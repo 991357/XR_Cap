@@ -1,0 +1,219 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager Instance;
+    [Header("# GameObject")]
+    public Player PlayerLogic;
+    public GameObject Player;
+    public PoolManager P_Manager;
+    public LevelUp LevelUp;
+    public Result Obj_UiResult;
+    public GameObject Obj_EnemyCleaner;
+    public GameObject Obj_Health;
+    public ChatManager C_Manager;
+    public QuestManager Q_Manager;
+    public GameObject EscPanel;
+    public Item Item;
+
+    [Header("# GameControl")]
+    public float GameTime;
+    public float MaxGameTime = 2 * 10f;
+    public bool IsLive;
+    bool IsEsc;
+
+    [Header("# PlayerInfo")]
+    public float Health;
+    public float MaxHealth = 100;
+    public int PlayerId;
+    public int Level;
+    public int Kill;
+    public int Exp;
+    public int[] I_NextExp = { 10,30,60,100,150,210,280,360,450,600};
+
+
+    [Header("# DummyData")]
+    public TMP_Text Dummy_T_DashCoolTime;
+    public TMP_Text Dummy_T_QCoolTier;
+    public TMP_Text Dummy_T_Power;
+    public Image Blood_Img;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void GameStart(int id)
+    {
+        PlayerId = id;
+
+        Health = MaxHealth;
+
+        PlayerLogic.gameObject.SetActive(true);
+        LevelUp.Select(PlayerId % 2);
+
+        Resume();
+
+        AudioManager.Instance.PlayBgm(true);
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
+    }
+
+    public void GameRestart()
+    {
+        SceneManager.LoadScene(0);
+    }
+    public void GameOver()
+    {
+        StartCoroutine(GameOverRoutine());
+    }
+
+    IEnumerator GameOverRoutine()
+    {
+        IsLive = false;
+
+        yield return new WaitForSeconds(1.5f);
+        //yield return null;
+
+        Obj_UiResult.gameObject.SetActive(true);
+        Obj_UiResult.Lose();
+
+        Stop();
+
+        AudioManager.Instance.PlayBgm(false);
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
+    }
+
+    public void GameVictory()
+    {
+        StartCoroutine(GameVictoryRoutine());
+    }
+
+    IEnumerator GameVictoryRoutine()
+    {
+        IsLive = false;
+
+        yield return new WaitForSeconds(2f);
+
+        Obj_UiResult.gameObject.SetActive(true);
+        Obj_UiResult.Win();
+
+        Stop();
+
+        AudioManager.Instance.PlayBgm(false);
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
+    }
+
+    private void Update()
+    {
+        if (!IsLive)
+            return;
+
+        if (C_Manager.IsAction)
+            return;
+
+        GameTime += Time.deltaTime;
+
+        if(GameTime > MaxGameTime)
+        {
+            Obj_EnemyCleaner.SetActive(true);
+            GameTime = MaxGameTime;
+            GameVictory();
+        }
+        Dummy_Dash();
+        EscMenu();
+        Dummy_BloodImg();
+    }
+
+    public void Dummy_Dash()
+    {
+        if(PlayerLogic.DashTimer < PlayerLogic.DashCoolTime)
+        {
+            Dummy_T_DashCoolTime.text = "Dash : false";
+        }
+        else
+        {
+            Dummy_T_DashCoolTime.text = "Dash : true";
+        }
+
+        if(PlayerLogic.QTimer < PlayerLogic.QCoolTime)
+        {
+            Dummy_T_QCoolTier.text = "Q : False";
+        }
+        else
+        {
+            Dummy_T_QCoolTier.text = "Q : true";
+        }
+
+        Dummy_T_Power.text = "Power : " + PlayerLogic.Power;
+    }
+
+    public void Dummy_BloodImg()
+    {
+        if(Health <= 40)
+        {
+            StartCoroutine(Blooding());
+        }
+    }
+    IEnumerator Blooding()
+    {
+        while (Health > 50)
+        {
+            for (byte i = 0; i < 255; i++)
+            {
+                Blood_Img.color = new Color32(255, 255, 255, i);
+            }
+            yield return new WaitForSeconds(0.5f);
+            for (byte i = 255; i > 0; i--)
+            {
+                Blood_Img.color = new Color32(0, 0, 0, i);
+            }
+        }
+    }
+
+    public void GetExp()
+    {
+        if (!IsLive)
+            return;
+
+        Exp++;
+        if(Exp == I_NextExp[Mathf.Min(Level,I_NextExp.Length-1)])
+        {
+            Level++;
+            Exp = 0;
+            //Weapon.LevelUp(5, 1);
+            LevelUp.Show();
+        }
+    }
+
+    public void Stop()
+    {
+        IsLive = false;
+        Time.timeScale = 0;
+    }
+
+    public void Resume()
+    {
+        IsLive = true;
+        Time.timeScale = 1;
+    }
+
+    void EscMenu()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            EscPanel.SetActive(true);
+            Stop();
+        }
+    }
+
+    public void OnClickEscExitBtn()
+    {
+        EscPanel.SetActive(false);
+        Resume();
+    }
+}

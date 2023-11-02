@@ -1,0 +1,308 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy : MonoBehaviour
+{
+    public string Name;
+
+    public float F_Speed;
+    public float F_Health;
+    public float F_MaxHealth;
+
+    public Rigidbody2D R_Target;
+    public RuntimeAnimatorController[] RAC_AnimCon;     //더 많은 몬스터를 넣고 싶다면 여기에 애니메이터를 추가해서 넣어주세요!
+
+    Rigidbody2D R_Rigid;
+    Collider2D C_Coll;
+    SpriteRenderer SR_SPriter;
+    Animator A_Anim;
+    WaitForFixedUpdate WFU_Wait;
+
+    bool B_IsLive;
+    public bool B_IsFlip;
+    bool IsHit;
+
+    private void Awake()
+    {
+        R_Rigid = GetComponent<Rigidbody2D>();
+        C_Coll = GetComponent<Collider2D>();
+        SR_SPriter = GetComponent<SpriteRenderer>();
+        A_Anim = GetComponent<Animator>();
+        WFU_Wait = new WaitForFixedUpdate();
+        B_IsFlip = true;
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (!GameManager.Instance.IsLive)
+            return;
+
+        if (!B_IsLive || A_Anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+            return;
+
+        Vector2 V_DirVec = R_Target.position - R_Rigid.position;        //타겟위치 - 나의위치 = 방향(위치차이)
+        Vector2 V_NextVec = V_DirVec.normalized * F_Speed * Time.fixedDeltaTime;
+
+        if (GameManager.Instance.C_Manager.IsAction)
+            return;
+        R_Rigid.MovePosition(R_Rigid.position + V_NextVec);
+        R_Rigid.velocity = Vector2.zero;
+    }
+    private void LateUpdate()
+    {
+        if (!GameManager.Instance.IsLive)
+            return;
+        if (!B_IsLive)
+            return;
+
+        // if (RAC_AnimCon.)
+        // {
+        //     SR_SPriter.flipX = R_Target.position.x < R_Rigid.position.x;
+        // }
+        //else
+        //{
+        SR_SPriter.flipX = R_Target.position.x > R_Rigid.position.x;
+        //}
+    }
+
+    private void OnEnable()
+    {
+        R_Target = GameManager.Instance.Player.GetComponent<Rigidbody2D>();
+        B_IsLive = true;
+
+        C_Coll.enabled = true;
+        R_Rigid.simulated = true;
+        SR_SPriter.sortingOrder = 2;
+        A_Anim.SetBool("Dead", false);
+        if (Name == "B_A_0")
+            Invoke("Walk", 0.7f);
+
+        F_Health = F_MaxHealth;
+    }
+    //public void Init(SpawnData data)
+    //{
+    //    A_Anim.runtimeAnimatorController = RAC_AnimCon[data.I_SpriteType];
+    //    F_Speed = data.F_Speed;
+    //    F_MaxHealth = data.I_Health;
+    //    F_Health = data.I_Health;
+    //}
+
+    void Walk()
+    {
+        A_Anim.SetTrigger("IsWalk");
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Bullet") || !B_IsLive)
+            return;
+
+        if (collision.gameObject.tag == "Bullet")
+        {
+
+            F_Health -= collision.GetComponent<Bullet>().F_Dmg;
+            StartCoroutine(KnockBack());
+
+            if (F_Health > 0)
+            {
+                if (Name == "A")
+                {
+                    A_Anim.SetTrigger("Hit");
+                }
+                else
+                {
+                    //RGB값 처리 예정
+                    SpriteRenderer sr = GetComponent<SpriteRenderer>();
+                    sr.color = new Color(1, 0, 0, 1);
+                    Invoke("ReturnSprite", 0.15f);
+                }
+                AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
+            }
+            else
+            {
+                if (IsHit)
+                    return;
+
+                IsHit = true;
+                B_IsLive = false;
+                C_Coll.enabled = false;
+                R_Rigid.simulated = false;
+                SR_SPriter.sortingOrder = 1;
+                if (GameManager.Instance.Q_Manager.IsQuest)
+                    GameManager.Instance.Q_Manager.Count += 1;
+                A_Anim.SetBool("Dead", true);
+
+                if (Name == "A" || Name == "B_A")
+                {
+                    Invoke("Dead", 0.65f);
+                }
+                else if (Name == "C" || Name == "B_A_0")
+                {
+                    Invoke("Dead", 0.6f);
+                }
+                else if (Name == "B")
+                {
+                    Invoke("Dead", 0.8f);
+                }
+                else if (Name == "B_C")
+                {
+                    Invoke("Dead", 1);
+                }
+                IsHit = false;
+                GameManager.Instance.Kill++;
+                GameManager.Instance.GetExp();
+
+                if (GameManager.Instance.IsLive)
+                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+            }
+        }
+        if(collision.gameObject.tag == "SubBullet")
+        {
+            F_Health -= collision.GetComponent<SubBullet>().F_Dmg;
+            StartCoroutine(KnockBack());
+
+            if (F_Health > 0)
+            {
+                if (Name == "A")
+                {
+                    A_Anim.SetTrigger("Hit");
+                }
+                else
+                {
+                    //RGB값 처리 예정
+                    SpriteRenderer sr = GetComponent<SpriteRenderer>();
+                    sr.color = new Color(1, 0, 0, 1);
+                    Invoke("ReturnSprite", 0.15f);
+                }
+                AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
+            }
+            else
+            {
+                if (IsHit)
+                    return;
+
+                IsHit = true;
+                B_IsLive = false;
+                C_Coll.enabled = false;
+                R_Rigid.simulated = false;
+                SR_SPriter.sortingOrder = 1;
+                if (GameManager.Instance.Q_Manager.IsQuest)
+                    GameManager.Instance.Q_Manager.Count += 1;
+                A_Anim.SetBool("Dead", true);
+
+                if (Name == "A" || Name == "B_A")
+                {
+                    Invoke("Dead", 0.65f);
+                }
+                else if (Name == "C" || Name == "B_A_0")
+                {
+                    Invoke("Dead", 0.6f);
+                }
+                else if (Name == "B")
+                {
+                    Invoke("Dead", 0.8f);
+                }
+                else if (Name == "B_C")
+                {
+                    Invoke("Dead", 1);
+                }
+                IsHit = false;
+                GameManager.Instance.Kill++;
+                GameManager.Instance.GetExp();
+
+                if (GameManager.Instance.IsLive)
+                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Fire")
+        {
+            F_Health -= collision.GetComponent<Bullet>().F_Dmg;
+            StartCoroutine(KnockBack());
+
+            if (F_Health > 0)
+            {
+                if (Name == "A")
+                {
+                    A_Anim.SetTrigger("Hit");
+                }
+                else if (Name == "B_A_0")
+                {
+                    Debug.Log("애기가 맞음");
+                }
+                else
+                {
+                    //RGB값 처리 예정
+                    SpriteRenderer sr = GetComponent<SpriteRenderer>();
+                    sr.color = new Color(1, 0, 0, 1);
+                    Invoke("ReturnSprite", 0.15f);
+                }
+
+                AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
+            }
+            else
+            {
+                if (IsHit)
+                    return;
+
+                IsHit = true;
+                B_IsLive = false;
+                C_Coll.enabled = false;
+                R_Rigid.simulated = false;
+                SR_SPriter.sortingOrder = 1;
+                if (GameManager.Instance.Q_Manager.IsQuest)
+                    GameManager.Instance.Q_Manager.Count += 1;
+                A_Anim.SetBool("Dead", true);
+
+                if (Name == "A" || Name == "B_A")
+                {
+                    Invoke("Dead", 0.65f);
+                }
+                else if (Name == "C")
+                {
+                    Invoke("Dead", 0.6f);
+                }
+                else if (Name == "B")
+                {
+                    Invoke("Dead", 0.8f);
+                }
+                else if (Name == "B_C")
+                {
+                    Invoke("Dead", 1.5f);
+                }
+                IsHit = false;
+                GameManager.Instance.Kill++;
+                GameManager.Instance.GetExp();
+
+                if (GameManager.Instance.IsLive)
+                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+            }
+        }
+    }
+
+    IEnumerator KnockBack()
+    {
+        //yield return null;                          //1프레임 쉬기 
+        //yield return new WaitForSeconds(2f);        //2초 쉬기
+        yield return WFU_Wait;                      //다음 하나의 물리 프레임 딜레이
+        Vector3 playerpos = GameManager.Instance.Player.transform.position;
+        Vector3 dirvec = transform.position - playerpos;
+
+        R_Rigid.AddForce(dirvec.normalized * 1f, ForceMode2D.Impulse);
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
+    }
+
+    void ReturnSprite()
+    {
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        sr.color = new Color(1, 1, 1, 1);
+    }
+}
