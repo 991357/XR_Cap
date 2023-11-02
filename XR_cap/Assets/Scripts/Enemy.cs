@@ -133,7 +133,11 @@ public class Enemy : MonoBehaviour
                     GameManager.Instance.Q_Manager.Count += 1;
                 A_Anim.SetBool("Dead", true);
 
-                if (Name == "A" || Name == "B_A")
+                if(Name == "A")
+                {
+                    Invoke("Dead", 0.5f);
+                }
+                else if ( Name == "B_A")
                 {
                     Invoke("Dead", 0.65f);
                 }
@@ -141,7 +145,7 @@ public class Enemy : MonoBehaviour
                 {
                     Invoke("Dead", 0.6f);
                 }
-                else if (Name == "B")
+                else if (Name == "B" || Name == "B_B")
                 {
                     Invoke("Dead", 0.8f);
                 }
@@ -151,7 +155,13 @@ public class Enemy : MonoBehaviour
                 }
                 IsHit = false;
                 GameManager.Instance.Kill++;
-                GameManager.Instance.GetExp();
+                if (Name == "B_A" || Name == "B_B" || Name == "B_C")
+                {
+                    for (int i = 0; i < 20; i++)
+                        GameManager.Instance.GetExp();
+                }
+                else
+                    GameManager.Instance.GetExp();
 
                 if (GameManager.Instance.IsLive)
                     AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
@@ -199,7 +209,7 @@ public class Enemy : MonoBehaviour
                 {
                     Invoke("Dead", 0.6f);
                 }
-                else if (Name == "B")
+                else if (Name == "B" || Name== "B_B")
                 {
                     Invoke("Dead", 0.8f);
                 }

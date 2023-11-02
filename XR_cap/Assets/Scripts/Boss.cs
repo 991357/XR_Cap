@@ -147,9 +147,6 @@ public class Boss : MonoBehaviour
 
     void ActiveFalse()
     {
-        for (int i = 0; i < 20; i++)
-            GameManager.Instance.GetExp();
-
         Thunder.SetActive(false);
     }
 }

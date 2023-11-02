@@ -51,17 +51,21 @@ public class Spawner : MonoBehaviour
         else if (F_Timer <= 30)
         {
             I_Level = 2;
-            SpawnDelay = Random.Range(0.9f, 1.2f);
+            StartCoroutine(LevelChange());
         }
         else if (F_Timer <= 60)
         {
             I_Level = 3;
-            SpawnDelay = Random.Range(0.7f, 0.9f);
+            StartCoroutine(LevelChange());
+        }
+        else if(F_Timer <= 100)
+        {
+            I_Level = 4;
+            SpawnDelay = 0.45f;
         }
         else
         {
-            I_Level = 4;
-            SpawnDelay = 0.5f;
+            SpawnDelay = 0.3f;
         }
     }
 
@@ -74,6 +78,16 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    IEnumerator LevelChange()
+    {
+        SpawnDelay = 0.5f;
+
+        yield return new WaitForSeconds(0.01f);
+        if(I_Level == 2)
+            SpawnDelay = Random.Range(0.8f, 1f);
+        else if(I_Level == 3)
+            SpawnDelay = Random.Range(0.6f, 0.8f);
+    }
     void Spawn()
     {
         if(I_Level == 1)

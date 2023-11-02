@@ -294,20 +294,23 @@ public class Player : MonoBehaviour
     {
         switch (Item.Level)
         {
+            case 0:
+                Speed = 5f;
+                break;
             case 1:
-                Speed = 3.6f;
+                Speed = 6f;
                 break;
             case 2:
-                Speed = 4.32f;
+                Speed = 7.2f;
                 break;
             case 3:
-                Speed = 5.184f;
-                break;
-            case 4:
                 Speed = 6.220799f;
                 break;
+            case 4:
+                Speed = 8.639999f;
+                break;
             case 5:
-                Speed = 7.464959f;
+                Speed = 10.63f;
                 break;
             default:
                 Speed = 3;

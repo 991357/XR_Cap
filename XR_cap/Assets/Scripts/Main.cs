@@ -6,8 +6,18 @@ using UnityEngine.SceneManagement;
 public class Main : MonoBehaviour
 {
     public GameObject Obj_OptionPanel;
+    public GameObject Obj_GameModePanel;
+    public GameObject Obj_GameStartBtn;
+    public GameObject Obj_ExitBtn;
 
     public void OnClickStartBtn()
+    {
+        Obj_GameStartBtn.SetActive(false);
+        Obj_ExitBtn.SetActive(false);
+        Obj_GameModePanel.SetActive(true);
+    }
+
+    public void OnClickMode1Btn()
     {
         SceneManager.LoadScene(1);
     }

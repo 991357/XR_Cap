@@ -63,7 +63,8 @@ public class Bullet : MonoBehaviour
 
         if (GameManager.Instance.LevelUp.items[1].Level > 3)
         {
-            for (int i = 0; i < 10; i++)
+            int rannum = Random.Range(10, 13);
+            for (int i = 0; i < rannum; i++)
             {
                 GameObject test = GameManager.Instance.P_Manager.Get(22);
                 //test.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -73,12 +74,12 @@ public class Bullet : MonoBehaviour
                 Rigidbody2D rigid = test.GetComponent<Rigidbody2D>();
                 SubBullet bulletlogic = test.GetComponent<SubBullet>();
                 bulletlogic.F_Dmg = 1;
-                if (GameManager.Instance.LevelUp.items[1].Level > 4)
+                if (GameManager.Instance.LevelUp.items[1].Level > rannum)
                     bulletlogic.I_Per = 99;
 
                 //bulletlogic.IsRotate = true;
 
-                Vector2 dirvec = new Vector2(Mathf.Cos(Mathf.PI * 2 * i / 10), Mathf.Sin(Mathf.PI * 2 * i / 10));
+                Vector2 dirvec = new Vector2(Mathf.Cos(Mathf.PI * 2 * i / rannum), Mathf.Sin(Mathf.PI * 2 * i / rannum));
 
                 if(GameManager.Instance.LevelUp.items[1].Level > 4)
                     rigid.AddForce(dirvec.normalized * 20, ForceMode2D.Impulse);
