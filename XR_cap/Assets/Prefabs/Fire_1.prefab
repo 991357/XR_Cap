@@ -183,8 +183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6422bc0043552af47b1aa06893a6affc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   F_Dmg: 2
   I_Per: 999
+  IsRotate: 0
+  Dir: {x: 0, y: 0, z: 0}
 --- !u!1 &2478226130752668431
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +289,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 6789524314458676217, guid: 7854251af2d89c54ab95fdeee357e903, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -386,8 +389,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6422bc0043552af47b1aa06893a6affc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   F_Dmg: 2
   I_Per: 999
+  IsRotate: 0
+  Dir: {x: 0, y: 0, z: 0}
 --- !u!1 &5265249463652647491
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,8 +577,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6422bc0043552af47b1aa06893a6affc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   F_Dmg: 2
   I_Per: 999
+  IsRotate: 0
+  Dir: {x: 0, y: 0, z: 0}
 --- !u!1 &8522392064419497915
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,5 +765,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6422bc0043552af47b1aa06893a6affc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   F_Dmg: 2
   I_Per: 999
+  IsRotate: 0
+  Dir: {x: 0, y: 0, z: 0}

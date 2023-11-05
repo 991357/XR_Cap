@@ -117,7 +117,10 @@ public class Bullet : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         R_Rigid.velocity = Vector2.zero;
-        transform.localScale = new Vector3(0.1f,0.1f,0.1f);
+
+        if(Name == "Pillar")
+            transform.localScale = new Vector3(0.1f,0.1f,0.1f);
+
         IsTouch = true;
 
         yield return null;
