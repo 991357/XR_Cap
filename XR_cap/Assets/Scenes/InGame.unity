@@ -2059,7 +2059,7 @@ GameObject:
   - component: {fileID: 222996159}
   m_Layer: 0
   m_Name: Player__
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4336,7 +4336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Obj_Prefabs:
   - {fileID: 185740373333152952, guid: 58f1130e68080c645a2d8556317dabfc, type: 3}
-  - {fileID: 2073811964565237417, guid: 5365b2ae0d585024aa2c3743a6e5789b, type: 3}
+  - {fileID: 5610843971730775487, guid: c5598b90d28fb1b44b5a2cabf3da9283, type: 3}
   - {fileID: 3725729640343643223, guid: f1ab356c81f0c4f41ae9bbdc83f8a8b4, type: 3}
   - {fileID: 6785772262510733928, guid: b57a029f2a05384479a50eadf7e5b43c, type: 3}
   - {fileID: 185740373333152952, guid: 5c350dfa55414914fa2a2e874ad724d8, type: 3}
@@ -4358,6 +4358,8 @@ MonoBehaviour:
   - {fileID: 4255989977469396628, guid: 0a2914d4beb53544583231933bbe7d4d, type: 3}
   - {fileID: 3376164925244337846, guid: f9894b7119daca74d80d76a5ae69aa24, type: 3}
   - {fileID: 1425539491849238206, guid: 79ff33b6c0a7a1b41a8bee67c00f31ff, type: 3}
+  - {fileID: 5736561157687432679, guid: 8a02070e88f0bd3499eeff6867ddd067, type: 3}
+  - {fileID: 6001549431854689702, guid: e210570494d0c3f40a489a237d67ce19, type: 3}
 --- !u!4 &426365951
 Transform:
   m_ObjectHideFlags: 0
@@ -24463,7 +24465,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 10, y: 0}
-  m_SizeDelta: {x: 160, y: 50}
+  m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &883109438
 GameObject:
@@ -60715,9 +60717,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6422bc0043552af47b1aa06893a6affc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   F_Dmg: 100000
   I_Per: -1
   IsRotate: 0
+  Dir: {x: 0, y: 0, z: 0}
 --- !u!61 &1403360336
 BoxCollider2D:
   m_ObjectHideFlags: 0

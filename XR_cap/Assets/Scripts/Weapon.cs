@@ -13,7 +13,9 @@ public class Weapon : MonoBehaviour
     public float F_Dmg;
     public float F_Speed;       //회전 속도
 
-    float F_Timer;
+    public float SpearShotDealy = 1;
+
+    public float F_Timer;
 
     Player S_Player;
     public bool IsWeapon0;
@@ -35,6 +37,14 @@ public class Weapon : MonoBehaviour
         {
             case 0:
                 transform.Rotate(Vector3.back * F_Speed * Time.deltaTime);
+
+                F_Timer += Time.deltaTime;
+
+                if (F_Timer > SpearShotDealy)
+                {
+                    F_Timer = 0;
+                    Spear();
+                }
                 break;
 
             case 1:
@@ -137,7 +147,7 @@ public class Weapon : MonoBehaviour
             }
             else
             {
-                bullet = GameManager.Instance.P_Manager.Get(I_PrefabId).transform;
+                bullet = GameManager.Instance.P_Manager.Get(1).transform;
                 bullet.parent = transform;
             }
 
@@ -147,7 +157,6 @@ public class Weapon : MonoBehaviour
             Vector3 rotvec = Vector3.forward * 360 * i / I_Count;
             bullet.Rotate(rotvec);
             bullet.Translate(bullet.up * 2.5f, Space.World);
-
             bullet.GetComponent<Bullet>().Init(F_Dmg, -100,Vector3.zero);      //-100 is Infinity per (관통)
 
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
@@ -207,57 +216,39 @@ public class Weapon : MonoBehaviour
                 bulletll.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 bulletcc.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 break;
-            //case 4:
-            //    for (int i = 0; i < 8; i++)
-            //    {
-            //        GameObject test = GameManager.Instance.P_Manager.Get(2);
-            //        test.transform.position = transform.position;
-            //        //test.transform.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
-            //
-            //        Rigidbody2D rigid = test.GetComponent<Rigidbody2D>();
-            //        Bullet bulletlogic = test.GetComponent<Bullet>();
-            //        bulletlogic.I_Per = 999;
-            //        bulletlogic.F_Dmg = 1;
-            //        //bulletlogic.IsRotate = true;
-            //
-            //        Vector2 dirvec = new Vector2(Mathf.Cos(Mathf.PI * 2 * i / 8), Mathf.Sin(Mathf.PI * 2 * i / 8));
-            //
-            //        rigid.AddForce(dirvec.normalized * 4, ForceMode2D.Impulse);
-            //
-            //        Vector3 rotvec = Vector3.forward * 360 * i / 8 + Vector3.forward;
-            //        test.transform.Rotate(rotvec);
-            //    }
-            //    break;
-            //default:
-            //    for (int i = 0; i < 14; i++)
-            //    {
-            //        GameObject test = GameManager.Instance.P_Manager.Get(2);
-            //        test.transform.position = transform.position;
-            //        //test.transform.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
-            //
-            //        Rigidbody2D rigid = test.GetComponent<Rigidbody2D>();
-            //        Bullet bulletlogic = test.GetComponent<Bullet>();
-            //        bulletlogic.F_Dmg = 1;
-            //        //bulletlogic.IsRotate = true;
-            //
-            //        Vector2 dirvec = new Vector2(Mathf.Cos(Mathf.PI * 2 * i / 14), Mathf.Sin(Mathf.PI * 2 * i / 14));
-            //
-            //        rigid.AddForce(dirvec.normalized * 6, ForceMode2D.Impulse);
-            //
-            //        Vector3 rotvec = Vector3.forward * 360 * i / 14 + Vector3.forward;
-            //        test.transform.Rotate(rotvec);
-            //    }
-            //    break;
-            //case 6:
-            //    break;
-            //default:
-            //    Debug.Log("무기 레벨 초과");
-            //    break;
         }
         //Transform bullet = GameManager.Instance.S_Pool.Get(I_PrefabId).transform;
-
 
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
+    void Spear()
+    {
+        if (!S_Player.Scanner.F_NearstTarget)
+            return;
+
+        Vector3 targetpos = S_Player.Scanner.F_NearstTarget.position;
+        Vector3 dir = targetpos - transform.position;
+        dir = dir.normalized;
+
+        switch (GameManager.Instance.LevelUp.items[0].Level)
+        {
+            case 3:
+            case 4:
+            case 5:
+                Transform bullet = GameManager.Instance.P_Manager.Get(23).transform;
+                bullet.position = transform.position;
+                bullet.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
+                Debug.Log("실행");
+                bullet.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
+                bullet.GetComponent<Bullet>().Dir = dir;
+                break;
+           // case 4:
+           //
+           //     break;
+           // case 5:
+           //
+           //     break;
+        }
+    }
 }

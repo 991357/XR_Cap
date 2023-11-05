@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SubBullet : MonoBehaviour
 {
+    public string Name;
     public float F_Dmg;
     public int I_Per;
 
@@ -19,6 +20,19 @@ public class SubBullet : MonoBehaviour
     private void Update()
     {
         Dead();
+    }
+    private void OnEnable()
+    {
+        if (Name == "Pillar")
+        {
+            StartCoroutine(ActiveFalse());
+        }
+    }
+
+    IEnumerator ActiveFalse()
+    {
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(false);
     }
 
     public void Init(float dmg, int per, Vector3 dir)

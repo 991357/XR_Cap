@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public string Name;
+
     public float F_Dmg;
     public int I_Per;
 
     public bool IsRotate;
+    bool IsTouch;
 
+    public Vector3 Dir;
     Rigidbody2D R_Rigid;
 
     private void Awake()
     {
         R_Rigid = GetComponent<Rigidbody2D>();
+    }
+
+    private void OnEnable()
+    {
+        if(Name == "Pillar")
+            transform.localScale = new Vector3(1, 1, 1);
     }
 
     private void Update()
@@ -56,7 +66,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy") || I_Per == -100)
+        if (!collision.CompareTag("Enemy") || I_Per == -100 || IsTouch)
             return;
 
         I_Per--;
@@ -91,6 +101,11 @@ public class Bullet : MonoBehaviour
             }
         }
 
+        if(GameManager.Instance.LevelUp.items[0].Level > 3)
+        {
+            StartCoroutine(SpearRotate());
+        }
+
         if (I_Per < 0)
         {
             R_Rigid.velocity = Vector2.zero;
@@ -98,14 +113,24 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    IEnumerator SpearRotate()
     {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            
-        }
-    }
+        yield return new WaitForSeconds(0.1f);
+        R_Rigid.velocity = Vector2.zero;
+        transform.localScale = new Vector3(0.1f,0.1f,0.1f);
+        IsTouch = true;
 
+        yield return null;
+        GameObject Pillar = GameManager.Instance.P_Manager.Get(24);
+        Pillar.transform.position = transform.position;
+        Pillar.GetComponent<SubBullet>().F_Dmg = 10;
+        Pillar.GetComponent<SubBullet>().I_Per = 999;
+
+        yield return new WaitForSeconds(1f);
+        IsTouch = false;
+        Pillar.SetActive(false);
+        gameObject.SetActive(false);
+    }
     void Dead()
     {
         Transform target = GameManager.Instance.Player.transform;
