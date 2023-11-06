@@ -49,18 +49,21 @@ public class Gear : MonoBehaviour
     {
         Weapon[] weapons = transform.parent.GetComponentsInChildren<Weapon>();
 
-        foreach(Weapon weapon in weapons)
+        foreach (Weapon weapon in weapons)
         {
             switch (weapon.I_Id)
             {
                 case 0:
-                    float speed = 150 * Character.WeaponSpeed;
-                    weapon.F_Speed = speed + (150 * F_Rate);
+                    //float speed = 150 * Character.WeaponSpeed;
+                    //weapon.F_Speed = speed + (150 * F_Rate);
+
+                    Bullet[] slash = weapon.GetComponentsInChildren<Bullet>();
+
+                    for (int i = 0; i < slash.Length; i++)
+                    {
+                        slash[i].transform.localScale = new Vector3(slash[i].transform.localScale.x * F_Rate, slash[i].transform.localScale.y * F_Rate, slash[i].transform.localScale.z * F_Rate);
+                    }  
                     break;
-                //case 1:
-                //    speed = 0.5f * Character.WeaponRate;
-                //    weapon.F_Speed = speed * (1f - F_Rate);
-                //    break;
             }
         }
     }
@@ -81,10 +84,6 @@ public class Gear : MonoBehaviour
         {
             switch (weapon.I_Id)
             {
-                //case 0:
-                //    float speed = 150 * Character.WeaponSpeed;
-                //    weapon.F_Speed = speed + (150 * F_Rate);
-                //    break;
                 case 1:
                     float speed = 1f * Character.WeaponRate;
                     weapon.F_Speed = speed * (1f - F_Rate);

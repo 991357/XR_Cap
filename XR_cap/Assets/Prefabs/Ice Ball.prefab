@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 7385130165922202062}
   - component: {fileID: 7625971668680053193}
   - component: {fileID: -2683846586051827687}
-  - component: {fileID: 2506160268915078680}
+  - component: {fileID: 497122792821128107}
+  - component: {fileID: 6580041223653906413}
   m_Layer: 0
   m_Name: Ice Ball
   m_TagString: Bullet
@@ -143,7 +144,21 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.7
---- !u!114 &2506160268915078680
+--- !u!114 &497122792821128107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5610843971730775487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1ec02b52264b84e8eec3655dfb6d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: Sword
+  Dmg: 0
+--- !u!114 &6580041223653906413
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

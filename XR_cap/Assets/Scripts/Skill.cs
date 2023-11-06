@@ -145,6 +145,14 @@ public class Skill : MonoBehaviour
                 y = Random.Range(1, 10);
                 transform.position = new Vector3(transform.position.x + x, transform.position.y + y);
                 break;
+            case "Sword":
+                Vector2 swordpos = GameManager.Instance.Player.transform.position;
+                transform.position = swordpos;
+
+                x = Random.Range(-2.5f,2.5f );
+                y = Random.Range(0.5f, 1.5f);
+                transform.position = new Vector3(transform.position.x + x, transform.position.y + y);
+                break;
         }
     }
 
@@ -195,6 +203,11 @@ public class Skill : MonoBehaviour
                     transform.position = new Vector2(transform.position.x + 0.001f, transform.position.y - 0.005f);
                 GameManager.Instance.PlayerLogic.CamShake.IsShake = true;
                 Invoke("TurnOff", 2.5f);
+                break;
+            case "Sword":
+                transform.position = new Vector2(0, transform.position.y - 0.01f);
+                //GameManager.Instance.PlayerLogic.CamShake.IsShake = true;
+                Invoke("TurnOff", 2f);
                 break;
         }
     }

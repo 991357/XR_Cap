@@ -36,7 +36,7 @@ public class Weapon : MonoBehaviour
         switch (I_Id)
         {
             case 0:
-                transform.Rotate(Vector3.back * F_Speed * Time.deltaTime);
+                //transform.Rotate(Vector3.back * F_Speed * Time.deltaTime);
 
                 F_Timer += Time.deltaTime;
 
@@ -151,12 +151,13 @@ public class Weapon : MonoBehaviour
                 bullet.parent = transform;
             }
 
+            bullet.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
 
             Vector3 rotvec = Vector3.forward * 360 * i / I_Count;
             bullet.Rotate(rotvec);
-            bullet.Translate(bullet.up * 2.5f, Space.World);
+            //bullet.Translate(bullet.up * 2.5f, Space.World);
             bullet.GetComponent<Bullet>().Init(F_Dmg, -100,Vector3.zero);      //-100 is Infinity per (°üÅë)
 
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);

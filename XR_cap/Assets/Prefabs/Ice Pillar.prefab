@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6391070518262560310}
   - component: {fileID: 2560546060440898242}
   - component: {fileID: 8747533736384473462}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Ice Pillar
   m_TagString: SubBullet
   m_Icon: {fileID: 0}

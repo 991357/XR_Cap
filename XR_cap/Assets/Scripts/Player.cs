@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     public SpriteRenderer SR;
     Animator Anim;
     CapsuleCollider2D Collider;
-    public GameObject[] Q_Skill;
     public Scanner Scanner;
     public Item Item;
     public RuntimeAnimatorController[] RAC;

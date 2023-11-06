@@ -1494,7 +1494,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputVec: {x: 0, y: 0}
   SR: {fileID: 125647746}
-  Q_Skill: []
   Scanner: {fileID: 125647750}
   Item: {fileID: 120995999}
   RAC:
@@ -2230,7 +2229,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputVec: {x: 0, y: 0}
   SR: {fileID: 222996157}
-  Q_Skill: []
   Scanner: {fileID: 222996159}
   Item: {fileID: 120995999}
   RAC:
@@ -4336,7 +4334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Obj_Prefabs:
   - {fileID: 185740373333152952, guid: 58f1130e68080c645a2d8556317dabfc, type: 3}
-  - {fileID: 5610843971730775487, guid: c5598b90d28fb1b44b5a2cabf3da9283, type: 3}
+  - {fileID: 1062036644191289934, guid: 7650d0260cdc7ed418a8b9552a44728c, type: 3}
   - {fileID: 3725729640343643223, guid: f1ab356c81f0c4f41ae9bbdc83f8a8b4, type: 3}
   - {fileID: 6785772262510733928, guid: b57a029f2a05384479a50eadf7e5b43c, type: 3}
   - {fileID: 185740373333152952, guid: 5c350dfa55414914fa2a2e874ad724d8, type: 3}
@@ -4360,6 +4358,7 @@ MonoBehaviour:
   - {fileID: 1425539491849238206, guid: 79ff33b6c0a7a1b41a8bee67c00f31ff, type: 3}
   - {fileID: 5736561157687432679, guid: 8a02070e88f0bd3499eeff6867ddd067, type: 3}
   - {fileID: 6001549431854689702, guid: e210570494d0c3f40a489a237d67ce19, type: 3}
+  - {fileID: 5610843971730775487, guid: c5598b90d28fb1b44b5a2cabf3da9283, type: 3}
 --- !u!4 &426365951
 Transform:
   m_ObjectHideFlags: 0

@@ -14,14 +14,16 @@ public class Enemy : MonoBehaviour
     public RuntimeAnimatorController[] RAC_AnimCon;     //더 많은 몬스터를 넣고 싶다면 여기에 애니메이터를 추가해서 넣어주세요!
 
     Rigidbody2D R_Rigid;
-    Collider2D C_Coll;
-    SpriteRenderer SR_SPriter;
+    public Collider2D C_Coll;
+    public SpriteRenderer SR_SPriter;
     Animator A_Anim;
     WaitForFixedUpdate WFU_Wait;
+    FreezeEnemy Freeze;
 
-    bool B_IsLive;
     public bool B_IsFlip;
+    bool B_IsLive;
     bool IsHit;
+    bool IsFreeze;
 
     private void Awake()
     {
@@ -30,6 +32,7 @@ public class Enemy : MonoBehaviour
         SR_SPriter = GetComponent<SpriteRenderer>();
         A_Anim = GetComponent<Animator>();
         WFU_Wait = new WaitForFixedUpdate();
+        Freeze = GetComponent<FreezeEnemy>();
         B_IsFlip = true;
     }
 
@@ -42,13 +45,16 @@ public class Enemy : MonoBehaviour
         if (!B_IsLive || A_Anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
 
+        if (Freeze.IsFreeze)
+            return;
+
         Vector2 V_DirVec = R_Target.position - R_Rigid.position;        //타겟위치 - 나의위치 = 방향(위치차이)
         Vector2 V_NextVec = V_DirVec.normalized * F_Speed * Time.fixedDeltaTime;
 
         if (GameManager.Instance.C_Manager.IsAction)
             return;
         R_Rigid.MovePosition(R_Rigid.position + V_NextVec);
-        R_Rigid.velocity = Vector2.zero;
+        //R_Rigid.velocity = Vector2.zero;
     }
     private void LateUpdate()
     {
@@ -93,6 +99,7 @@ public class Enemy : MonoBehaviour
     {
         A_Anim.SetTrigger("IsWalk");
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Bullet") || !B_IsLive)
@@ -100,9 +107,29 @@ public class Enemy : MonoBehaviour
 
         if (collision.gameObject.tag == "Bullet")
         {
-
             F_Health -= collision.GetComponent<Bullet>().F_Dmg;
+
             StartCoroutine(KnockBack());
+
+            if(collision.GetComponent<Bullet>().Name == "Slash")
+            {
+                Freeze.IsFreeze = true;
+                SR_SPriter.color = new Color(0, 0, 1);
+                C_Coll.isTrigger = true;
+            }
+            if (collision.GetComponent<Bullet>().Name == "Slash")
+            {
+                int ran = Random.Range(0, 3);
+                if (ran == 0)
+                {
+                    //RGB 값 처리
+                    SR_SPriter.color = new Color(0, 0, 1);
+                    IsFreeze = true;
+                    C_Coll.isTrigger = true;
+                    StartCoroutine(EnemyFreeze());
+                }
+            }
+
 
             if (F_Health > 0)
             {
@@ -133,11 +160,11 @@ public class Enemy : MonoBehaviour
                     GameManager.Instance.Q_Manager.Count += 1;
                 A_Anim.SetBool("Dead", true);
 
-                if(Name == "A")
+                if (Name == "A")
                 {
                     Invoke("Dead", 0.5f);
                 }
-                else if ( Name == "B_A")
+                else if (Name == "B_A")
                 {
                     Invoke("Dead", 0.65f);
                 }
@@ -167,64 +194,16 @@ public class Enemy : MonoBehaviour
                     AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
             }
         }
-        if(collision.gameObject.tag == "SubBullet")
-        {
-            F_Health -= collision.GetComponent<SubBullet>().F_Dmg;
-            StartCoroutine(KnockBack());
+    }
 
-            if (F_Health > 0)
-            {
-                if (Name == "A")
-                {
-                    A_Anim.SetTrigger("Hit");
-                }
-                else
-                {
-                    //RGB값 처리 예정
-                    SpriteRenderer sr = GetComponent<SpriteRenderer>();
-                    sr.color = new Color(1, 0, 0, 1);
-                    Invoke("ReturnSprite", 0.15f);
-                }
-                AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
-            }
-            else
-            {
-                if (IsHit)
-                    return;
+    IEnumerator EnemyFreeze()
+    {
+        yield return new WaitForSeconds(5f);
 
-                IsHit = true;
-                B_IsLive = false;
-                C_Coll.enabled = false;
-                R_Rigid.simulated = false;
-                SR_SPriter.sortingOrder = 1;
-                if (GameManager.Instance.Q_Manager.IsQuest)
-                    GameManager.Instance.Q_Manager.Count += 1;
-                A_Anim.SetBool("Dead", true);
+        SR_SPriter.color = new Color(1, 1, 1);
 
-                if (Name == "A" || Name == "B_A")
-                {
-                    Invoke("Dead", 0.65f);
-                }
-                else if (Name == "C" || Name == "B_A_0")
-                {
-                    Invoke("Dead", 0.6f);
-                }
-                else if (Name == "B" || Name== "B_B")
-                {
-                    Invoke("Dead", 0.8f);
-                }
-                else if (Name == "B_C")
-                {
-                    Invoke("Dead", 1);
-                }
-                IsHit = false;
-                GameManager.Instance.Kill++;
-                GameManager.Instance.GetExp();
-
-                if (GameManager.Instance.IsLive)
-                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
-            }
-        }
+        IsFreeze = false;
+        C_Coll.isTrigger = false;
     }
 
     private void OnTriggerStay2D(Collider2D collision)

@@ -22,13 +22,14 @@ public class Bullet : MonoBehaviour
 
     private void OnEnable()
     {
-        if(Name == "Pillar")
+        if(Name == "Spear")
             transform.localScale = new Vector3(1, 1, 1);
     }
 
     private void Update()
     {
         Dead();
+
         if(IsRotate)
             transform.Rotate(Vector3.forward * 0.5f);
     }
@@ -84,7 +85,7 @@ public class Bullet : MonoBehaviour
                 Rigidbody2D rigid = test.GetComponent<Rigidbody2D>();
                 SubBullet bulletlogic = test.GetComponent<SubBullet>();
                 bulletlogic.F_Dmg = 1;
-                if (GameManager.Instance.LevelUp.items[1].Level > rannum)
+                if (GameManager.Instance.LevelUp.items[1].Level > 4)
                     bulletlogic.I_Per = 99;
 
                 //bulletlogic.IsRotate = true;
@@ -103,7 +104,8 @@ public class Bullet : MonoBehaviour
 
         if(GameManager.Instance.LevelUp.items[0].Level > 3)
         {
-            StartCoroutine(SpearRotate());
+            if(Name == "Spear")
+                StartCoroutine(SpearRotate());
         }
 
         if (I_Per < 0)
@@ -118,7 +120,7 @@ public class Bullet : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         R_Rigid.velocity = Vector2.zero;
 
-        if(Name == "Pillar")
+        if(Name == "Spear")
             transform.localScale = new Vector3(0.1f,0.1f,0.1f);
 
         IsTouch = true;
@@ -129,11 +131,26 @@ public class Bullet : MonoBehaviour
         Pillar.GetComponent<SubBullet>().F_Dmg = 10;
         Pillar.GetComponent<SubBullet>().I_Per = 999;
 
+        if(GameManager.Instance.LevelUp.items[0].Level > 4)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            GameObject sword = GameManager.Instance.P_Manager.Get(25);
+            sword.GetComponent<Bullet>().I_Per = 99;
+            sword.GetComponent<Bullet>().F_Dmg = 10;
+        }
+        else
+
+
         yield return new WaitForSeconds(1f);
         IsTouch = false;
         Pillar.SetActive(false);
+
+        yield return new WaitForSeconds(3f);
         gameObject.SetActive(false);
     }
+
+
     void Dead()
     {
         Transform target = GameManager.Instance.Player.transform;

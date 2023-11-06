@@ -36,12 +36,12 @@ public class Item : MonoBehaviour
         {
             case ItemData.ItemType.Melee:
             case ItemData.ItemType.Range:
-                T_Desc.text = string.Format(Data.S_ItemDesc,Data.F_Dmgs[Level] * 100,Data.I_Counts[Level]);
+                T_Desc.text = string.Format(Data.S_ItemDesc,Data.F_Dmgs[Level] * 10,Data.I_Counts[Level]);
                     break;
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
             case ItemData.ItemType.GunRateUp:
-                T_Desc.text = string.Format(Data.S_ItemDesc, Data.F_Dmgs[Level] * 100);
+                T_Desc.text = string.Format(Data.S_ItemDesc, Data.F_Dmgs[Level] * 10);
                 break;
             default:
                 T_Desc.text = string.Format(Data.S_ItemDesc);

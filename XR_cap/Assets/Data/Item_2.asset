@@ -15,15 +15,15 @@ MonoBehaviour:
   Type: 2
   I_ItemId: 2
   S_ItemName: "\uC0BD \uD68C\uC804\uC18D\uB3C4 \uC99D\uAC00 \uC7A5\uAC11"
-  S_ItemDesc: "\uC0BD \uD68C\uC804 \uC18D\uB3C4\n{0}% \uC99D\uAC00"
+  S_ItemDesc: "\uCE7C \uD06C\uAE30\n{0}% \uC99D\uAC00"
   SP_ItemIcon: {fileID: -181907988, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   F_BaseDmg: 0
   I_BaseCount: 0
   F_Dmgs:
-  - 0.1
-  - 0.2
-  - 0.3
-  - 0.5
-  - 0.7
+  - 1.1
+  - 1.1
+  - 1.1
+  - 1.1
+  - 1.1
   I_Counts: 0000000000000000000000000000000000000000
   PB_Projectile: {fileID: 0}
