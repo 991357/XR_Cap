@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
     public SpriteRenderer SR_SPriter;
     Animator A_Anim;
     WaitForFixedUpdate WFU_Wait;
-    FreezeEnemy Freeze;
+    //FreezeEnemy Freeze;
 
     public bool B_IsFlip;
     bool B_IsLive;
@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
         SR_SPriter = GetComponent<SpriteRenderer>();
         A_Anim = GetComponent<Animator>();
         WFU_Wait = new WaitForFixedUpdate();
-        Freeze = GetComponent<FreezeEnemy>();
+        //Freeze = GetComponent<FreezeEnemy>();
         B_IsFlip = true;
     }
 
@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
         if (!B_IsLive || A_Anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
 
-        if (Freeze.IsFreeze)
+        if (IsFreeze)
             return;
 
         Vector2 V_DirVec = R_Target.position - R_Rigid.position;        //타겟위치 - 나의위치 = 방향(위치차이)
@@ -111,22 +111,13 @@ public class Enemy : MonoBehaviour
 
             StartCoroutine(KnockBack());
 
-            if(collision.GetComponent<Bullet>().Name == "Slash")
-            {
-                Freeze.IsFreeze = true;
-                SR_SPriter.color = new Color(0, 0, 1);
-                C_Coll.isTrigger = true;
-            }
             if (collision.GetComponent<Bullet>().Name == "Slash")
             {
                 int ran = Random.Range(0, 3);
                 if (ran == 0)
                 {
                     //RGB 값 처리
-                    SR_SPriter.color = new Color(0, 0, 1);
-                    IsFreeze = true;
-                    C_Coll.isTrigger = true;
-                    StartCoroutine(EnemyFreeze());
+                    StartCoroutine(EnemyFreeze(ran));
                 }
             }
 
@@ -196,12 +187,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    IEnumerator EnemyFreeze()
+    IEnumerator EnemyFreeze(int ran)
     {
+        Debug.Log(ran);
+        SR_SPriter.color = new Color(0, 0, 1);
+        IsFreeze = true;
+        C_Coll.isTrigger = true;
+
         yield return new WaitForSeconds(5f);
 
         SR_SPriter.color = new Color(1, 1, 1);
-
         IsFreeze = false;
         C_Coll.isTrigger = false;
     }
