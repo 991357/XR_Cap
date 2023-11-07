@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,10 @@ public class Enemy : MonoBehaviour
     public float F_Speed;
     public float F_Health;
     public float F_MaxHealth;
+    float HitTimer;
+    float HitDelay = 0.5f;
+
+    public int FireStack;
 
     public Rigidbody2D R_Target;
     public RuntimeAnimatorController[] RAC_AnimCon;     //더 많은 몬스터를 넣고 싶다면 여기에 애니메이터를 추가해서 넣어주세요!
@@ -22,8 +27,9 @@ public class Enemy : MonoBehaviour
 
     public bool B_IsFlip;
     bool B_IsLive;
-    bool IsHit;
-    bool IsFreeze;
+    //bool IsHit;
+    public bool IsFreeze;
+    bool IsBurn;
 
     private void Awake()
     {
@@ -55,6 +61,11 @@ public class Enemy : MonoBehaviour
             return;
         R_Rigid.MovePosition(R_Rigid.position + V_NextVec);
         //R_Rigid.velocity = Vector2.zero;
+
+        HitTimer += Time.fixedDeltaTime;
+
+        if (IsBurn)
+            Burning();
     }
     private void LateUpdate()
     {
@@ -78,12 +89,14 @@ public class Enemy : MonoBehaviour
         R_Target = GameManager.Instance.Player.GetComponent<Rigidbody2D>();
         B_IsLive = true;
 
+        SR_SPriter.color = new Color(1, 1, 1);
         C_Coll.enabled = true;
         R_Rigid.simulated = true;
+        IsFreeze = false;
         SR_SPriter.sortingOrder = 2;
         A_Anim.SetBool("Dead", false);
         if (Name == "B_A_0")
-            Invoke("Walk", 0.7f);
+            StartCoroutine(Walk());
 
         F_Health = F_MaxHealth;
     }
@@ -95,14 +108,63 @@ public class Enemy : MonoBehaviour
     //    F_Health = data.I_Health;
     //}
 
-    void Walk()
+    void Burning()
     {
+        StartCoroutine(Burn());
+    }
+
+    IEnumerator Burn()
+    {
+        //파티클 생성
+
+
+        if (HitTimer > HitDelay)
+        {
+            switch (GameManager.Instance.LevelUp.items[1].Level)
+            {
+                case 1:
+                    F_Health -= 0.3f;
+                    if(F_Health < 0)
+                        EnemyDead();
+                    break;
+                case 2:
+                    F_Health -= 0.5f;
+                    if (F_Health < 0)
+                        EnemyDead();
+                    break;
+                case 3:
+                    F_Health -= 0.7f;
+                    if (F_Health < 0)
+                        EnemyDead();
+                    break;
+                default:
+                    F_Health -= 1;
+                    if (F_Health < 0)
+                        EnemyDead();
+                    break;
+            }
+            HitTimer = 0;
+        }
+
+        //피격 표시   ?? 붙탄 파티클이 나오고 있으면 뭐 0.5초마다 빨갛게-> 원래대로 빨갛게 -> 원래대로
+
+        //파티클 끄기
+
+        yield return new WaitForSeconds(5);
+        IsBurn = false;
+    }
+
+
+    IEnumerator Walk()
+    {
+        yield return new WaitForSeconds(0.7f);
         A_Anim.SetTrigger("IsWalk");
     }
 
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Bullet") || !B_IsLive)
+        if (!collision.CompareTag("Bullet") || !B_IsLive || IsFreeze)
             return;
 
         if (collision.gameObject.tag == "Bullet")
@@ -110,17 +172,6 @@ public class Enemy : MonoBehaviour
             F_Health -= collision.GetComponent<Bullet>().F_Dmg;
 
             StartCoroutine(KnockBack());
-
-            if (collision.GetComponent<Bullet>().Name == "Slash")
-            {
-                int ran = Random.Range(0, 3);
-                if (ran == 0)
-                {
-                    //RGB 값 처리
-                    StartCoroutine(EnemyFreeze(ran));
-                }
-            }
-
 
             if (F_Health > 0)
             {
@@ -130,75 +181,111 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    //RGB값 처리 예정
-                    SpriteRenderer sr = GetComponent<SpriteRenderer>();
-                    sr.color = new Color(1, 0, 0, 1);
-                    Invoke("ReturnSprite", 0.15f);
+                    //수현님한테 Enemy Animation 만들어달라 하기
+
+                    //if (IsFreeze)
+                    //    return;
+                    ////RGB값 처리 예정
+                    //SpriteRenderer sr = GetComponent<SpriteRenderer>();
+                    //sr.color = new Color(1, 0, 0, 1);
+                    //Invoke("ReturnSprite", 0.15f);
                 }
                 AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
             }
             else
             {
-                if (IsHit)
-                    return;
+                EnemyDead();
+            }
+        }
 
-                IsHit = true;
-                B_IsLive = false;
-                C_Coll.enabled = false;
-                R_Rigid.simulated = false;
-                SR_SPriter.sortingOrder = 1;
-                if (GameManager.Instance.Q_Manager.IsQuest)
-                    GameManager.Instance.Q_Manager.Count += 1;
-                A_Anim.SetBool("Dead", true);
+        if (collision.GetComponent<Bullet>().Name == "Slash")
+        {
+            int ran = UnityEngine.Random.Range(0, 5);
 
-                if (Name == "A")
-                {
-                    Invoke("Dead", 0.5f);
-                }
-                else if (Name == "B_A")
-                {
-                    Invoke("Dead", 0.65f);
-                }
-                else if (Name == "C" || Name == "B_A_0")
-                {
-                    Invoke("Dead", 0.6f);
-                }
-                else if (Name == "B" || Name == "B_B")
-                {
-                    Invoke("Dead", 0.8f);
-                }
-                else if (Name == "B_C")
-                {
-                    Invoke("Dead", 1);
-                }
-                IsHit = false;
-                GameManager.Instance.Kill++;
-                if (Name == "B_A" || Name == "B_B" || Name == "B_C")
-                {
-                    for (int i = 0; i < 20; i++)
-                        GameManager.Instance.GetExp();
-                }
-                else
-                    GameManager.Instance.GetExp();
+            GameObject Par = GameManager.Instance.P_Manager.Get(26);
+            Par.transform.position = transform.position;
+            Par.transform.rotation = transform.rotation;
 
-                if (GameManager.Instance.IsLive)
-                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+            if (ran == 0)
+            {
+                IsFreeze = true;
+
+                StartCoroutine(EnemyFreeze());
+                //int ran을 전역변수로 빼서 int ran이 0이 아닐때
+
+                //이거 혹시 0인 상태로 얼었는데 바로 또 맞아서 1이 떴는데 1이 떠있는 상태로 코루틴이 돌고 있어서 안되는거 아닌지?
+            }
+            else
+            {
+                IsFreeze = false;
+            }
+        }
+        else if (collision.GetComponent<Bullet>().Name == "Fire" || collision.GetComponent<Bullet>().Name == "Fire2")
+        {
+            FireStack++;
+            GameObject par = GameManager.Instance.P_Manager.Get(27);
+            par.transform.position = transform.position;
+            par.transform.rotation = transform.rotation;
+
+            if (FireStack >= 3)
+            {
+                IsBurn = true;
             }
         }
     }
 
-    IEnumerator EnemyFreeze(int ran)
+    void EnemyDead()
     {
-        Debug.Log(ran);
+        B_IsLive = false;
+        C_Coll.enabled = false;
+        R_Rigid.simulated = false;
+        SR_SPriter.sortingOrder = 1;
+        if (GameManager.Instance.Q_Manager.IsQuest)
+            GameManager.Instance.Q_Manager.Count += 1;
+        A_Anim.SetBool("Dead", true);
+
+        if (Name == "A")
+        {
+            Invoke("Dead", 0.5f);
+        }
+        else if (Name == "B_A")
+        {
+            Invoke("Dead", 0.65f);
+        }
+        else if (Name == "C" || Name == "B_A_0")
+        {
+            Invoke("Dead", 0.6f);
+        }
+        else if (Name == "B" || Name == "B_B")
+        {
+            Invoke("Dead", 0.8f);
+        }
+        else if (Name == "B_C")
+        {
+            Invoke("Dead", 1);
+        }
+        GameManager.Instance.Kill++;
+        if (Name == "B_A" || Name == "B_B" || Name == "B_C")
+        {
+            for (int i = 0; i < 20; i++)
+                GameManager.Instance.GetExp();
+        }
+        else
+            GameManager.Instance.GetExp();
+
+        if (GameManager.Instance.IsLive)
+            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+    }
+    IEnumerator EnemyFreeze()
+    {
         SR_SPriter.color = new Color(0, 0, 1);
-        IsFreeze = true;
         C_Coll.isTrigger = true;
 
         yield return new WaitForSeconds(5f);
 
         SR_SPriter.color = new Color(1, 1, 1);
-        IsFreeze = false;
         C_Coll.isTrigger = false;
+        IsFreeze = false;
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -220,20 +307,16 @@ public class Enemy : MonoBehaviour
                 }
                 else
                 {
-                    //RGB값 처리 예정
-                    SpriteRenderer sr = GetComponent<SpriteRenderer>();
-                    sr.color = new Color(1, 0, 0, 1);
-                    Invoke("ReturnSprite", 0.15f);
+                    ////RGB값 처리 예정
+                    //SpriteRenderer sr = GetComponent<SpriteRenderer>();
+                    //sr.color = new Color(1, 0, 0, 1);
+                    //Invoke("ReturnSprite", 0.15f);
                 }
 
                 AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
             }
             else
             {
-                if (IsHit)
-                    return;
-
-                IsHit = true;
                 B_IsLive = false;
                 C_Coll.enabled = false;
                 R_Rigid.simulated = false;
@@ -258,7 +341,6 @@ public class Enemy : MonoBehaviour
                 {
                     Invoke("Dead", 1.5f);
                 }
-                IsHit = false;
                 GameManager.Instance.Kill++;
                 GameManager.Instance.GetExp();
 
@@ -284,9 +366,9 @@ public class Enemy : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void ReturnSprite()
-    {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        sr.color = new Color(1, 1, 1, 1);
-    }
+    //void ReturnSprite()
+    //{
+    //    SpriteRenderer sr = GetComponent<SpriteRenderer>();
+    //    sr.color = new Color(1, 1, 1, 1);
+    //}
 }

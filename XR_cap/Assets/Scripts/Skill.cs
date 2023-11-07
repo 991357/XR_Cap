@@ -142,7 +142,7 @@ public class Skill : MonoBehaviour
                 transform.position = meteopos;
 
                 x = Random.Range(-20, 20);
-                y = Random.Range(1, 10);
+                y = Random.Range(2, 8);
                 transform.position = new Vector3(transform.position.x + x, transform.position.y + y);
                 break;
             case "Sword":
@@ -200,7 +200,7 @@ public class Skill : MonoBehaviour
                 break;
             case "Meteo":
                 if (!GameManager.Instance.LevelUp.IsLevelUp)
-                    transform.position = new Vector2(transform.position.x + 0.001f, transform.position.y - 0.005f);
+                    transform.position = new Vector2(transform.position.x + 0.003f, transform.position.y - 0.009f);
                 GameManager.Instance.PlayerLogic.CamShake.IsShake = true;
                 Invoke("TurnOff", 2.5f);
                 break;
@@ -237,9 +237,9 @@ public class Skill : MonoBehaviour
 
     IEnumerator Meteo()
     {
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 40; i++)
         {
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.05f);
             GameManager.Instance.P_Manager.Get(21);
         }
     }

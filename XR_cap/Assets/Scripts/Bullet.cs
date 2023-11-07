@@ -24,6 +24,16 @@ public class Bullet : MonoBehaviour
     {
         if(Name == "Spear")
             transform.localScale = new Vector3(1, 1, 1);
+
+        if(Name == "Fire2")
+        {
+            //Sin 그래프로
+            Rigidbody2D rigid = GetComponent<Rigidbody2D>();
+            Vector2 dir = new Vector2(Mathf.Sin(Mathf.PI * 2 * 2 / 10),-1);
+            rigid.AddForce(dir.normalized * 14, ForceMode2D.Impulse);
+
+            //1107 여기까지 했음
+        }
     }
 
     private void Update()
@@ -41,6 +51,8 @@ public class Bullet : MonoBehaviour
 
         if(per >= 0)
         {
+            if (Name == "Fire2")
+                return;
             switch (GameManager.Instance.LevelUp.items[1].Level)
             {
                 case 1:
@@ -63,6 +75,8 @@ public class Bullet : MonoBehaviour
                     break;
             }
         }
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

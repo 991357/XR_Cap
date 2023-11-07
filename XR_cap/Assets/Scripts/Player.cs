@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
         Anim = GetComponent<Animator>();
         Collider = GetComponent<CapsuleCollider2D>();
         Scanner = GetComponent<Scanner>();
+        //Debug.Log(GameManager.Instance.PlayerId);
     }
 
     private void OnEnable()
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
         IsDash = false;
         DashTimer = 2f;
 
+        //Debug.Log(GameManager.Instance.PlayerId);
         Anim.runtimeAnimatorController = RAC[GameManager.Instance.PlayerId];
         //Speed *= Character.Speed;
     }
@@ -240,7 +242,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
         {
             GameManager.Instance.Obj_EnemyCleaner.SetActive(true);
-            Invoke("TurnOffEnemyCleaner", 0.1f);
+            StartCoroutine(TurnOffEnemyCleaner());
         }
         //Test Code
         if (Input.GetKeyDown(KeyCode.C) && ScanObj != null)
@@ -255,8 +257,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    void TurnOffEnemyCleaner()
+    IEnumerator TurnOffEnemyCleaner()
     {
+        yield return new WaitForSeconds(0.1f);
         GameManager.Instance.Obj_EnemyCleaner.SetActive(false);
     }
 

@@ -67,7 +67,7 @@ public class Weapon : MonoBehaviour
         I_Count += count;
 
        GameManager.Instance.P_Manager.Get(3);
-        Invoke("TurnOffLevelUp", 0.5f);
+        StartCoroutine(TurnOffLevelUp());
 
         if (I_Id == 0)
             Batch();
@@ -93,7 +93,7 @@ public class Weapon : MonoBehaviour
                 break;
         }
         GameManager.Instance.P_Manager.Get(3);
-        Invoke("TurnOffLevelUp", 0.5f);
+        StartCoroutine(TurnOffLevelUp());
 
         if (I_Id == 0)
             Batch();
@@ -164,8 +164,9 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void TurnOffLevelUp()
+    IEnumerator TurnOffLevelUp()
     {
+        yield return new WaitForSeconds(0.5f);
         GameObject levelup = GameObject.FindGameObjectWithTag("LevelUp");
         levelup.SetActive(false);
     }
@@ -195,8 +196,9 @@ public class Weapon : MonoBehaviour
                 bulletr.position = transform.position;
                 bulletl.position = transform.position + Vector3.left * 0.7f;
                 bulletr.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
-                bulletl.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);    
-                                                                                               //bullet.transform.LookAt(targetpos);
+                bulletl.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
+
+                bulletr.GetComponent<Bullet>().Name = "Fire2";
                 bulletr.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);                     //-1 is Infinity per (관통)
                 bulletl.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 break;

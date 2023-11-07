@@ -198,5 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6422bc0043552af47b1aa06893a6affc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: Null
   F_Dmg: 1
   I_Per: 999
+  IsRotate: 0
+  Dir: {x: 0, y: 0, z: 0}

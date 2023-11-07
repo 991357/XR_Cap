@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 622a5403f17509b48940319d7b1cbc7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Fire
   F_Dmg: 0
   I_Per: 0
   IsRotate: 0
