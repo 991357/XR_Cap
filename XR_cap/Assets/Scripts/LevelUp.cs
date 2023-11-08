@@ -94,36 +94,6 @@ public class LevelUp : MonoBehaviour
                         //TrashCard.gameObject.SetActive(true);
                     }
                 }
-
-                //if (Player.transform.Find("Weapon0").gameObject != null)
-                //{
-                //    test = Player.transform.Find("Weapon0").gameObject.GetComponent<Weapon>();
-                //
-                //    if (test != null)
-                //    {
-                //        if (test.IsWeapon0 == false)
-                //        {
-                //            items[2].gameObject.SetActive(false);
-                //            Debug.Log(Player.GetComponentInChildren<Weapon>());
-                //        }
-                //        else
-                //        {
-                //            Debug.Log("삽 생성 했고, 그 다음에 떴음");
-                //            items[2].gameObject.SetActive(true);
-                //        }
-                //    }
-                //}
-
-                //if (Player.transform.Find("Weapon0").gameObject.GetComponent<Weapon>().IsWeapon0 == false)
-                //{
-                //    items[2].gameObject.SetActive(false);
-                //    Debug.Log(Player.GetComponentInChildren<Weapon>());
-                //}
-                //else
-                //{
-                //    Debug.Log("삽 생성 했고, 그 다음에 떴음");
-                //    items[2].gameObject.SetActive(true);
-                //}
             }
             else if(ranitem == items[5])
             {

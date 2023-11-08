@@ -21,6 +21,8 @@ public class Weapon : MonoBehaviour
     public bool IsWeapon0;
     public bool IsWeapon1;
 
+    GameObject[] swords;
+
     private void Awake()
     {
         S_Player = GameManager.Instance.PlayerLogic;
@@ -198,7 +200,6 @@ public class Weapon : MonoBehaviour
                 bulletr.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
                 bulletl.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
 
-                bulletr.GetComponent<Bullet>().Name = "Fire2";
                 bulletr.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);                     //-1 is Infinity per (관통)
                 bulletl.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 break;
@@ -238,7 +239,6 @@ public class Weapon : MonoBehaviour
         {
             case 3:
             case 4:
-            case 5:
                 Transform bullet = GameManager.Instance.P_Manager.Get(23).transform;
                 bullet.position = transform.position;
                 bullet.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
@@ -246,12 +246,11 @@ public class Weapon : MonoBehaviour
                 bullet.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 bullet.GetComponent<Bullet>().Dir = dir;
                 break;
-           // case 4:
-           //
-           //     break;
-           // case 5:
-           //
-           //     break;
         }
+    }
+
+    void OnOff()
+    {
+
     }
 }

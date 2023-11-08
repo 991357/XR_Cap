@@ -24,6 +24,6 @@ public class Character : MonoBehaviour
     }
     public static int WeaponCount       //CHaracter 2에 적용되어 있음  //무기 개수 1개 추가
     {
-        get { return GameManager.Instance.PlayerId == 2 ? 1 : 0; }
+        get { return GameManager.Instance.PlayerId == 2 ? 2 : 0; }
     }
 }
