@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     [Header("ETC")]
     public GameObject ScanObj;
     public Vector3 DirVec;
+    public GameObject SlowArea;
 
     [Space(10f)]
     [Header("List")]
@@ -255,6 +256,10 @@ public class Player : MonoBehaviour
             if (Power > 3)
                 Power = 1;
         }
+
+        //SlowArea Test Code
+        if (GameManager.Instance.LevelUp.items[1].Level > 3)
+            SlowArea.SetActive(true);
     }
 
     IEnumerator TurnOffEnemyCleaner()

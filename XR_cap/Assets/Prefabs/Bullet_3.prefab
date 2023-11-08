@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6422bc0043552af47b1aa06893a6affc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Fire
+  Name: FireBall
   F_Dmg: 0
   I_Per: 0
   IsRotate: 0

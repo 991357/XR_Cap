@@ -14,16 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 5
   I_ItemId: 5
-  S_ItemName: "\uC5F0\uC0AC\uC18D\uB3C4 \uC99D\uAC00 \uC7A5\uAC11"
-  S_ItemDesc: "\uCD1D \uC5F0\uC0AC\uC18D\uB3C4\n10% \uC99D\uAC00"
-  SP_ItemIcon: {fileID: -201829820, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
-  F_BaseDmg: 0
+  S_ItemName: Fire_2
+  S_ItemDesc: "\uBD88 \uBB34\uAE30 2"
+  SP_ItemIcon: {fileID: 3294393947178549522, guid: 1f75f3f3c045ada4c87e65ebd937a92d, type: 3}
+  F_BaseDmg: 2
   I_BaseCount: 0
   F_Dmgs:
   - 0.1
   - 0.2
   - 0.3
   - 0.4
-  - 0.5
-  I_Counts: 0000000000000000000000000000000000000000
+  I_Counts: e7030000e7030000e7030000e7030000
   PB_Projectile: {fileID: 0}

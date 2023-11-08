@@ -16,6 +16,7 @@ TagManager:
   - NPC
   - Area
   - Ground
+  - Test
   layers:
   - Default
   - TransparentFX

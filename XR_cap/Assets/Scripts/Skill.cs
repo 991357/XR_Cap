@@ -128,7 +128,7 @@ public class Skill : MonoBehaviour
                 break;
             case "Acid":
                 Vector2 acidpos = GameManager.Instance.Player.transform.position;
-                transform.position = acidpos;
+                transform.position = acidpos;    
 
                 x = Random.Range(-4, 4);
                 y = Random.Range(-2, 2);
@@ -153,8 +153,11 @@ public class Skill : MonoBehaviour
                 y = Random.Range(0.5f, 1.5f);
                 transform.position = new Vector3(transform.position.x + x, transform.position.y + y);
                 break;
+            case "BlazeWall":
+                StartCoroutine(TurnOff(3.5f));
+                break;
         }
-    }
+}
 
     private void Update()
     {
@@ -165,55 +168,56 @@ public class Skill : MonoBehaviour
                 {
                     Rigidbody2D rigid = GetComponent<Rigidbody2D>();
                     rigid.AddForce(Vector2.left * 1.5f, ForceMode2D.Impulse);
-                    Invoke("TurnOff", 1.5f);
+                    StartCoroutine(TurnOff(1.5f));
                 }
                 else
                 {
                     Rigidbody2D rigid = GetComponent<Rigidbody2D>();
                     rigid.AddForce(Vector2.right * 1.5f, ForceMode2D.Impulse);
-                    Invoke("TurnOff", 1.5f);
+                    StartCoroutine(TurnOff(1.5f));
                 }
                 break;
-            case "Wind_1":                
-                Invoke("TurnOff", 1f);
+            case "Wind_1":
+                StartCoroutine(TurnOff(1f));
                 break;
             case "Wind_2":
-                Invoke("TurnOff", 0.1f);
+                StartCoroutine(TurnOff(0.1f));
                 break;
             case "Wind_3":
-                Invoke("TurnOff", 1.3f);
+                StartCoroutine(TurnOff(1.3f));
                 break;
             case "Fire_0":
-                Invoke("TurnOff", 1.5f);
+                StartCoroutine(TurnOff(1.5f));
                 break;
             case "Fire_1":
                 float Fire_1PosX = GameManager.Instance.Player.transform.position.x + 2.5f;
                 float Fire_1PosY = GameManager.Instance.Player.transform.position.y;
                 transform.position = new Vector2(Fire_1PosX, Fire_1PosY);
-                Invoke("TurnOff", 2f);
+                StartCoroutine(TurnOff(2));
                 break;
             case "Fire_2":
                 if(!GameManager.Instance.LevelUp.IsLevelUp)
                     transform.position = new Vector2(transform.position.x + 0.001f, transform.position.y - 0.005f);
                 GameManager.Instance.PlayerLogic.CamShake.IsShake = true;
-                Invoke("TurnOff", 2.5f);
+                StartCoroutine(TurnOff(2.5f));
                 break;
             case "Meteo":
                 if (!GameManager.Instance.LevelUp.IsLevelUp)
                     transform.position = new Vector2(transform.position.x + 0.003f, transform.position.y - 0.009f);
                 GameManager.Instance.PlayerLogic.CamShake.IsShake = true;
-                Invoke("TurnOff", 2.5f);
+                StartCoroutine(TurnOff(2.5f));
                 break;
             case "Sword":
                 transform.position = new Vector2(0, transform.position.y - 0.01f);
                 //GameManager.Instance.PlayerLogic.CamShake.IsShake = true;
-                Invoke("TurnOff", 2f);
+                StartCoroutine(TurnOff(2));
                 break;
         }
     }
     
-    void TurnOff()
+    IEnumerator TurnOff(float time)
     {
+        yield return new WaitForSeconds(time);
         gameObject.SetActive(false);
         GameManager.Instance.PlayerLogic.CamShake.IsShake = false;
     }

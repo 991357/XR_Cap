@@ -24,18 +24,18 @@ public class Gear : MonoBehaviour
     {
         switch(Type)
         {
-            case ItemData.ItemType.Glove:
-                RateUp();
-                Debug.Log("삽 회전 속도 증가");
-                break;
+            //case ItemData.ItemType.Glove:
+            //    RateUp();
+            //    Debug.Log("삽 회전 속도 증가");
+            //    break;
             case ItemData.ItemType.Shoe:
                 SpeedUP();
                 Debug.Log("이동속도 증가");
                 break;
-            case ItemData.ItemType.GunRateUp:
-                GunRateUp();
-                Debug.Log("총알 연사속도 증가");
-                break;
+            //case ItemData.ItemType.GunRateUp:
+            //    GunRateUp();
+            //    Debug.Log("총알 연사속도 증가");
+            //    break;
         }
     }
 

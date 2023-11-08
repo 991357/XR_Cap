@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6001549431854689696}
   - component: {fileID: 6391070518262560310}
   - component: {fileID: 2560546060440898242}
-  - component: {fileID: 8747533736384473462}
+  - component: {fileID: 4948975978085424034}
   m_Layer: 10
   m_Name: Ice Pillar
   m_TagString: SubBullet
@@ -171,7 +171,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &8747533736384473462
+--- !u!114 &4948975978085424034
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,10 +180,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6001549431854689702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 622a5403f17509b48940319d7b1cbc7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6422bc0043552af47b1aa06893a6affc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Pillar
   F_Dmg: 0
   I_Per: 0
   IsRotate: 0
+  Dir: {x: 0, y: 0, z: 0}

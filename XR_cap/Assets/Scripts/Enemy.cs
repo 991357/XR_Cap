@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     public float F_MaxHealth;
     float HitTimer;
     float HitDelay = 0.5f;
+    float Timer;
 
     public int FireStack;
 
@@ -30,6 +31,7 @@ public class Enemy : MonoBehaviour
     //bool IsHit;
     public bool IsFreeze;
     bool IsBurn;
+    bool IsBlazeWall;
 
     private void Awake()
     {
@@ -40,6 +42,12 @@ public class Enemy : MonoBehaviour
         WFU_Wait = new WaitForFixedUpdate();
         //Freeze = GetComponent<FreezeEnemy>();
         B_IsFlip = true;
+    }
+
+    private void Update()
+    {
+        if (IsBlazeWall)
+            StayBlazeWall();
     }
 
     // Update is called once per frame
@@ -164,7 +172,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Bullet") || !B_IsLive || IsFreeze)
+        if (!collision.CompareTag("Bullet") || !B_IsLive)
             return;
 
         if (collision.gameObject.tag == "Bullet")
@@ -198,7 +206,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if (collision.GetComponent<Bullet>().Name == "Slash")
+        if (collision.GetComponent<Bullet>().Name == "Slash" || collision.GetComponent<Bullet>().Name == "IceBall")
         {
             int ran = UnityEngine.Random.Range(0, 5);
 
@@ -220,7 +228,7 @@ public class Enemy : MonoBehaviour
                 IsFreeze = false;
             }
         }
-        else if (collision.GetComponent<Bullet>().Name == "Fire" || collision.GetComponent<Bullet>().Name == "Fire2")
+        else if (collision.GetComponent<Bullet>().Name == "FireBall" || collision.GetComponent<Bullet>().Name == "BlazeWall") //|| collision.GetComponent<Bullet>().Name == "FireBallSmall")
         {
             FireStack++;
             GameObject par = GameManager.Instance.P_Manager.Get(27);
@@ -246,23 +254,23 @@ public class Enemy : MonoBehaviour
 
         if (Name == "A")
         {
-            Invoke("Dead", 0.5f);
+            StartCoroutine(Dead(0.5f));
         }
         else if (Name == "B_A")
         {
-            Invoke("Dead", 0.65f);
+            StartCoroutine(Dead(0.65f));
         }
         else if (Name == "C" || Name == "B_A_0")
         {
-            Invoke("Dead", 0.6f);
+            StartCoroutine(Dead(0.6f));
         }
         else if (Name == "B" || Name == "B_B")
         {
-            Invoke("Dead", 0.8f);
+            StartCoroutine(Dead(0.8f));
         }
         else if (Name == "B_C")
         {
-            Invoke("Dead", 1);
+            StartCoroutine(Dead(1f));
         }
         GameManager.Instance.Kill++;
         if (Name == "B_A" || Name == "B_B" || Name == "B_C")
@@ -281,7 +289,7 @@ public class Enemy : MonoBehaviour
         SR_SPriter.color = new Color(0, 0, 1);
         C_Coll.isTrigger = true;
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
 
         SR_SPriter.color = new Color(1, 1, 1);
         C_Coll.isTrigger = false;
@@ -327,19 +335,19 @@ public class Enemy : MonoBehaviour
 
                 if (Name == "A" || Name == "B_A")
                 {
-                    Invoke("Dead", 0.65f);
+                    StartCoroutine(Dead(0.65f));
                 }
                 else if (Name == "C")
                 {
-                    Invoke("Dead", 0.6f);
+                    StartCoroutine(Dead(0.6f));
                 }
                 else if (Name == "B")
                 {
-                    Invoke("Dead", 0.8f);
+                    StartCoroutine(Dead(0.8f));
                 }
                 else if (Name == "B_C")
                 {
-                    Invoke("Dead", 1.5f);
+                    StartCoroutine(Dead(1.5f));
                 }
                 GameManager.Instance.Kill++;
                 GameManager.Instance.GetExp();
@@ -348,6 +356,43 @@ public class Enemy : MonoBehaviour
                     AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
             }
         }
+
+        Bullet bullet = collision.GetComponent<Bullet>();
+        if(bullet != null && bullet.Name == "BlazeWall")
+            IsBlazeWall = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Bullet bullet = collision.GetComponent<Bullet>();
+        if (bullet != null && bullet.Name == "BlazeWall")
+            IsBlazeWall = false;
+    }
+
+    void StayBlazeWall()
+    {
+          Timer += Time.deltaTime;
+          if (Timer > 0.5f)
+          {
+              switch (GameManager.Instance.LevelUp.items[5].Level)
+              {
+                  case 1:
+                      F_Health -= 0.2f;
+                      break;
+                  case 2:
+                      F_Health -= 0.3f;
+                      break;
+                  case 3:
+                      F_Health -= 0.4f;
+                      break;
+                  case 4:
+                      F_Health -= 0.5f;
+                      break;
+                  default:
+                      break;
+              }
+              Timer = 0;
+          }
     }
 
     IEnumerator KnockBack()
@@ -361,8 +406,9 @@ public class Enemy : MonoBehaviour
         R_Rigid.AddForce(dirvec.normalized * 1f, ForceMode2D.Impulse);
     }
 
-    void Dead()
+    IEnumerator Dead(float time)
     {
+        yield return new WaitForSeconds(time);
         gameObject.SetActive(false);
     }
 

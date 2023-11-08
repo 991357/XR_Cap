@@ -24,6 +24,8 @@ public class Bullet : MonoBehaviour
     {
         if(Name == "Spear")
             transform.localScale = new Vector3(1, 1, 1);
+
+        transform.rotation = Quaternion.identity;
     }
 
     private void Update()
@@ -39,9 +41,9 @@ public class Bullet : MonoBehaviour
         F_Dmg = dmg;
         I_Per = per;
 
-        if(per >= 0)
+        if (per >= 0)
         {
-            switch (GameManager.Instance.LevelUp.items[1].Level)
+            switch (GameManager.Instance.LevelUp.items[2].Level)
             {
                 case 1:
                     R_Rigid.velocity = dir * 14f;
@@ -50,21 +52,16 @@ public class Bullet : MonoBehaviour
                     R_Rigid.velocity = dir * 14f;
                     break;
                 case 3:
-                    R_Rigid.velocity = dir * 14f;
+                    R_Rigid.velocity = dir * 16f;
                     break;
                 case 4:
                     R_Rigid.velocity = dir * 16f;
-                    break;
-                case 5:
-                    R_Rigid.velocity = dir * 17f;
                     break;
                 default:
                     R_Rigid.velocity = dir * 18f;
                     break;
             }
         }
-
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -74,40 +71,48 @@ public class Bullet : MonoBehaviour
 
         I_Per--;
 
-        if (GameManager.Instance.LevelUp.items[1].Level > 3)
+        if (Name == "FireBall")
         {
-            int rannum = Random.Range(10, 13);
-            for (int i = 0; i < rannum; i++)
+            if (GameManager.Instance.LevelUp.items[2].Level > 3)
             {
-                GameObject test = GameManager.Instance.P_Manager.Get(22);
-                //test.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                test.transform.position = transform.position;
-                //test.transform.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
+                int rannum = Random.Range(10, 13);
+                for (int i = 0; i < rannum; i++)
+                {
+                    GameObject test = GameManager.Instance.P_Manager.Get(22);
+                    //test.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                    test.transform.position = transform.position;
+                    //test.transform.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
 
-                Rigidbody2D rigid = test.GetComponent<Rigidbody2D>();
-                SubBullet bulletlogic = test.GetComponent<SubBullet>();
-                bulletlogic.F_Dmg = 1;
-                if (GameManager.Instance.LevelUp.items[1].Level > 4)
+                    Rigidbody2D rigid = test.GetComponent<Rigidbody2D>();
+                    Bullet bulletlogic = test.GetComponent<Bullet>();
+                    bulletlogic.F_Dmg = 0.5f;
                     bulletlogic.I_Per = 99;
 
-                //bulletlogic.IsRotate = true;
+                    Vector2 dirvec = new Vector2(Mathf.Cos(Mathf.PI * 2 * i / rannum), Mathf.Sin(Mathf.PI * 2 * i / rannum));
 
-                Vector2 dirvec = new Vector2(Mathf.Cos(Mathf.PI * 2 * i / rannum), Mathf.Sin(Mathf.PI * 2 * i / rannum));
-
-                if(GameManager.Instance.LevelUp.items[1].Level > 4)
-                    rigid.AddForce(dirvec.normalized * 20, ForceMode2D.Impulse);
-                else
                     rigid.AddForce(dirvec.normalized * 16, ForceMode2D.Impulse);
 
-                Vector3 rotvec = Vector3.forward * 360 * i / 10 + Vector3.forward * 90;
-                test.transform.Rotate(rotvec);
+                    Vector3 rotvec = Vector3.forward * 360 * i / 10 + Vector3.forward * 90;
+
+                    test.transform.Rotate(rotvec);
+                }
             }
         }
 
         if(GameManager.Instance.LevelUp.items[0].Level > 3)
         {
             if(Name == "Spear")
-                StartCoroutine(SpearRotate());
+                StartCoroutine(IcePillar());
+        }
+
+        if(GameManager.Instance.LevelUp.items[5].Level > 2)
+        {
+            //폭발
+            //1109  여기까지
+        }
+        else if(GameManager.Instance.LevelUp.items[5].Level > 3)
+        {
+            //원형으로?
         }
 
         if (I_Per < 0)
@@ -117,48 +122,41 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    IEnumerator SpearRotate()
+    IEnumerator IcePillar()
     {
-        yield return new WaitForSeconds(0.1f);
         R_Rigid.velocity = Vector2.zero;
 
         if(Name == "Spear")
             transform.localScale = new Vector3(0.1f,0.1f,0.1f);
 
         IsTouch = true;
-
-        yield return null;
         GameObject Pillar = GameManager.Instance.P_Manager.Get(24);
         Pillar.transform.position = transform.position;
-        Pillar.GetComponent<SubBullet>().F_Dmg = 10;
-        Pillar.GetComponent<SubBullet>().I_Per = 999;
-
-        if(GameManager.Instance.LevelUp.items[0].Level > 4)
-        {
-            yield return new WaitForSeconds(0.2f);
-
-            GameObject sword = GameManager.Instance.P_Manager.Get(25);
-            sword.GetComponent<Bullet>().I_Per = 99;
-            sword.GetComponent<Bullet>().F_Dmg = 10;
-        }
-        else
+        Pillar.GetComponent<Bullet>().F_Dmg = 10;
+        Pillar.GetComponent<Bullet>().I_Per = 999;
 
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
+
+        Pillar.gameObject.SetActive(false);
         IsTouch = false;
-        Pillar.SetActive(false);
-
-        yield return new WaitForSeconds(3f);
         gameObject.SetActive(false);
     }
 
-
+    public void BulletRotate(Transform bullet)
+    {
+        bullet.Rotate(Vector3.back * 100 * Time.deltaTime);
+    }
     void Dead()
     {
         Transform target = GameManager.Instance.Player.transform;
         Vector3 targetPos = target.position;
         float dir = Vector3.Distance(targetPos, transform.position);
         if (dir > 20f)
+        {
+            if (Name == "FireBall2" || Name == "FireBall3")
+                Name = "FireBall";
             this.gameObject.SetActive(false);
+        }
     }
 }

@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 7487865992312723784}
   - component: {fileID: 6567439502253607622}
   - component: {fileID: 6974079919273020523}
-  - component: {fileID: 3064607805971959474}
+  - component: {fileID: 3412856056136341390}
   m_Layer: 10
   m_Name: Bullets_6
-  m_TagString: SubBullet
+  m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,7 +149,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.1, y: 0.1}
   m_Direction: 0
---- !u!114 &3064607805971959474
+--- !u!114 &3412856056136341390
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,10 +158,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1425539491849238206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 622a5403f17509b48940319d7b1cbc7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6422bc0043552af47b1aa06893a6affc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Fire
+  Name: FireBallSmall
   F_Dmg: 0
   I_Per: 0
   IsRotate: 0
+  Dir: {x: 0, y: 0, z: 0}

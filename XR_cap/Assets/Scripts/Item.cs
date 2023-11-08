@@ -34,13 +34,17 @@ public class Item : MonoBehaviour
         T_Level.text = "Lv." + (Level + 1);
         switch(Data.Type)
         {
-            case ItemData.ItemType.Melee:
-            case ItemData.ItemType.Range:
-                T_Desc.text = string.Format(Data.S_ItemDesc,Data.F_Dmgs[Level] * 10,Data.I_Counts[Level]);
+            case ItemData.ItemType.Ice_1:
+                T_Desc.text = "얼음무기 1";
+                break;
+            case ItemData.ItemType.Ice_2:
+                //T_Desc.text = string.Format(Data.S_ItemDesc,Data.F_Dmgs[Level] * 10,Data.I_Counts[Level]);
+                {
+                    T_Desc.text = "얼음무기 2";
+                }
                     break;
-            case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
-            case ItemData.ItemType.GunRateUp:
+            //case ItemData.ItemType.GunRateUp:
                 T_Desc.text = string.Format(Data.S_ItemDesc, Data.F_Dmgs[Level] * 10);
                 break;
             default:
@@ -53,8 +57,10 @@ public class Item : MonoBehaviour
     {
         switch(Data.Type)
         {
-            case ItemData.ItemType.Melee:
-            case ItemData.ItemType.Range:
+            case ItemData.ItemType.Ice_1:
+            case ItemData.ItemType.Ice_2:
+            case ItemData.ItemType.Fire_1:
+            case ItemData.ItemType.Fire_2:
                 if(Level == 0)
                 {
                     GameObject newweapon = new GameObject();
@@ -77,8 +83,6 @@ public class Item : MonoBehaviour
                 break;
 
             case ItemData.ItemType.Shoe:
-            case ItemData.ItemType.Glove:
-            case ItemData.ItemType.GunRateUp:
                 if(Level == 0)
                 {
                     GameObject newgear = new GameObject();
