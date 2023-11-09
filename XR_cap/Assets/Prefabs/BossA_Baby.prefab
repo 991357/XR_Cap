@@ -189,9 +189,13 @@ MonoBehaviour:
   F_Speed: 3.5
   F_Health: 1
   F_MaxHealth: 1
+  FireStack: 0
   R_Target: {fileID: 0}
   RAC_AnimCon: []
+  C_Coll: {fileID: 0}
+  SR_SPriter: {fileID: 0}
   B_IsFlip: 0
+  IsFreeze: 0
 --- !u!114 &-4534343952044545945
 MonoBehaviour:
   m_ObjectHideFlags: 0

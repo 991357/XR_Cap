@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="Item",menuName = "Scriptable Object/ItemData")]
 public class ItemData : ScriptableObject
 {
-    public enum ItemType { Ice_1, Ice_2, Fire_1, Shoe, Heal, Fire_2}
+    public enum ItemType { Ice_1, Ice_2, Fire_1, Shoe, Heal, Fire_2, Thunder_1, Thunder_2, Mes, SlowNet}
 
     [Header("# Main Info")]
     public ItemType Type;
@@ -23,5 +23,4 @@ public class ItemData : ScriptableObject
 
     [Header("# Weapon")]
     public GameObject PB_Projectile;
-
 }

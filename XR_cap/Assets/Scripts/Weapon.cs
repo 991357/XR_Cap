@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour
     public int I_PrefabId;
     public int I_Count;         //몇개나 배치할것인지?
     public int WeaponLevel;
+    public int WeaponCount;
 
     public float F_Dmg;
     public float F_Speed;       //회전 속도
@@ -77,6 +78,10 @@ public class Weapon : MonoBehaviour
                     BlazeWall();
                 }
                 break;
+            case 8:
+                transform.Rotate(Vector3.back * F_Speed * Time.deltaTime);
+
+                break;
             default:
                 break;
         }
@@ -95,6 +100,9 @@ public class Weapon : MonoBehaviour
 
         if (I_Id == 1)
             IceRotate();
+
+        if (I_Id == 8)
+            MesBatch();
 
         //S_Player.BroadcastMessage("ApplyGear",SendMessageOptions.DontRequireReceiver);
     }
@@ -148,22 +156,40 @@ public class Weapon : MonoBehaviour
 
         switch(I_Id)
         {
-            case 0:
+            case 0:                                         //얼음무기 1 (얼음 칼)
                 IsWeapon0 = true;
                 F_Speed = 150 * Character.WeaponSpeed;
                 Batch();
+                WeaponCount++;
                 break;
-            case 1:
+            case 1:                                         //얼음무기 2 (회전하는 고드름)
                 IsWeapon1 = true;
                 //F_Speed = 1.2f * Character.WeaponRate;
                 F_Speed = 150 * Character.WeaponSpeed;
                 IceRotate();
+                WeaponCount++;
                 break;
-            case 2:
+            case 2:                                         //불 무기 1 (파이어볼)
                 F_Speed = 1.2f * Character.WeaponRate;      //Shot Dealy
+                WeaponCount++;
                 break;
-            case 5:
+            case 5:                                         //불 무기 2 (화염장판)
                 F_Speed = 1.5f;
+                WeaponCount++;
+                break;
+            case 6:                                         //전기 무기 1 (체인라이트닝)
+                WeaponCount++;
+                break;
+            case 7:                                         //전기 무기 2 (레일건)
+                WeaponCount++;
+                break;
+            case 8:                                         //메스
+                F_Speed = 150;
+                MesBatch();
+                WeaponCount++;
+                break;
+            case 9:                                         //슬로우그물
+                WeaponCount++;
                 break;
             default:
                 break;
@@ -305,12 +331,6 @@ public class Weapon : MonoBehaviour
                 bulletll.rotation = Quaternion.FromToRotation(Vector3.left * 0.3f, dir);
                 bulletcc.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
 
-                bulletrr.Translate(bulletrr.up * 1.5f, Space.World);
-                bulletll.Translate(bulletll.up * 1.5f, Space.World);
-
-                bulletrr.GetComponent<Bullet>().Name = "FireBall2";
-                bulletll.GetComponent<Bullet>().Name = "FireBall3";
-
                 bulletrr.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);                     //-1 is Infinity per (관통)
                 bulletll.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 bulletcc.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
@@ -344,6 +364,34 @@ public class Weapon : MonoBehaviour
                 bulletr.position = new Vector2(transform.position.x + ranx1, transform.position.y + rany1);
                 bulletl.position = new Vector2(transform.position.x + ranx2, transform.position.y + rany2);
                 break;
+        }
+    }
+
+    void MesBatch()
+    {
+        for (int i = 0; i < I_Count; i++)
+        {
+            Transform bullet;
+            if (i < transform.childCount)               //원래는 ObjectPooling 에서만 가져왔던걸 이제는 내가 갖고있는 자식 오브젝트를 먼저 재활용하고 모자란걸 오브젝트 풀링으로 충당하겠다..!
+            {
+                bullet = transform.GetChild(i);
+            }
+            else
+            {
+                bullet = GameManager.Instance.P_Manager.Get(29).transform;
+                bullet.parent = transform;
+            }
+
+            bullet.localScale = new Vector3(0.3f, 1f, 1f);
+            bullet.localPosition = Vector3.zero;
+            bullet.localRotation = Quaternion.identity;
+
+            Vector3 rotvec = Vector3.forward * 360 * i / I_Count;
+            bullet.Rotate(rotvec);
+            bullet.Translate(bullet.up * 1.5f, Space.World);
+            bullet.GetComponent<Bullet>().Init(F_Dmg, -100, Vector3.zero);      //-100 is Infinity per (관통)
+
+            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
         }
     }
 }

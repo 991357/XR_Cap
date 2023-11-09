@@ -7,10 +7,6 @@ public class Bullet : MonoBehaviour
     public string Name;
 
     public float F_Dmg;
-    public float speed = 16f; // 총알의 이동 속도
-    public float amplitude = 3f; // Sin 그래프의 진폭
-    public float frequency = 5f; // Sin 그래프의 주파수
-    private float startTime; // 총알 이동 시작 시간
 
     public int I_Per;
 
@@ -23,6 +19,7 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         R_Rigid = GetComponent<Rigidbody2D>();
+        //startTime = Time.time;
     }
 
     private void OnEnable()
@@ -40,10 +37,7 @@ public class Bullet : MonoBehaviour
         if(IsRotate)
             transform.Rotate(Vector3.forward * 0.5f);
 
-        if (Name == "FIreBall2")
-        {
-            MoveSin();
-        }
+        //MoveSin();
     }
 
     public void Init(float dmg, int per, Vector3 dir)
@@ -62,10 +56,7 @@ public class Bullet : MonoBehaviour
                     R_Rigid.velocity = dir * 14f;
                     break;
                 case 3:
-                    if (Name == "FireBall2")
-                        return;
-                    else
-                        R_Rigid.velocity = dir * 16f;
+                    R_Rigid.velocity = dir * 16f;
                     break;
                 case 4:
                     R_Rigid.velocity = dir * 16f;
@@ -173,14 +164,25 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void MoveSin()
+    /*void MoveSin()
     {
-        // 시간에 따라 Sin 그래프를 따라 이동
-        float deltaTime = Time.time - startTime;
-        float yPos = Mathf.Sin(deltaTime * frequency) * amplitude;
-        Vector3 newPos = new Vector3(transform.position.x + speed * Time.deltaTime, yPos, 0);
-        transform.position = newPos;
-    }
+        if (Name == "FireBall2")
+        {
+            // 시간에 따라 Sin 그래프를 따라 이동
+            float deltaTime = Time.time - startTime;
+            float yPos = Mathf.Sin(deltaTime * frequency) * amplitude;
+            Vector3 newPos = new Vector3(transform.position.x + speed * Time.deltaTime, yPos, 0);
+            transform.position = newPos;
+        }
+        else if(Name == "FireBall3")
+        {
+            // 시간에 따라 Sin 그래프를 따라 이동
+            float deltaTime = Time.time - startTime;
+            float yPos = Mathf.Cos(deltaTime * frequency) * amplitude;
+            Vector3 newPos = new Vector3(transform.position.x + speed * Time.deltaTime, yPos, 0);
+            transform.position = newPos;
+        }
+    }*/
 
     public void BulletRotate(Transform bullet)
     {

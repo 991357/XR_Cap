@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
                 Speed = 17;
                 Vector2 V_DashVec = InputVec.normalized * Speed * Time.fixedDeltaTime;
                 Rigid.MovePosition(Rigid.position + V_DashVec);
-                Invoke("SpeedReset", 0.2f);
+                StartCoroutine(SpeedReset());
             }
             else
                 return;
@@ -297,8 +297,10 @@ public class Player : MonoBehaviour
     }
 
 
-    void SpeedReset()
+    IEnumerator SpeedReset()
     {
+        yield return new WaitForSeconds(0.2f);
+
         switch (Item.Level)
         {
             case 0:
