@@ -301,12 +301,12 @@ public class Weapon : MonoBehaviour
                 bulletll.position = transform.position + Vector3.left * 0.7f;
                 bulletrr.position = transform.position + Vector3.right * 0.7f;
 
-                bulletrr.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
-                bulletll.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
+                bulletrr.rotation = Quaternion.FromToRotation(Vector3.right * 0.3f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
+                bulletll.rotation = Quaternion.FromToRotation(Vector3.left * 0.3f, dir);
                 bulletcc.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
 
-                //bulletrr.Translate(bulletrr.up * 1.5f, Space.World);
-                //bulletll.Translate(bulletll.up * 1.5f, Space.World);
+                bulletrr.Translate(bulletrr.up * 1.5f, Space.World);
+                bulletll.Translate(bulletll.up * 1.5f, Space.World);
 
                 bulletrr.GetComponent<Bullet>().Name = "FireBall2";
                 bulletll.GetComponent<Bullet>().Name = "FireBall3";

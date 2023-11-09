@@ -7,6 +7,11 @@ public class Bullet : MonoBehaviour
     public string Name;
 
     public float F_Dmg;
+    public float speed = 16f; // 총알의 이동 속도
+    public float amplitude = 3f; // Sin 그래프의 진폭
+    public float frequency = 5f; // Sin 그래프의 주파수
+    private float startTime; // 총알 이동 시작 시간
+
     public int I_Per;
 
     public bool IsRotate;
@@ -34,6 +39,11 @@ public class Bullet : MonoBehaviour
 
         if(IsRotate)
             transform.Rotate(Vector3.forward * 0.5f);
+
+        if (Name == "FIreBall2")
+        {
+            MoveSin();
+        }
     }
 
     public void Init(float dmg, int per, Vector3 dir)
@@ -52,7 +62,10 @@ public class Bullet : MonoBehaviour
                     R_Rigid.velocity = dir * 14f;
                     break;
                 case 3:
-                    R_Rigid.velocity = dir * 16f;
+                    if (Name == "FireBall2")
+                        return;
+                    else
+                        R_Rigid.velocity = dir * 16f;
                     break;
                 case 4:
                     R_Rigid.velocity = dir * 16f;
@@ -105,14 +118,31 @@ public class Bullet : MonoBehaviour
                 StartCoroutine(IcePillar());
         }
 
-        if(GameManager.Instance.LevelUp.items[5].Level > 2)
+        if (Name == "BlazeWall")
         {
-            //폭발
-            //1109  여기까지
-        }
-        else if(GameManager.Instance.LevelUp.items[5].Level > 3)
-        {
-            //원형으로?
+            if (GameManager.Instance.LevelUp.items[5].Level > 2)
+            {
+                //폭발
+                //1109  여기까지 했음
+            }
+            if (GameManager.Instance.LevelUp.items[5].Level > 3)
+            {
+                //원형으로?
+                
+                //원형을 만든다
+                //GameObject circle = GameManager.Instance.P_Manager.Get(29);
+                //circle.transform.position = transform.position;
+                //circle.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                //
+                ////퍼진다
+                //for (int i = 0; i < 2; i++)
+                //{
+                //    circle.transform.localScale = new Vector3(transform.localScale.x + 0.000001f, transform.localScale.y + 0.000001f, transform.localScale.z + 0.000001f);
+                //}
+                //
+                ////삭제한다
+                //StartCoroutine(TurnOff(2,circle));
+            }
         }
 
         if (I_Per < 0)
@@ -143,10 +173,20 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    void MoveSin()
+    {
+        // 시간에 따라 Sin 그래프를 따라 이동
+        float deltaTime = Time.time - startTime;
+        float yPos = Mathf.Sin(deltaTime * frequency) * amplitude;
+        Vector3 newPos = new Vector3(transform.position.x + speed * Time.deltaTime, yPos, 0);
+        transform.position = newPos;
+    }
+
     public void BulletRotate(Transform bullet)
     {
         bullet.Rotate(Vector3.back * 100 * Time.deltaTime);
     }
+
     void Dead()
     {
         Transform target = GameManager.Instance.Player.transform;
@@ -158,5 +198,11 @@ public class Bullet : MonoBehaviour
                 Name = "FireBall";
             this.gameObject.SetActive(false);
         }
+    }
+
+    IEnumerator TurnOff(float time,GameObject circle)
+    {
+        yield return new WaitForSeconds(time);
+        circle.gameObject.SetActive(false);
     }
 }
