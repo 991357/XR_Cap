@@ -35,18 +35,99 @@ public class Item : MonoBehaviour
         switch(Data.Type)
         {
             case ItemData.ItemType.Ice_1:
-                T_Desc.text = "얼음무기 1";
+                switch (Level)
+                {
+                    case 0:
+                        T_Desc.text = "플레이어 몸을 휘감는 칼을\n 획득합니다.";
+                        break;
+                    case 1:
+                        T_Desc.text = "갯수가 증가합니다.\n크기가 증가합니다.\n데미지가" + Data.F_Dmgs[Level] * 10 +"% 증가합니다.";
+                        break;
+                    case 2:
+                        T_Desc.text = "칼에서 검기를 발사합니다.\n데미지가 " + (Data.F_Dmgs[Level] * 10) + "% 증가합니다.";
+                        break;
+                    case 3:
+                        T_Desc.text = "검기에 맞은 적 위치에\n 빙산을 생성합니다.\n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                    default:
+                        T_Desc.text = "&*&@$#%^$&*#@!@#*&^%!@@##^&%$@^#@$!";
+                        break;
+                }
                 break;
+
+
             case ItemData.ItemType.Ice_2:
                 //T_Desc.text = string.Format(Data.S_ItemDesc,Data.F_Dmgs[Level] * 10,Data.I_Counts[Level]);
+                switch (Level)
                 {
-                    T_Desc.text = "얼음무기 2";
+                    case 0:
+                        T_Desc.text = "플레이어를 중심으로 \n회전하는 고드름을 생성합니다.";
+                        break;
+                    case 1:
+                        T_Desc.text = "갯수가 증가합니다.\n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                    case 2:
+                        T_Desc.text = "갯수가 증가합니다.\n속도가 증가합니다.\n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                    case 3:
+                        T_Desc.text = "플레이어 주변에\n냉기지대가 형성됩니다. \n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                    default:
+                        T_Desc.text = "*&#^%T#%*!@%^%#@^*@$#^%*";
+                
+                        break;
                 }
-                    break;
+                break;
+
+
             case ItemData.ItemType.Shoe:
             //case ItemData.ItemType.GunRateUp:
                 T_Desc.text = string.Format(Data.S_ItemDesc, Data.F_Dmgs[Level] * 10);
                 break;
+
+
+            case ItemData.ItemType.Fire_1:
+                switch (Level)
+                {
+                    case 0:
+                        T_Desc.text = "파이어볼을 발사합니다";
+                        break;
+                    case 1:
+                        T_Desc.text = "발사체 갯수가\n2개로 증가합니다.\n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                    case 2:
+                        T_Desc.text = "발사체 크기가 증가합니다\n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                    case 3:
+                        T_Desc.text = "발사체에 맞은 적 주변으로\n파편이 발생합니다\n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                
+                    default:
+                        T_Desc.text = "*&#^%T#%*!@%^%#@^*@$#^%*";
+                        break;
+                }
+                break;
+
+            case ItemData.ItemType.Fire_2:
+                switch (Level)
+                {
+                    case 0:
+                        T_Desc.text = "화염지대를 생성합니다";
+                        break;
+                    case 1:
+                        T_Desc.text = "갯수가 증가합니다\n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                    case 2:
+                        T_Desc.text = "화염지대에서 \n 폭발을 일으킵니다.\n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                    case 3:
+                        T_Desc.text = "화염지대 생성시\n원형파동이 생성됩니다.\n데미지가 " + Data.F_Dmgs[Level] * 10 + "% 증가합니다.";
+                        break;
+                    default:
+                        break;
+                }
+                break;
+
             default:
                 T_Desc.text = string.Format(Data.S_ItemDesc);
                 break;
