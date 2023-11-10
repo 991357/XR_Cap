@@ -217,6 +217,7 @@ public class Enemy : MonoBehaviour
             Par.transform.position = transform.position;
             Par.transform.rotation = transform.rotation;
 
+            StartCoroutine(DestroyPar(Par));
             if (ran == 0)
             {
                 IsFreeze = true;
@@ -238,11 +239,18 @@ public class Enemy : MonoBehaviour
             par.transform.position = transform.position;
             par.transform.rotation = transform.rotation;
 
+            StartCoroutine(DestroyPar(par));
             if (FireStack >= 3)
             {
                 IsBurn = true;
             }
         }
+    }
+
+    IEnumerator DestroyPar(GameObject Par)
+    {
+        yield return new WaitForSeconds(0.3f);
+        Par.gameObject.SetActive(false);
     }
 
     void EnemyDead()

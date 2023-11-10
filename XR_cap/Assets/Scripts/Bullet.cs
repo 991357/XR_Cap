@@ -191,6 +191,9 @@ public class Bullet : MonoBehaviour
 
     void Dead()
     {
+        if (Name == "Mes")
+            return;
+
         Transform target = GameManager.Instance.Player.transform;
         Vector3 targetPos = target.position;
         float dir = Vector3.Distance(targetPos, transform.position);
