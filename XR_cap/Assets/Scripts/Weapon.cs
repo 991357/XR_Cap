@@ -79,7 +79,7 @@ public class Weapon : MonoBehaviour
                 }
                 break;
             case 8:
-                transform.Rotate(Vector3.back * F_Speed * Time.deltaTime);
+                //transform.Rotate(Vector3.back * F_Speed * Time.deltaTime);
 
                 break;
             default:
@@ -388,7 +388,7 @@ public class Weapon : MonoBehaviour
 
             Vector3 rotvec = Vector3.forward * 360 * i / I_Count;
             bullet.Rotate(rotvec);
-            bullet.Translate(bullet.up * 1.5f, Space.World);
+            bullet.Translate(bullet.up * 2f, Space.World);
             bullet.GetComponent<Bullet>().Init(F_Dmg, -100, Vector3.zero);      //-100 is Infinity per (°üÅë)
 
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);

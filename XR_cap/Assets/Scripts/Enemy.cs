@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     public SpriteRenderer SR_SPriter;
     Animator A_Anim;
     WaitForFixedUpdate WFU_Wait;
+    SpriteRenderer SR;
     //FreezeEnemy Freeze;
 
     public bool B_IsFlip;
@@ -40,6 +41,7 @@ public class Enemy : MonoBehaviour
         SR_SPriter = GetComponent<SpriteRenderer>();
         A_Anim = GetComponent<Animator>();
         WFU_Wait = new WaitForFixedUpdate();
+        SR = GetComponent<SpriteRenderer>();
         //Freeze = GetComponent<FreezeEnemy>();
         B_IsFlip = true;
     }
@@ -106,6 +108,7 @@ public class Enemy : MonoBehaviour
         if (Name == "B_A_0")
             StartCoroutine(Walk());
 
+        SR.enabled = false;
         F_Health = F_MaxHealth;
     }
     //public void Init(SpawnData data)
@@ -297,7 +300,10 @@ public class Enemy : MonoBehaviour
     }
 
     private void OnTriggerStay2D(Collider2D collision)
-    {
+    { 
+        if (collision.gameObject.name == "OC_Area")
+            SR.enabled = true;
+
         if (collision.gameObject.tag == "Fire")
         {
             F_Health -= collision.GetComponent<Bullet>().F_Dmg;
@@ -364,6 +370,10 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+
+        if (collision.gameObject.name == "OC_Area")
+            SR.enabled = false;
+
         Bullet bullet = collision.GetComponent<Bullet>();
         if (bullet != null && bullet.Name == "BlazeWall")
             IsBlazeWall = false;
