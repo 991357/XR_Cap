@@ -62,8 +62,8 @@ public class Weapon : MonoBehaviour
                 break;
             case 2:
                 F_Timer += Time.deltaTime;
-                
-                if(F_Timer > F_Speed)
+
+                if (F_Timer > F_Speed)
                 {
                     F_Timer = 0;
                     Fire();
@@ -82,17 +82,26 @@ public class Weapon : MonoBehaviour
                 //transform.Rotate(Vector3.back * F_Speed * Time.deltaTime);
 
                 break;
+            case 9:
+                F_Timer += Time.deltaTime;
+
+                if (F_Timer > F_Speed)
+                {
+                    F_Timer = 0;
+                    Slownet();
+                }
+                break;
             default:
                 break;
         }
     }
 
-    public void LevelUp(float dmg , int count)
+    public void LevelUp(float dmg, int count)
     {
         F_Dmg = dmg;
         I_Count += count;
 
-       GameManager.Instance.P_Manager.Get(3);
+        GameManager.Instance.P_Manager.Get(3);
         StartCoroutine(TurnOffLevelUp());
 
         if (I_Id == 0)
@@ -147,14 +156,14 @@ public class Weapon : MonoBehaviour
 
         for (int i = 0; i < GameManager.Instance.P_Manager.Obj_Prefabs.Length; i++)
         {
-            if(data.PB_Projectile == GameManager.Instance.P_Manager.Obj_Prefabs[i])
+            if (data.PB_Projectile == GameManager.Instance.P_Manager.Obj_Prefabs[i])
             {
                 I_PrefabId = i;
                 break;
             }
         }
 
-        switch(I_Id)
+        switch (I_Id)
         {
             case 0:                                         //얼음무기 1 (얼음 칼)
                 IsWeapon0 = true;
@@ -188,7 +197,8 @@ public class Weapon : MonoBehaviour
                 MesBatch();
                 WeaponCount++;
                 break;
-            case 9:                                         //슬로우그물
+            case 9:                                         //Shot Dealy//슬로우그물
+                F_Speed = 1.2f * Character.WeaponRate;
                 WeaponCount++;
                 break;
             default:
@@ -220,7 +230,7 @@ public class Weapon : MonoBehaviour
             Vector3 rotvec = Vector3.forward * 360 * i / I_Count;
             bullet.Rotate(rotvec);
             //bullet.Translate(bullet.up * 2.5f, Space.World);
-            bullet.GetComponent<Bullet>().Init(F_Dmg, -100,Vector3.zero);      //-100 is Infinity per (관통)
+            bullet.GetComponent<Bullet>().Init(F_Dmg, -100, Vector3.zero);      //-100 is Infinity per (관통)
 
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
         }
@@ -271,7 +281,7 @@ public class Weapon : MonoBehaviour
                 bullet.parent = transform;
             }
 
-            bullet.localScale = new Vector3(0.5f,0.5f,0.5f);
+            bullet.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
 
@@ -284,6 +294,34 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    void MesBatch()
+    {
+        for (int i = 0; i < I_Count; i++)
+        {
+            Transform bullet;
+            if (i < transform.childCount)               //원래는 ObjectPooling 에서만 가져왔던걸 이제는 내가 갖고있는 자식 오브젝트를 먼저 재활용하고 모자란걸 오브젝트 풀링으로 충당하겠다..!
+            {
+                bullet = transform.GetChild(i);
+            }
+            else
+            {
+                bullet = GameManager.Instance.P_Manager.Get(29).transform;
+                bullet.parent = transform;
+            }
+
+            bullet.localScale = new Vector3(0.3f, 1f, 1f);
+            bullet.localPosition = Vector3.zero;
+            bullet.localRotation = Quaternion.identity;
+
+            Vector3 rotvec = Vector3.forward * 360 * i / I_Count;
+            bullet.Rotate(rotvec);
+            bullet.Translate(bullet.up * 2f, Space.World);
+            bullet.GetComponent<Bullet>().Init(F_Dmg, -100, Vector3.zero);      //-100 is Infinity per (관통)
+            bullet.GetComponent<Mes>().Number = i;
+
+            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
+        }
+    }
 
     void Fire()
     {
@@ -299,8 +337,8 @@ public class Weapon : MonoBehaviour
             case 1:
                 Transform bullet = GameManager.Instance.P_Manager.Get(2).transform;
                 bullet.position = transform.position;
-                bullet.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
-                                                                                               //bullet.transform.LookAt(targetpos);
+                bullet.rotation = Quaternion.FromToRotation(Vector3.right, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
+                                                                                        //bullet.transform.LookAt(targetpos);
                 bullet.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);                       //-1 is Infinity per (관통)
                 break;
             case 2:
@@ -342,6 +380,37 @@ public class Weapon : MonoBehaviour
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
+    void Slownet()
+    {
+        if (!S_Player.Scanner.F_NearstTarget)
+            return;
+
+        Vector3 targetpos = S_Player.Scanner.F_NearstTarget.position;
+        Vector3 dir = targetpos - transform.position;
+        dir = dir.normalized;
+
+        switch (GameManager.Instance.LevelUp.items[7].Level)        //나중에 바꾸기
+        {
+            case 1:
+                Transform bullet = GameManager.Instance.P_Manager.Get(30).transform;
+                bullet.position = transform.position;
+                bullet.rotation = Quaternion.FromToRotation(Vector3.right, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
+                                                                                        //bullet.transform.LookAt(targetpos);
+                bullet.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);                       //-1 is Infinity per (관통)
+                break;
+            default:
+                Transform bulletr = GameManager.Instance.P_Manager.Get(30).transform;
+                Transform bulletl = GameManager.Instance.P_Manager.Get(30).transform;
+                bulletr.position = transform.position;
+                bulletl.position = transform.position + Vector3.left * 0.7f;
+                bulletr.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
+                bulletl.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
+
+                bulletr.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);                     //-1 is Infinity per (관통)
+                bulletl.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
+                break;
+        }
+    }
     void BlazeWall()
     {
         switch (GameManager.Instance.LevelUp.items[5].Level)
@@ -356,7 +425,7 @@ public class Weapon : MonoBehaviour
             case 3:
             case 4:
                 int ranx1 = Random.Range(-5, 5);
-                int rany1 = Random.Range(-4, 4);        
+                int rany1 = Random.Range(-4, 4);
                 int ranx2 = Random.Range(-5, 5);
                 int rany2 = Random.Range(-4, 4);
                 Transform bulletr = GameManager.Instance.P_Manager.Get(28).transform;
@@ -364,34 +433,6 @@ public class Weapon : MonoBehaviour
                 bulletr.position = new Vector2(transform.position.x + ranx1, transform.position.y + rany1);
                 bulletl.position = new Vector2(transform.position.x + ranx2, transform.position.y + rany2);
                 break;
-        }
-    }
-
-    void MesBatch()
-    {
-        for (int i = 0; i < I_Count; i++)
-        {
-            Transform bullet;
-            if (i < transform.childCount)               //원래는 ObjectPooling 에서만 가져왔던걸 이제는 내가 갖고있는 자식 오브젝트를 먼저 재활용하고 모자란걸 오브젝트 풀링으로 충당하겠다..!
-            {
-                bullet = transform.GetChild(i);
-            }
-            else
-            {
-                bullet = GameManager.Instance.P_Manager.Get(29).transform;
-                bullet.parent = transform;
-            }
-
-            bullet.localScale = new Vector3(0.3f, 1f, 1f);
-            bullet.localPosition = Vector3.zero;
-            bullet.localRotation = Quaternion.identity;
-
-            Vector3 rotvec = Vector3.forward * 360 * i / I_Count;
-            bullet.Rotate(rotvec);
-            bullet.Translate(bullet.up * 2f, Space.World);
-            bullet.GetComponent<Bullet>().Init(F_Dmg, -100, Vector3.zero);      //-100 is Infinity per (관통)
-
-            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
         }
     }
 }

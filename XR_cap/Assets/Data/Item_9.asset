@@ -17,12 +17,12 @@ MonoBehaviour:
   S_ItemName: SlowNet
   S_ItemDesc: 
   SP_ItemIcon: {fileID: 21300000, guid: d5e10fc92b570cb4cbb31ccddcf26a02, type: 3}
-  F_BaseDmg: 1.5
+  F_BaseDmg: 0
   I_BaseCount: 0
   F_Dmgs:
-  - 0.25
-  - 0.25
-  - 0.25
-  - 0.25
+  - 0
+  - 0
+  - 0
+  - 0
   I_Counts: 00000000010000000200000003000000
   PB_Projectile: {fileID: 0}

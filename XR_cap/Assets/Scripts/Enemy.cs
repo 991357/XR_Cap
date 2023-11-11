@@ -32,7 +32,9 @@ public class Enemy : MonoBehaviour
     //bool IsHit;
     public bool IsFreeze;
     bool IsBurn;
+    bool IsSlowBurn;
     bool IsBlazeWall;
+    bool IsNet;
 
     private void Awake()
     {
@@ -75,7 +77,10 @@ public class Enemy : MonoBehaviour
         HitTimer += Time.fixedDeltaTime;
 
         if (IsBurn)
-            Burning();
+            StartCoroutine(Burn());
+
+        if (IsSlowBurn)
+            StartCoroutine(SlowBurn());
     }
     private void LateUpdate()
     {
@@ -111,19 +116,6 @@ public class Enemy : MonoBehaviour
         SR.enabled = false;
         F_Health = F_MaxHealth;
     }
-    //public void Init(SpawnData data)
-    //{
-    //    A_Anim.runtimeAnimatorController = RAC_AnimCon[data.I_SpriteType];
-    //    F_Speed = data.F_Speed;
-    //    F_MaxHealth = data.I_Health;
-    //    F_Health = data.I_Health;
-    //}
-
-    void Burning()
-    {
-        StartCoroutine(Burn());
-    }
-
     IEnumerator Burn()
     {
         //파티클 생성
@@ -232,7 +224,8 @@ public class Enemy : MonoBehaviour
                 IsFreeze = false;
             }
         }
-        else if (collision.GetComponent<Bullet>().Name == "FireBall" || collision.GetComponent<Bullet>().Name == "BlazeWall") //|| collision.GetComponent<Bullet>().Name == "FireBallSmall")
+
+        if (collision.GetComponent<Bullet>().Name == "FireBall" || collision.GetComponent<Bullet>().Name == "BlazeWall") //|| collision.GetComponent<Bullet>().Name == "FireBallSmall")
         {
             FireStack++;
             GameObject par = GameManager.Instance.P_Manager.Get(27);
@@ -245,6 +238,134 @@ public class Enemy : MonoBehaviour
                 IsBurn = true;
             }
         }
+
+        if(collision.GetComponent<Bullet>().Name == "SlowNet")
+        {
+            Debug.Log("SlowNet");
+            switch (GameManager.Instance.LevelUp.items[7].Level)        //나중에 바꾸기
+            {
+                case 1:
+                    StartCoroutine(EnemySlow());
+                    break;
+                case 2:
+                    StartCoroutine(EnemySlow());
+                    break;
+
+                case 3:
+                    //상태이상
+                    break;
+                case 4:
+                    //자폭병
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        if(collision.GetComponent<Bullet>().Name == "SlowNet_2")
+        {
+            if (IsNet)
+                return;
+
+            //랜덤상태이상 부여
+            int ran = UnityEngine.Random.Range(0, 4);
+
+            switch (ran)
+            {
+                case 0:
+                    IsNet = true;
+                    StartCoroutine(EnemyFreeze());
+                    break;
+                case 1:
+                    IsNet = true;
+                    IsSlowBurn = true;
+                    break;
+                case 2:
+                    //감전
+                    IsNet = true;
+                    Debug.Log("감전");
+                    break;
+                case 3:
+                    //출혈
+                    IsNet = true;
+                    Debug.Log("출혈");
+                    break;
+            }
+        }
+    }
+
+    IEnumerator EnemySlow()
+    {
+        switch (Name)
+        {
+            case "A":
+                F_Speed = 0.8f;
+                break;
+            case "B":
+                F_Speed = 1f;
+                break;
+            case "C":
+                F_Speed = 0.8f;
+                break;
+            case "B_A":
+                F_Speed = 0.5f;
+                break;
+            case "B_A_0":
+                F_Speed = 2f;
+                break;
+            case "B_B":
+                F_Speed = 0.8f;
+                break;
+            case "B_C":
+                F_Speed = 1f;
+                break;
+        }
+        yield return new WaitForSeconds(3);
+
+        switch (Name)
+        { 
+            case "A":
+                F_Speed = 2f;
+                break;
+            case "B":
+                F_Speed = 2.2f;
+                break;
+            case "C":
+                F_Speed = 2.5f;
+                break;
+            case "B_A":
+                F_Speed = 1.2f;
+                break;
+            case "B_A_0":
+                F_Speed = 3.5f;
+                break;
+            case "B_B":
+                F_Speed = 2f;
+                break;
+            case "B_C":
+                F_Speed = 2.3f;
+                break;
+        }
+    }
+
+    IEnumerator SlowBurn()
+    {
+        //파티클 생성
+        
+        if (HitTimer > HitDelay)
+        {
+            F_Health -= 0.3f;
+            if (F_Health < 0)
+                EnemyDead();
+
+            HitTimer = 0;
+        }
+
+        yield return new WaitForSeconds(3);
+
+        //파티클 끄기
+
+        IsSlowBurn = false;
     }
 
     IEnumerator DestroyPar(GameObject Par)
@@ -427,6 +548,7 @@ public class Enemy : MonoBehaviour
     IEnumerator Dead(float time)
     {
         yield return new WaitForSeconds(time);
+        IsNet = false;
         gameObject.SetActive(false);
     }
 

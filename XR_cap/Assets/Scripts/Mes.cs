@@ -5,93 +5,201 @@ using DG.Tweening;
 
 public class Mes : MonoBehaviour
 {
-    public GameObject HitPoint;
-    GameObject ScanObj;
-    bool IsAttack;
-    Animator Anim;
-    DOTweenAnimation DotAnim;
-    bool isAnimationPlaying;
+     public GameObject HitPoint;
+     GameObject ScanObj;
+     bool IsAttack;
+     Animator Anim;
+     DOTweenAnimation DotAnim;
+     bool isAnimationPlaying;
+
+    public int Number;
 
     // Start is called before the first frame update
     void Awake()
     {
         Anim = GetComponent<Animator>();
         DotAnim = GetComponent<DOTweenAnimation>();
-        transform.parent = GameManager.Instance.Player.transform;
     }
-
+   
     // Update is called once per frame
     void Update()
     {
-        if (IsAttack)
-            return;
-
-        if (isAnimationPlaying)
-            return;
-
-        Vector3 dir = HitPoint.transform.position - transform.position;
-
-        Debug.DrawRay(HitPoint.transform.position, dir.normalized * 1f, new Color(1, 0, 0));
+             //if (IsAttack)
+             //    return;
+             //
+             //if (isAnimationPlaying)
+             //    return;
+             //
+             //transform.position = GameManager.Instance.Player.transform.position;
+             Vector3 dir = HitPoint.transform.position - transform.position;
+             //
+             Debug.DrawRay(HitPoint.transform.position, dir.normalized * 1f, new Color(1, 0, 0));
         RaycastHit2D ray = Physics2D.Raycast(HitPoint.transform.position, dir, 1, LayerMask.GetMask("Enemy"));
-
-        if (ray.collider != null && ray.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        
+        if (ray.collider != null /*&& ray.collider.gameObject.layer == LayerMask.NameToLayer("Enemy")*/)
         {
-            // A 함수 호출
-            A(ray.collider.gameObject);
-
-            //1110 여기까지 했음--------------------------------------------------------------------------------------------------------------------------------------------------------
+            Test();
         }
         else
         {
-            ScanObj = null;
+            transform.position = transform.position;
         }
-    }
 
-    private void A(GameObject enemy)
-    {
-        // 애니메이션이 실행 중임을 플래그로 표시
-        isAnimationPlaying = true;
-
-        // DOTween을 사용하여 칼을 Enemy에게 이동시키고 되돌아오는 애니메이션 설정
-        transform.DOMove(GameManager.Instance.Player.transform.position, 0.1f)
-            .SetEase(Ease.Linear)
-            .OnComplete(() =>
-            {
-                // 이동이 끝난 후에 호출되는 부분
-                // 되돌아오기 애니메이션 설정
-                transform.DOMove(transform.position + new Vector3(0, -2, 0), 0.1f)
-                    .SetEase(Ease.Linear)
-                    .OnComplete(() =>
-                    {
-                        // 두 번째 애니메이션이 끝나면 호출되는 부분
-                        // 이곳에 추가 애니메이션이나 로직을 넣을 수 있습니다.
-
-                        // 애니메이션이 끝났음을 플래그로 표시
-                        isAnimationPlaying = false;
-
-                        Debug.Log("Knife animation complete");
-                    });
-            });
-    }
-    IEnumerator PlayAnim(Vector3 Pos)
-    {
-        //DotAnim.DOPlay();
-        yield return new WaitForSeconds(0.1f);
-        transform.position = Pos;
-        //DotAnim.DORewind();
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "Enemy")
+       /* switch (GameManager.Instance.LevelUp.items[6].Level)
         {
-            //애니메이션 실행
+            case 1:
+                switch (Number)
+                {
+                    case 0:
+                        transform.position = new Vector3(0, 2, 0);
+                        break;
+                    case 1:
+                        transform.position = new Vector3(0, -2, 0);
+                        break;
+                }
+                break;
+            case 2:
+                switch (Number)
+                {
+                    case 0:
+                        
+                        break;
+                    case 1:
 
-            //근데 지금 애니메이션 진행중이야?
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                }
+                break;
+            case 3:
+                switch (Number)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
+                break;
+            case 4:
+                switch (Number)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                }
+                break;
+        }*/
+    }
 
-            //그럼 return
-
-            //아니면 실행
+    public void Test()
+    {
+        switch (GameManager.Instance.LevelUp.items[6].Level)        //나중에바꾸기
+        {
+            case 0:
+                break;
+            case 1:
+                switch (Number)
+                {
+                    case 0:
+                        Anim.SetTrigger("M0");
+                        break;
+                    case 1:
+                        Anim.SetTrigger("M1");
+                        break;
+                }
+                break;
+            case 2:
+                switch (Number)
+                {
+                    case 0:
+                        Anim.SetTrigger("M0");
+                        break;
+                    case 1:
+                        Anim.SetTrigger("M2");
+                        break;
+                    case 2:
+                        Anim.SetTrigger("M1");
+                        break;
+                    case 3:
+                        Anim.SetTrigger("M3");
+                        break;
+                }
+                break;
+            case 3:
+                switch (Number)
+                {
+                    case 0:
+                        Anim.SetTrigger("M0");
+                        break;
+                    case 1:
+                        Anim.SetTrigger("M3-1");
+                        break;
+                    case 2:
+                        Anim.SetTrigger("M3-2");
+                        break;
+                    case 3:
+                        Anim.SetTrigger("M1");
+                        break;
+                    case 4:
+                        Anim.SetTrigger("M3-4");
+                        break;
+                    case 5:
+                        Anim.SetTrigger("M3-5");
+                        break;
+                }
+                break;
+            case 4:
+                switch (Number)
+                {
+                    case 0:
+                        Anim.SetTrigger("M0");
+                        break;
+                    case 1:
+                        Anim.SetTrigger("M4-1");
+                        break;
+                    case 2:
+                        Anim.SetTrigger("M2");
+                        break;
+                    case 3:
+                        Anim.SetTrigger("M4-3");
+                        break;
+                    case 4:
+                        Anim.SetTrigger("M1");
+                        break;
+                    case 5:
+                        Anim.SetTrigger("M4-5");
+                        break;
+                    case 6:
+                        Anim.SetTrigger("M3");
+                        break;
+                    case 7:
+                        Anim.SetTrigger("M4-7");
+                        break;
+                }
+                break;
         }
     }
 }

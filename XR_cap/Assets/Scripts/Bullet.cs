@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour
 
     public bool IsRotate;
     bool IsTouch;
+    bool IsJang;
 
     public Vector3 Dir;
     Rigidbody2D R_Rigid;
@@ -66,6 +67,28 @@ public class Bullet : MonoBehaviour
                     break;
             }
         }
+
+        if (per >= 0)
+        {
+            switch (GameManager.Instance.LevelUp.items[7].Level)        //나중에 바꾸기
+            {
+                case 1:
+                    R_Rigid.velocity = dir * 10f;
+                    break;
+                case 2:
+                    R_Rigid.velocity = dir * 10f;
+                    break;
+                case 3:
+                    R_Rigid.velocity = dir * 10f;
+                    break;
+                case 4:
+                    R_Rigid.velocity = dir * 10f;
+                    break;
+                default:
+                    R_Rigid.velocity = dir * 18f;
+                    break;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -103,9 +126,9 @@ public class Bullet : MonoBehaviour
             }
         }
 
-        if(GameManager.Instance.LevelUp.items[0].Level > 3)
+        if(Name == "Spear")
         {
-            if(Name == "Spear")
+            if (GameManager.Instance.LevelUp.items[0].Level > 3)
                 StartCoroutine(IcePillar());
         }
 
@@ -114,7 +137,6 @@ public class Bullet : MonoBehaviour
             if (GameManager.Instance.LevelUp.items[5].Level > 2)
             {
                 //폭발
-                //1109  여기까지 했음
             }
             if (GameManager.Instance.LevelUp.items[5].Level > 3)
             {
@@ -136,8 +158,24 @@ public class Bullet : MonoBehaviour
             }
         }
 
+        if(Name == "SlowNet")
+        {
+            if(GameManager.Instance.LevelUp.items[7].Level>2)//나중에바꾸기
+            {
+                if (IsJang)
+                    return;
+                //장판생성
+                IsJang = true;
+                GameObject jang = GameManager.Instance.P_Manager.Get(31);
+                jang.transform.position = transform.position;
+            }
+        }
+
         if (I_Per < 0)
         {
+            if (Name == "SlowNet_2")
+                return;
+
             R_Rigid.velocity = Vector2.zero;
             gameObject.SetActive(false);
         }
@@ -164,25 +202,6 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    /*void MoveSin()
-    {
-        if (Name == "FireBall2")
-        {
-            // 시간에 따라 Sin 그래프를 따라 이동
-            float deltaTime = Time.time - startTime;
-            float yPos = Mathf.Sin(deltaTime * frequency) * amplitude;
-            Vector3 newPos = new Vector3(transform.position.x + speed * Time.deltaTime, yPos, 0);
-            transform.position = newPos;
-        }
-        else if(Name == "FireBall3")
-        {
-            // 시간에 따라 Sin 그래프를 따라 이동
-            float deltaTime = Time.time - startTime;
-            float yPos = Mathf.Cos(deltaTime * frequency) * amplitude;
-            Vector3 newPos = new Vector3(transform.position.x + speed * Time.deltaTime, yPos, 0);
-            transform.position = newPos;
-        }
-    }*/
 
     public void BulletRotate(Transform bullet)
     {
@@ -201,6 +220,7 @@ public class Bullet : MonoBehaviour
         {
             if (Name == "FireBall2" || Name == "FireBall3")
                 Name = "FireBall";
+            IsJang = false;
             this.gameObject.SetActive(false);
         }
     }

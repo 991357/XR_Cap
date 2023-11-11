@@ -175,7 +175,7 @@ public class Item : MonoBehaviour
                 switch (Level)
                 {
                     case 0:
-                        T_Desc.text = "메스 발사";
+                        T_Desc.text = "플레이어를 지키는\n칼 생성";
                         break;
                     case 1:
                         T_Desc.text = "갯수 2개 증가\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";
@@ -227,6 +227,7 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Fire_1:
             case ItemData.ItemType.Fire_2:
             case ItemData.ItemType.Mes:
+            case ItemData.ItemType.SlowNet:
                 if(Level == 0)
                 {
                     GameObject newweapon = new GameObject();

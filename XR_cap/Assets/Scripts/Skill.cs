@@ -212,6 +212,10 @@ public class Skill : MonoBehaviour
                 //GameManager.Instance.PlayerLogic.CamShake.IsShake = true;
                 StartCoroutine(TurnOff(2));
                 break;
+            case "SlowNet_2":
+                StartCoroutine(TurnOff(2));
+                break;
+
         }
     }
     
