@@ -81372,8 +81372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cd8c1853095b5542b471cc1010c7a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerLogic: {fileID: 222996160}
-  Player: {fileID: 222996154}
+  Player: {fileID: 222996160}
   P_Manager: {fileID: 426365950}
   LevelUp: {fileID: 291818606}
   Obj_UiResult: {fileID: 703494449}

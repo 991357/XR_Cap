@@ -73,6 +73,7 @@ public class Player : MonoBehaviour
         if (!GameManager.Instance.IsLive)
             return;
 
+        //이동
         InputVec.x = GameManager.Instance.C_Manager.IsAction ? 0 : Input.GetAxisRaw("Horizontal");
         InputVec.y = GameManager.Instance.C_Manager.IsAction ? 0 : Input.GetAxisRaw("Vertical");
 
@@ -85,9 +86,11 @@ public class Player : MonoBehaviour
         else if (InputVec.y == 1)
             DirVec = Vector3.up;
 
+
         DashTimer += Time.deltaTime;
         QTimer += Time.deltaTime;
 
+        //대쉬
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (DashTimer > DashCoolTime)
@@ -106,8 +109,11 @@ public class Player : MonoBehaviour
                 return;
         }
 
+        //최대 파워 설정
         if (Power >= 3)
             Power = 3;
+
+        //캐릭터별 스킬 설정
         if (GameManager.Instance.PlayerId == 0 || GameManager.Instance.PlayerId == 2)
         {
             if (Input.GetKeyDown(KeyCode.Q))
@@ -234,6 +240,7 @@ public class Player : MonoBehaviour
             }
         }
 
+
         //Test Code
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -299,6 +306,7 @@ public class Player : MonoBehaviour
 
     IEnumerator SpeedReset()
     {
+        //대쉬 후 player speed를 장화 레벨에 따라 변경
         yield return new WaitForSeconds(0.2f);
 
         switch (Item.Level)
@@ -340,6 +348,8 @@ public class Player : MonoBehaviour
     {
         if (!GameManager.Instance.IsLive)
             return;
+
+        //Enemy에게 닿으면
         if (collision.gameObject.tag == "Enemy")
         {
             GameManager.Instance.Health -= Time.deltaTime * 10;
@@ -358,6 +368,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //보스 스킬에 닿으면
         if(collision.gameObject.tag == "EnemyBullet")
         {
             GameManager.Instance.Health -= 10;

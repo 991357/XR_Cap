@@ -9,8 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     [Header("# GameObject")]
-    public Player PlayerLogic;
-    public GameObject Player;
+    public Player Player;
     public PoolManager P_Manager;
     public LevelUp LevelUp;
     public Result Obj_UiResult;
@@ -54,7 +53,7 @@ public class GameManager : MonoBehaviour
 
         Health = MaxHealth;
 
-        PlayerLogic.gameObject.SetActive(true);
+        Player.gameObject.SetActive(true);
         LevelUp.Select(PlayerId % 2);
 
         Resume();
@@ -131,7 +130,7 @@ public class GameManager : MonoBehaviour
 
     public void Dummy_Dash()
     {
-        if(PlayerLogic.DashTimer < PlayerLogic.DashCoolTime)
+        if(Player.DashTimer < Player.DashCoolTime)
         {
             Dummy_T_DashCoolTime.text = "Dash : false";
         }
@@ -140,7 +139,7 @@ public class GameManager : MonoBehaviour
             Dummy_T_DashCoolTime.text = "Dash : true";
         }
 
-        if(PlayerLogic.QTimer < PlayerLogic.QCoolTime)
+        if(Player.QTimer < Player.QCoolTime)
         {
             Dummy_T_QCoolTier.text = "Q : False";
         }
@@ -149,7 +148,7 @@ public class GameManager : MonoBehaviour
             Dummy_T_QCoolTier.text = "Q : true";
         }
 
-        Dummy_T_Power.text = "Power : " + PlayerLogic.Power;
+        Dummy_T_Power.text = "Power : " + Player.Power;
     }
 
     public void Dummy_BloodImg()
@@ -189,7 +188,7 @@ public class GameManager : MonoBehaviour
             LevelUp.Show();
         }
     }
-
+    
     public void Stop()
     {
         IsLive = false;
@@ -201,7 +200,7 @@ public class GameManager : MonoBehaviour
         IsLive = true;
         Time.timeScale = 1;
     }
-
+    
     void EscMenu()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -210,9 +209,9 @@ public class GameManager : MonoBehaviour
             Stop();
         }
     }
-
+    
     public void OnClickEscExitBtn()
-    {
+    {      
         EscPanel.SetActive(false);
         Resume();
     }

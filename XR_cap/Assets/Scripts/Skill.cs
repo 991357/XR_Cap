@@ -29,7 +29,7 @@ public class Skill : MonoBehaviour
                 float Wind_0PosX = GameManager.Instance.Player.transform.position.x;
                 float Wind_0PosY = GameManager.Instance.Player.transform.position.y;
                 transform.position = new Vector2(Wind_0PosX, Wind_0PosY);
-                if (GameManager.Instance.PlayerLogic.SR.flipX)
+                if (GameManager.Instance.Player.SR.flipX)
                 {
                     SR.flipX = true;
                     IsLeft = true;
@@ -77,7 +77,7 @@ public class Skill : MonoBehaviour
                 GetComponent<Bullet>().I_Per = 999;
                 break;
             case "Fire_0":
-                if (GameManager.Instance.PlayerLogic.SR.flipX)
+                if (GameManager.Instance.Player.SR.flipX)
                 {
                     float Fire_0PosX = GameManager.Instance.Player.transform.position.x - 1f;
                     float Fire_0PosY = GameManager.Instance.Player.transform.position.y;
@@ -198,13 +198,13 @@ public class Skill : MonoBehaviour
             case "Fire_2":
                 if(!GameManager.Instance.LevelUp.IsLevelUp)
                     transform.position = new Vector2(transform.position.x + 0.001f, transform.position.y - 0.005f);
-                GameManager.Instance.PlayerLogic.CamShake.IsShake = true;
+                GameManager.Instance.Player.CamShake.IsShake = true;
                 StartCoroutine(TurnOff(2.5f));
                 break;
             case "Meteo":
                 if (!GameManager.Instance.LevelUp.IsLevelUp)
                     transform.position = new Vector2(transform.position.x + 0.003f, transform.position.y - 0.009f);
-                GameManager.Instance.PlayerLogic.CamShake.IsShake = true;
+                GameManager.Instance.Player.CamShake.IsShake = true;
                 StartCoroutine(TurnOff(2.5f));
                 break;
             case "Sword":
@@ -223,7 +223,7 @@ public class Skill : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         gameObject.SetActive(false);
-        GameManager.Instance.PlayerLogic.CamShake.IsShake = false;
+        GameManager.Instance.Player.CamShake.IsShake = false;
     }
 
     IEnumerator Thunder(GameObject cloud)

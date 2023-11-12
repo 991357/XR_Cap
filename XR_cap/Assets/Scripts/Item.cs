@@ -234,7 +234,7 @@ public class Item : MonoBehaviour
                     Weapon = newweapon.AddComponent<Weapon>();
                     Weapon.Init(Data);
 
-                    GameManager.Instance.PlayerLogic.WeaponList.Add(Weapon);
+                    GameManager.Instance.Player.WeaponList.Add(Weapon);
                 }
                 else
                 {

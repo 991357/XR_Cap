@@ -26,7 +26,7 @@ public class Reposition : MonoBehaviour
         F_Dirx = F_Dirx > 0 ? 1 : -1;
         F_Diry = F_Diry > 0 ? 1 : -1;
 
-        Vector3 V_PlayerDir = GameManager.Instance.PlayerLogic.InputVec;
+        Vector3 V_PlayerDir = GameManager.Instance.Player.InputVec;
 
         switch (transform.tag)
         {

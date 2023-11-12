@@ -71,9 +71,9 @@ public class Gear : MonoBehaviour
     void SpeedUP()
     {
         //float speed = GameManager.Instance.S_Player.F_Speed * Character.Speed;
-        float speed = GameManager.Instance.PlayerLogic.Speed;
+        float speed = GameManager.Instance.Player.Speed;
 
-        GameManager.Instance.PlayerLogic.Speed = speed + speed * F_Rate;
+        GameManager.Instance.Player.Speed = speed + speed * F_Rate;
     }
 
     void GunRateUp()

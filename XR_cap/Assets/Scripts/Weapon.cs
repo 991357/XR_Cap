@@ -27,7 +27,7 @@ public class Weapon : MonoBehaviour
 
     private void Awake()
     {
-        S_Player = GameManager.Instance.PlayerLogic;
+        S_Player = GameManager.Instance.Player;
     }
 
     private void OnEnable()

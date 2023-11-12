@@ -27,7 +27,7 @@ public class QuestManager : MonoBehaviour
                     Count = 0;
                     Debug.Log("Äù½ºÆ® ¼º°ø!");
                     GameManager.Instance.C_Manager.ScanObject.GetComponent<NPC>().Id += 1;
-                    GameManager.Instance.PlayerLogic.Power++;
+                    GameManager.Instance.Player.Power++;
                     IsQuest = false;
                 }
             }
@@ -44,7 +44,7 @@ public class QuestManager : MonoBehaviour
                     Count = 0;
                     Debug.Log("Äù½ºÆ® ¼º°ø!");
                     GameManager.Instance.C_Manager.ScanObject.GetComponent<NPC>().Id += 1;
-                    GameManager.Instance.PlayerLogic.Power++;
+                    GameManager.Instance.Player.Power++;
                     IsQuest = false;
                 }
             }
