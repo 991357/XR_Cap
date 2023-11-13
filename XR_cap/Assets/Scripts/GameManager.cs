@@ -174,12 +174,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GetExp()
+    public void GetExp(int exp)
     {
         if (!IsLive)
             return;
 
-        Exp++;
+        Exp += exp;
         if(Exp == I_NextExp[Mathf.Min(Level,I_NextExp.Length-1)])
         {
             Level++;

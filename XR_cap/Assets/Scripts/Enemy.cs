@@ -407,11 +407,10 @@ public class Enemy : MonoBehaviour
         GameManager.Instance.Kill++;
         if (Name == "B_A" || Name == "B_B" || Name == "B_C")
         {
-            for (int i = 0; i < 20; i++)
-                GameManager.Instance.GetExp();
+            //상자에 대한 처리..?
         }
         else
-            GameManager.Instance.GetExp();
+            GameManager.Instance.GetExp(1);
 
         if (GameManager.Instance.IsLive)
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
@@ -485,7 +484,7 @@ public class Enemy : MonoBehaviour
                     StartCoroutine(Dead(1.5f));
                 }
                 GameManager.Instance.Kill++;
-                GameManager.Instance.GetExp();
+                GameManager.Instance.GetExp(1);
 
                 if (GameManager.Instance.IsLive)
                     AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
@@ -547,6 +546,11 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Dead(float time)
     {
+        if(Name == "B_A" || Name == "B_B" || Name == "B_C")
+        {
+            GameObject box = GameManager.Instance.P_Manager.Get(32);
+            box.transform.position = transform.position;
+        }
         yield return new WaitForSeconds(time);
         IsNet = false;
         gameObject.SetActive(false);

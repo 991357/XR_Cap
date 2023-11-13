@@ -31,7 +31,7 @@ public class NPC : MonoBehaviour
             QuestNotice.transform.GetChild(0).GetComponent<Text>().text = "Kill Monster\n" + GameManager.Instance.Q_Manager.Count + "/5";
 
             //Ã³¸®
-            if(GameManager.Instance.Q_Manager.Count == 5)
+            if(GameManager.Instance.Q_Manager.Count >= 5)
                 QuestNotice.SetActive(false);
         }
         ActiveFalse();
@@ -61,6 +61,7 @@ public class NPC : MonoBehaviour
             GameManager.Instance.Q_Manager.IsHint = true;
             NPC2.gameObject.SetActive(true);
             NPC2.transform.position = new Vector3(Random.Range(-40, 40), Random.Range(-40, 40), 0);
+            GameManager.Instance.LevelUp.Show();
             gameObject.SetActive(false);
             IsEnd = true;
         }
