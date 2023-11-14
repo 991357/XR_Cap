@@ -46,7 +46,7 @@ public class Spawner : MonoBehaviour
         if (F_Timer <= 15)
         {
             I_Level = 1;
-            SpawnDelay = Random.Range(1,1.5f);
+            SpawnDelay = Random.Range(0.7f,0.9f);
         }
         else if (F_Timer <= 30)
         {
@@ -84,9 +84,9 @@ public class Spawner : MonoBehaviour
 
         yield return new WaitForSeconds(0.01f);
         if(I_Level == 2)
-            SpawnDelay = Random.Range(0.8f, 1f);
+            SpawnDelay = Random.Range(0.6f, 7f);
         else if(I_Level == 3)
-            SpawnDelay = Random.Range(0.6f, 0.8f);
+            SpawnDelay = Random.Range(0.4f, 0.6f);
     }
     void Spawn()
     {
@@ -104,15 +104,18 @@ public class Spawner : MonoBehaviour
 
             GameObject Enemya = GameManager.Instance.P_Manager.Get(0);
             Enemya.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            Enemya.GetComponent<Enemy>().F_Health = 7;
 
         }
         else
         {
             GameObject EnemyA = GameManager.Instance.P_Manager.Get(0);
             EnemyA.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            EnemyA.GetComponent<Enemy>().F_Health = 10;
 
             GameObject EnemyB = GameManager.Instance.P_Manager.Get(4);
             EnemyB.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            EnemyA.GetComponent<Enemy>().F_Health = 13;
 
             GameObject EnemyC = GameManager.Instance.P_Manager.Get(5);
             EnemyC.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;

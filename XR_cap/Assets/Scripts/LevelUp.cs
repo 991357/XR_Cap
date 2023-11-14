@@ -20,6 +20,7 @@ public class LevelUp : MonoBehaviour
     {
         IsLevelUp = true;
         Next();
+        IsEmpty();
         RT_rect.localScale = Vector3.one;
         GameManager.Instance.Stop();
         GameManager.Instance.Obj_Health.SetActive(false);
@@ -44,11 +45,17 @@ public class LevelUp : MonoBehaviour
         items[i].OnClickBtn();
     }
 
+    private void IsEmpty()
+    {
+        if (!items[0].gameObject.activeSelf && !items[1].gameObject.activeSelf && !items[2].gameObject.activeSelf && !items[3].gameObject.activeSelf && !items[4].gameObject.activeSelf && !items[5].gameObject.activeSelf && !items[6].gameObject.activeSelf && !items[7].gameObject.activeSelf && !items[9].gameObject.activeSelf && !items[9].gameObject.activeSelf)
+        {
+            Debug.Log("아무것도 안떴음");
+            items[4].gameObject.SetActive(true);
+        }
+    }
 
     private void Next()
     {
-        Weapon test = null;
-
         //모든 아이템 비활성화
         foreach (Item item in items)
         {
@@ -57,6 +64,7 @@ public class LevelUp : MonoBehaviour
 
         //랜덤으로 3개만 활성화
         int[] ran = new int[3];
+
         while (true)
         {
             ran[0] = Random.Range(0, items.Length);
@@ -78,40 +86,24 @@ public class LevelUp : MonoBehaviour
                 //소비아이템이 여러개일경우
                 //items[Random.Range(4,7)].gameObject.SetActive(true);같은 코드를 쓰면 됨
             }
-            //else if (ranitem == items[2])
-            //{
-            //     Test
-            //    for (int j = 0; j < GameManager.Instance.PlayerLogic.WeaponList.Count; j++)
-            //    {
-            //        if (GameManager.Instance.PlayerLogic.WeaponList[j].name == "Weapon0")
-            //        {
-            //            items[2].gameObject.SetActive(true);
-            //            break;
-            //        }
-            //        else
-            //        {
-            //            items[2].gameObject.SetActive(false);
-            //            //TrashCard.gameObject.SetActive(true);
-            //        }
-            //    }
-            //}
-            //else if(ranitem == items[5])
-            //{
-            //    for (int j = 0; j < GameManager.Instance.PlayerLogic.WeaponList.Count; j++)
-            //    {
-            //        if (GameManager.Instance.PlayerLogic.WeaponList[j].name == "Weapon1")
-            //        {
-            //            items[5].gameObject.SetActive(true);
-            //            break;
-            //        }
-            //        else
-            //        {
-            //            items[5].gameObject.SetActive(false);
-            //            //TrashCard.gameObject.SetActive(true);
-            //        }
-            //    }
-            //
-            //}
+            else if (GameManager.Instance.Player.WeaponList.Count == 4)
+            {
+                if(ranitem.Level == 0)
+                {                
+                    ranitem.gameObject.SetActive(false);
+                }
+                else if(ranitem.Level == 1)
+                {
+                    ranitem.gameObject.SetActive(true);
+                }
+                else
+                {
+                    if (ranitem.Level >= 4)
+                        ranitem.gameObject.SetActive(false);
+                    else
+                        ranitem.gameObject.SetActive(true);
+                }
+            }
             else
                 ranitem.gameObject.SetActive(true);
             //Debug.Log(GameManager.Instance.S_Player.transform.Find("Weapon0").gameObject.activeSelf);
