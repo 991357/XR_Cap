@@ -18,20 +18,21 @@ public class Item : MonoBehaviour
 
     private void Awake()
     {
-        Img_Icon = GetComponentsInChildren<Image>()[1];
-        Img_Icon.sprite = Data.SP_ItemIcon;
+        //Img_Icon = GetComponentsInChildren<Image>()[1];
+        //Img_Icon.sprite = Data.SP_ItemIcon;
+        //Img_Icon.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
         Text[] texts = GetComponentsInChildren<Text>();
-        T_Level = texts[0];
-        T_Name = texts[1];
-        T_Desc = texts[2];
+        //T_Level = texts[0];
+        T_Name = texts[0];
+        T_Desc = texts[1];
 
         T_Name.text = Data.S_ItemName;
     }
 
     private void OnEnable()
     {
-        T_Level.text = "Lv." + (Level + 1);
+        //T_Level.text = "Lv." + (Level + 1);
         switch(Data.Type)
         {
             case ItemData.ItemType.Ice_1:

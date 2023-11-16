@@ -17,6 +17,11 @@ public class Spawner : MonoBehaviour
         TM_SpawnPoint = GetComponentsInChildren<Transform>();
         //F_LevelTime = GameManager.Instance.F_MaxGameTime / C_SpawnData.Length;
     }
+
+    private void Start()
+    {
+        StartCoroutine(LevelChange());
+    }
     void Update()
     {
         if (!GameManager.Instance.IsLive)
@@ -46,7 +51,7 @@ public class Spawner : MonoBehaviour
         if (F_Timer <= 15)
         {
             I_Level = 1;
-            SpawnDelay = Random.Range(0.7f,0.9f);
+            SpawnDelay = Random.Range(0.6f,0.8f);
         }
         else if (F_Timer <= 30)
         {
@@ -84,30 +89,29 @@ public class Spawner : MonoBehaviour
 
         yield return new WaitForSeconds(0.01f);
         if(I_Level == 2)
-            SpawnDelay = Random.Range(0.6f, 7f);
+            SpawnDelay = Random.Range(0.4f, 6f);
         else if(I_Level == 3)
-            SpawnDelay = Random.Range(0.4f, 0.6f);
+            SpawnDelay = Random.Range(0.2f, 0.4f);
+        else
+            SpawnDelay = Random.Range(0.6f, 0.8f);
     }
     void Spawn()
     {
         if(I_Level == 1)
         {
-            //Enemy 1 Spawn
-            GameObject Enemy = GameManager.Instance.P_Manager.Get(0);
-            Enemy.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            GameObject EnemyA = GameManager.Instance.P_Manager.Get(0);
+            EnemyA.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            EnemyA.GetComponent<Enemy>().F_Health = 5;
+
+           // GameObject EnemyB = GameManager.Instance.P_Manager.Get(4);
+           // EnemyB.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+           // EnemyB.GetComponent<Enemy>().F_Health = 8;
+           //
+           // GameObject EnemyC = GameManager.Instance.P_Manager.Get(5);
+           // EnemyC.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+           // EnemyC.GetComponent<Enemy>().F_Health = 10;
         }
         else if(I_Level == 2)
-        {
-            //Enemy 2 Spawn
-            GameObject Enemy = GameManager.Instance.P_Manager.Get(4);
-            Enemy.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
-
-            GameObject Enemya = GameManager.Instance.P_Manager.Get(0);
-            Enemya.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
-            Enemya.GetComponent<Enemy>().F_Health = 7;
-
-        }
-        else
         {
             GameObject EnemyA = GameManager.Instance.P_Manager.Get(0);
             EnemyA.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
@@ -115,10 +119,25 @@ public class Spawner : MonoBehaviour
 
             GameObject EnemyB = GameManager.Instance.P_Manager.Get(4);
             EnemyB.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
-            EnemyA.GetComponent<Enemy>().F_Health = 13;
+            EnemyB.GetComponent<Enemy>().F_Health = 15;
 
             GameObject EnemyC = GameManager.Instance.P_Manager.Get(5);
             EnemyC.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            EnemyC.GetComponent<Enemy>().F_Health = 20;
+        }
+        else
+        {
+            GameObject EnemyA = GameManager.Instance.P_Manager.Get(0);
+            EnemyA.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            EnemyA.GetComponent<Enemy>().F_Health = 20;
+
+            GameObject EnemyB = GameManager.Instance.P_Manager.Get(4);
+            EnemyB.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            EnemyB.GetComponent<Enemy>().F_Health = 30;
+
+            GameObject EnemyC = GameManager.Instance.P_Manager.Get(5);
+            EnemyC.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            EnemyC.GetComponent<Enemy>().F_Health = 40;
         }
     }
 }

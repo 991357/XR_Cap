@@ -52,6 +52,9 @@ public class Enemy : MonoBehaviour
     {
         if (IsBlazeWall)
             StayBlazeWall();
+
+        if (IsFreeze)
+            StartCoroutine(EnemyFreeze());
     }
 
     // Update is called once per frame
@@ -64,15 +67,19 @@ public class Enemy : MonoBehaviour
             return;
 
         if (IsFreeze)
-            return;
+            StartCoroutine(EnemyFreeze());
 
-        Vector2 V_DirVec = R_Target.position - R_Rigid.position;        //타겟위치 - 나의위치 = 방향(위치차이)
-        Vector2 V_NextVec = V_DirVec.normalized * F_Speed * Time.fixedDeltaTime;
+        if (!IsFreeze)
+        {
 
-        if (GameManager.Instance.C_Manager.IsAction)
-            return;
-        R_Rigid.MovePosition(R_Rigid.position + V_NextVec);
-        //R_Rigid.velocity = Vector2.zero;
+            Vector2 V_DirVec = R_Target.position - R_Rigid.position;        //타겟위치 - 나의위치 = 방향(위치차이)
+            Vector2 V_NextVec = V_DirVec.normalized * F_Speed * Time.fixedDeltaTime;
+
+            if (GameManager.Instance.C_Manager.IsAction)
+                return;
+            R_Rigid.MovePosition(R_Rigid.position + V_NextVec);
+            //R_Rigid.velocity = Vector2.zero;
+        }
 
         HitTimer += Time.fixedDeltaTime;
 
@@ -80,7 +87,7 @@ public class Enemy : MonoBehaviour
             StartCoroutine(Burn());
 
         if (IsSlowBurn)
-            StartCoroutine(SlowBurn());
+            StartCoroutine(SlowBurn());     //Net맞으면
     }
     private void LateUpdate()
     {
@@ -213,8 +220,6 @@ public class Enemy : MonoBehaviour
             if (ran == 0)
             {
                 IsFreeze = true;
-
-                StartCoroutine(EnemyFreeze());
                 //int ran을 전역변수로 빼서 int ran이 0이 아닐때
 
                 //이거 혹시 0인 상태로 얼었는데 바로 또 맞아서 1이 떴는데 1이 떠있는 상태로 코루틴이 돌고 있어서 안되는거 아닌지?
@@ -274,7 +279,7 @@ public class Enemy : MonoBehaviour
             {
                 case 0:
                     IsNet = true;
-                    StartCoroutine(EnemyFreeze());
+                    IsFreeze = true;
                     break;
                 case 1:
                     IsNet = true;
@@ -292,6 +297,91 @@ public class Enemy : MonoBehaviour
                     break;
             }
         }
+
+        if(collision.GetComponent<Bullet>().Name == "Lightning")
+        {
+
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    { 
+        if (collision.gameObject.name == "OC_Area")
+            SR.enabled = true;
+
+        if (collision.gameObject.tag == "Fire")
+        {
+            F_Health -= collision.GetComponent<Bullet>().F_Dmg;
+            StartCoroutine(KnockBack());
+
+            if (F_Health > 0)
+            {
+                if (Name == "A")
+                {
+                    A_Anim.SetTrigger("Hit");
+                }
+                else if (Name == "B_A_0")
+                {
+                    Debug.Log("애기가 맞음");
+                }
+                else
+                {
+                    ////RGB값 처리 예정
+                    //SpriteRenderer sr = GetComponent<SpriteRenderer>();
+                    //sr.color = new Color(1, 0, 0, 1);
+                    //Invoke("ReturnSprite", 0.15f);
+                }
+
+                AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
+            }
+            else
+            {
+                B_IsLive = false;
+                C_Coll.enabled = false;
+                R_Rigid.simulated = false;
+                SR_SPriter.sortingOrder = 1;
+                if (GameManager.Instance.Q_Manager.IsQuest)
+                    GameManager.Instance.Q_Manager.Count += 1;
+                A_Anim.SetBool("Dead", true);
+
+                if (Name == "A" || Name == "B_A")
+                {
+                    StartCoroutine(Dead(0.65f));
+                }
+                else if (Name == "C")
+                {
+                    StartCoroutine(Dead(0.6f));
+                }
+                else if (Name == "B")
+                {
+                    StartCoroutine(Dead(0.8f));
+                }
+                else if (Name == "B_C")
+                {
+                    StartCoroutine(Dead(1.5f));
+                }
+                GameManager.Instance.Kill++;
+                GameManager.Instance.GetExp(1);
+
+                if (GameManager.Instance.IsLive)
+                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+            }
+        }
+
+        Bullet bullet = collision.GetComponent<Bullet>();
+        if(bullet != null && bullet.Name == "BlazeWall")
+            IsBlazeWall = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+
+        if (collision.gameObject.name == "OC_Area")
+            SR.enabled = false;
+
+        Bullet bullet = collision.GetComponent<Bullet>();
+        if (bullet != null && bullet.Name == "BlazeWall")
+            IsBlazeWall = false;
     }
 
     IEnumerator EnemySlow()
@@ -386,7 +476,7 @@ public class Enemy : MonoBehaviour
 
         if (Name == "A")
         {
-            StartCoroutine(Dead(0.5f));
+            //StartCoroutine(Dead(0.5f));
         }
         else if (Name == "B_A")
         {
@@ -415,96 +505,17 @@ public class Enemy : MonoBehaviour
         if (GameManager.Instance.IsLive)
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
     }
-    IEnumerator EnemyFreeze()
+    public IEnumerator EnemyFreeze()
     {
-        SR_SPriter.color = new Color(0, 0, 1);
         C_Coll.isTrigger = true;
+        R_Rigid.velocity = Vector2.zero;
+        SR_SPriter.color = new Color(0, 0, 1);
 
         yield return new WaitForSeconds(3f);
 
         SR_SPriter.color = new Color(1, 1, 1);
         C_Coll.isTrigger = false;
         IsFreeze = false;
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    { 
-        if (collision.gameObject.name == "OC_Area")
-            SR.enabled = true;
-
-        if (collision.gameObject.tag == "Fire")
-        {
-            F_Health -= collision.GetComponent<Bullet>().F_Dmg;
-            StartCoroutine(KnockBack());
-
-            if (F_Health > 0)
-            {
-                if (Name == "A")
-                {
-                    A_Anim.SetTrigger("Hit");
-                }
-                else if (Name == "B_A_0")
-                {
-                    Debug.Log("애기가 맞음");
-                }
-                else
-                {
-                    ////RGB값 처리 예정
-                    //SpriteRenderer sr = GetComponent<SpriteRenderer>();
-                    //sr.color = new Color(1, 0, 0, 1);
-                    //Invoke("ReturnSprite", 0.15f);
-                }
-
-                AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
-            }
-            else
-            {
-                B_IsLive = false;
-                C_Coll.enabled = false;
-                R_Rigid.simulated = false;
-                SR_SPriter.sortingOrder = 1;
-                if (GameManager.Instance.Q_Manager.IsQuest)
-                    GameManager.Instance.Q_Manager.Count += 1;
-                A_Anim.SetBool("Dead", true);
-
-                if (Name == "A" || Name == "B_A")
-                {
-                    StartCoroutine(Dead(0.65f));
-                }
-                else if (Name == "C")
-                {
-                    StartCoroutine(Dead(0.6f));
-                }
-                else if (Name == "B")
-                {
-                    StartCoroutine(Dead(0.8f));
-                }
-                else if (Name == "B_C")
-                {
-                    StartCoroutine(Dead(1.5f));
-                }
-                GameManager.Instance.Kill++;
-                GameManager.Instance.GetExp(1);
-
-                if (GameManager.Instance.IsLive)
-                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
-            }
-        }
-
-        Bullet bullet = collision.GetComponent<Bullet>();
-        if(bullet != null && bullet.Name == "BlazeWall")
-            IsBlazeWall = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-
-        if (collision.gameObject.name == "OC_Area")
-            SR.enabled = false;
-
-        Bullet bullet = collision.GetComponent<Bullet>();
-        if (bullet != null && bullet.Name == "BlazeWall")
-            IsBlazeWall = false;
     }
 
     void StayBlazeWall()

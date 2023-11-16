@@ -10,13 +10,13 @@ public class PoolManager : MonoBehaviour
 
     public GameObject[] Obj_Prefabs;
 
-    List<GameObject>[] L_Pools;
+    public List<GameObject>[] L_Pools;
 
     private void Awake()
     {
         L_Pools = new List<GameObject>[Obj_Prefabs.Length];
 
-        for (int i = 0; i < L_Pools.Length; i ++)
+        for (int i = 0; i < L_Pools.Length; i++)
             L_Pools[i] = new List<GameObject>();
     }
 

@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     public GameObject ScanObj;
     public Vector3 DirVec;
     public GameObject SlowArea;
+    public GameObject FreezeArea;
 
     [Space(10f)]
     [Header("List")]
@@ -123,58 +124,18 @@ public class Player : MonoBehaviour
                     switch (Power)
                     {
                         case 1:
-                            GameManager.Instance.P_Manager.Get(9);
-                            QTimer = 0;
+                            StartCoroutine(FreezeAreaSkill());
                             break;
                         case 2:
-                            for (int i = 0; i < 10; i++)
-                            {
-                                GameManager.Instance.P_Manager.Get(10);
-                            }
-                            QTimer = 0;
+                            StartCoroutine(FreezeAreaSkill());
                             break;
                         case 3:
-                            //QCoolTime = 10f;
+                            StartCoroutine(FreezeAreaSkill());
                             break;
                     }
                 }
-
                 else
                     return;
-            }
-            if (Input.GetKey(KeyCode.Q))
-            {
-                if (QTimer > QCoolTime)
-                {
-                    switch (Power)
-                    {
-                        case 3:
-                            TornadoTimer += Time.deltaTime;
-                            
-                            if (TornadoTimer > 2)
-                            {
-                                WindObj.SetActive(true);
-                            }
-                            break;
-                    }
-                }
-            }
-            if (Input.GetKeyUp(KeyCode.Q))
-            {
-                if (QTimer > QCoolTime)
-                {
-                    switch (Power)
-                    {
-                        case 3:
-                            CamShake.IsShake = true;
-
-                            GameManager.Instance.P_Manager.Get(11);
-                            QTimer = 0;
-                            TornadoTimer = 0;
-                            WindObj.SetActive(false);
-                            break;
-                    }
-                }
             }
         }
         else if (GameManager.Instance.PlayerId == 1)
@@ -193,21 +154,7 @@ public class Player : MonoBehaviour
                             GameManager.Instance.P_Manager.Get(14);
                             break;
                         case 3:
-                            //for (int i = 0; i < 30; i++)
-                            //{
-                                GameManager.Instance.P_Manager.Get(15);
-                                //Invoke("Meteo", 1f);
-                            //}
-
-                            //Timer = Time.deltaTime;
-                            //Delay = 0.01f;
-                            //for (int i = 0; i < 15; i++)
-                            //{
-                            //    if (Timer < Delay)
-                            //        return;
-                            //    Timer = 0;
-                            //    GameManager.Instance.S_Pool.Get(15);
-                            //}
+                            GameManager.Instance.P_Manager.Get(15);
                             break;
                     }
                 }
@@ -215,31 +162,6 @@ public class Player : MonoBehaviour
                     return;
             }
         }
-        else if (GameManager.Instance.PlayerId == 2)
-        {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                if (QTimer > QCoolTime)
-                {
-                    QTimer = 0;
-                    switch (Power)
-                    {
-                        case 1:
-                            //GameManager.Instance.S_Pool.Get(16);
-                            break;
-                        case 2:
-                            //GameManager.Instance.S_Pool.Get(14);
-                            break;
-                        case 3:
-                            //GameManager.Instance.S_Pool.Get(15);
-                            break;
-                    }
-                }
-                else
-                    return;
-            }
-        }
-
 
         //Test Code
         if (Input.GetKeyDown(KeyCode.K))
@@ -269,6 +191,13 @@ public class Player : MonoBehaviour
             SlowArea.SetActive(true);
     }
 
+    IEnumerator FreezeAreaSkill()
+    {
+        FreezeArea.SetActive(true);
+        yield return new WaitForSeconds(2);
+        FreezeArea.SetActive(false);
+        QTimer = 0;
+    }
     IEnumerator TurnOffEnemyCleaner()
     {
         yield return new WaitForSeconds(0.1f);
@@ -309,7 +238,7 @@ public class Player : MonoBehaviour
         //대쉬 후 player speed를 장화 레벨에 따라 변경
         yield return new WaitForSeconds(0.2f);
 
-        switch (Item.Level)
+        switch (GameManager.Instance.LevelUp.items[3].Level)
         {
             case 0:
                 Speed = 5f;
