@@ -103,13 +103,13 @@ public class Spawner : MonoBehaviour
             EnemyA.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
             EnemyA.GetComponent<Enemy>().F_Health = 5;
 
-           // GameObject EnemyB = GameManager.Instance.P_Manager.Get(4);
-           // EnemyB.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
-           // EnemyB.GetComponent<Enemy>().F_Health = 8;
-           //
-           // GameObject EnemyC = GameManager.Instance.P_Manager.Get(5);
-           // EnemyC.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
-           // EnemyC.GetComponent<Enemy>().F_Health = 10;
+            GameObject EnemyB = GameManager.Instance.P_Manager.Get(4);
+            EnemyB.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            EnemyB.GetComponent<Enemy>().F_Health = 8;
+           
+            GameObject EnemyC = GameManager.Instance.P_Manager.Get(5);
+            EnemyC.transform.position = TM_SpawnPoint[Random.Range(1, TM_SpawnPoint.Length)].position;
+            EnemyC.GetComponent<Enemy>().F_Health = 10;
         }
         else if(I_Level == 2)
         {

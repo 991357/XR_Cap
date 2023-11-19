@@ -114,6 +114,12 @@ public class Player : MonoBehaviour
         if (Power >= 3)
             Power = 3;
 
+        //파워 레벨업
+        if (GameManager.Instance.Kill > 30)
+            Power = 2;
+        else if (GameManager.Instance.Kill > 100)
+            Power = 3;
+
         //캐릭터별 스킬 설정
         if (GameManager.Instance.PlayerId == 0 || GameManager.Instance.PlayerId == 2)
         {

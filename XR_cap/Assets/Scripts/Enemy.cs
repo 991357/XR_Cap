@@ -247,7 +247,7 @@ public class Enemy : MonoBehaviour
         if(collision.GetComponent<Bullet>().Name == "SlowNet")
         {
             Debug.Log("SlowNet");
-            switch (GameManager.Instance.LevelUp.items[7].Level)        //나중에 바꾸기
+            switch (GameManager.Instance.LevelUp.items[9].Level)        //나중에 바꾸기
             {
                 case 1:
                     StartCoroutine(EnemySlow());

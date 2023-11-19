@@ -13,7 +13,7 @@ public class LevelUp : MonoBehaviour
     private void Awake()
     {
         RT_rect = GetComponent<RectTransform>();
-        items = GetComponentsInChildren<Item>();
+        items = GetComponentsInChildren<Item>(true);
     }
 
     public void Show()
@@ -34,7 +34,7 @@ public class LevelUp : MonoBehaviour
         IsLevelUp = false;
         RT_rect.localScale = Vector3.zero;
         GameManager.Instance.Resume();
-        GameManager.Instance.Obj_Health.SetActive(true);
+        //GameManager.Instance.Obj_Health.SetActive(true);
 
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
         AudioManager.Instance.EffectBgm(false);

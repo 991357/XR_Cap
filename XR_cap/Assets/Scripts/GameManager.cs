@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     public LevelUp LevelUp;
     public Result Obj_UiResult;
     public GameObject Obj_EnemyCleaner;
-    public GameObject Obj_Health;
     public ChatManager C_Manager;
     public QuestManager Q_Manager;
     public GameObject EscPanel;

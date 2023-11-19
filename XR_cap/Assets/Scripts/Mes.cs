@@ -24,19 +24,11 @@ public class Mes : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-             //if (IsAttack)
-             //    return;
-             //
-             //if (isAnimationPlaying)
-             //    return;
-             //
-             //transform.position = GameManager.Instance.Player.transform.position;
-             Vector3 dir = HitPoint.transform.position - transform.position;
-             //
-             Debug.DrawRay(HitPoint.transform.position, dir.normalized * 1f, new Color(1, 0, 0));
-        RaycastHit2D ray = Physics2D.Raycast(HitPoint.transform.position, dir, 1, LayerMask.GetMask("Enemy"));
+        Vector3 dir = HitPoint.transform.position - transform.position;
+        Debug.DrawRay(HitPoint.transform.position, dir.normalized * 1.5f, new Color(1, 0, 0));
+        RaycastHit2D ray = Physics2D.Raycast(HitPoint.transform.position, dir, 1.5f, LayerMask.GetMask("Enemy"));
         
-        if (ray.collider != null /*&& ray.collider.gameObject.layer == LayerMask.NameToLayer("Enemy")*/)
+        if (ray.collider != null)
         {
             Test();
         }
@@ -44,79 +36,11 @@ public class Mes : MonoBehaviour
         {
             transform.position = transform.position;
         }
-
-       /* switch (GameManager.Instance.LevelUp.items[6].Level)
-        {
-            case 1:
-                switch (Number)
-                {
-                    case 0:
-                        transform.position = new Vector3(0, 2, 0);
-                        break;
-                    case 1:
-                        transform.position = new Vector3(0, -2, 0);
-                        break;
-                }
-                break;
-            case 2:
-                switch (Number)
-                {
-                    case 0:
-                        
-                        break;
-                    case 1:
-
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                }
-                break;
-            case 3:
-                switch (Number)
-                {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                }
-                break;
-            case 4:
-                switch (Number)
-                {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 6:
-                        break;
-                    case 7:
-                        break;
-                }
-                break;
-        }*/
     }
 
     public void Test()
     {
-        switch (GameManager.Instance.LevelUp.items[6].Level)        //나중에바꾸기
+        switch (GameManager.Instance.LevelUp.items[8].Level)        //나중에바꾸기
         {
             case 0:
                 break;

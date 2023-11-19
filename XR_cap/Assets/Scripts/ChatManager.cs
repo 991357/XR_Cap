@@ -29,7 +29,7 @@ public class ChatManager : MonoBehaviour
     private void Start()
     {
         Language = GameObject.Find("Language");
-        LNum = Language.GetComponent<LanguageNum>().Lnum;
+        //LNum = Language.GetComponent<LanguageNum>().Lnum;
 
         InitData();
     }

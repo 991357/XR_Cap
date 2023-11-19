@@ -70,7 +70,7 @@ public class Bullet : MonoBehaviour
 
         if (per >= 0)
         {
-            switch (GameManager.Instance.LevelUp.items[7].Level)        //나중에 바꾸기
+            switch (GameManager.Instance.LevelUp.items[9].Level)        //나중에 바꾸기
             {
                 case 1:
                     R_Rigid.velocity = dir * 10f;
@@ -160,7 +160,7 @@ public class Bullet : MonoBehaviour
 
         if(Name == "SlowNet")
         {
-            if(GameManager.Instance.LevelUp.items[7].Level>2)//나중에바꾸기
+            if(GameManager.Instance.LevelUp.items[9].Level>2)//나중에바꾸기
             {
                 if (IsJang)
                     return;

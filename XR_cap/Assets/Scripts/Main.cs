@@ -12,6 +12,7 @@ public class Main : MonoBehaviour
     public GameObject BtnGroup;
 
     public GameObject LanguageNum;
+    public GameObject Bgm;
 
     public void OnClickStartBtn()
     {
@@ -20,7 +21,7 @@ public class Main : MonoBehaviour
         //Obj_GameModePanel.SetActive(true);
     }
 
-    public void OnClickMode1Btn()
+    public void OnClickMode1Btn()//
     {
         SceneManager.LoadScene(1);
         DontDestroyOnLoad(LanguageNum);
