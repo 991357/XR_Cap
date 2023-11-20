@@ -6,10 +6,11 @@ using UnityEngine.SceneManagement;
 public class Main : MonoBehaviour
 {
     public GameObject Obj_OptionPanel;
+    public GameObject Obj_LanPanel;
+    public GameObject Obj_VolPanel;
     //public GameObject Obj_GameModePanel;
     //public GameObject Obj_GameStartBtn;
     //public GameObject Obj_ExitBtn;
-    public GameObject BtnGroup;
 
     public GameObject LanguageNum;
     public GameObject Bgm;
@@ -28,15 +29,11 @@ public class Main : MonoBehaviour
     }
     public void OnClickOptionBtn()
     {
-        gameObject.SetActive(false);
-        BtnGroup.SetActive(false);
         Obj_OptionPanel.SetActive(true);
     }
 
     public void OnClickOptionExitBtn()
     {
-        gameObject.SetActive(true);
-        BtnGroup.SetActive(true);
         Obj_OptionPanel.SetActive(false);
     }
 
@@ -52,5 +49,25 @@ public class Main : MonoBehaviour
     public void OnClickMuteBtn()
     {
         AudioListener.volume = AudioListener.volume == 0 ? 1 : 0;
+    }
+
+    public void OnClickGoMain()
+    {
+        Obj_OptionPanel.SetActive(false);
+    }
+
+    public void OnClickLanguageBtn()
+    {
+        Obj_LanPanel.SetActive(true);
+    }
+
+    public void OnClickVolumeBtn()
+    {
+        Obj_VolPanel.SetActive(true);
+    }
+
+    public void OnClickVolExitBtn()
+    {
+        Obj_VolPanel.SetActive(false);
     }
 }
