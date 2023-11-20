@@ -8,6 +8,7 @@ public class Main : MonoBehaviour
     public GameObject Obj_OptionPanel;
     public GameObject Obj_LanPanel;
     public GameObject Obj_VolPanel;
+    public GameObject Obj_GraphicPanel;
     //public GameObject Obj_GameModePanel;
     //public GameObject Obj_GameStartBtn;
     //public GameObject Obj_ExitBtn;
@@ -69,5 +70,10 @@ public class Main : MonoBehaviour
     public void OnClickVolExitBtn()
     {
         Obj_VolPanel.SetActive(false);
+    }
+
+    public void OnClickGraphicsBtn()
+    {
+        Obj_GraphicPanel.SetActive(true);
     }
 }

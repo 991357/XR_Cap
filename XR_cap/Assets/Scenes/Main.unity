@@ -1290,6 +1290,7 @@ MonoBehaviour:
   Obj_OptionPanel: {fileID: 1092719556}
   Obj_LanPanel: {fileID: 297879723}
   Obj_VolPanel: {fileID: 2074216621}
+  Obj_GraphicPanel: {fileID: 1251432492}
   LanguageNum: {fileID: 2131829222}
   Bgm: {fileID: 1341519171}
 --- !u!4 &408836094
@@ -2699,7 +2700,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 712548202}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 408836093}
+        m_TargetAssemblyTypeName: Main, Assembly-CSharp
+        m_MethodName: OnClickGraphicsBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &712548202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4550,7 +4563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1251432493
 RectTransform:
   m_ObjectHideFlags: 0
