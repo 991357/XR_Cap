@@ -222,6 +222,7 @@ public class Enemy : MonoBehaviour
                 {
                     A_Anim.SetBool("Dead", true);
                     B_IsLive = false;
+                    GameManager.Instance.GetExp(1);
 
                     if (Name == "A" || Name == "B" || Name == "C" || Name == "B_A")
                         GameManager.Instance.Kill++;
@@ -271,7 +272,7 @@ public class Enemy : MonoBehaviour
         if (collision.GetComponent<Bullet>().Name == "SlowNet")
         {
             Debug.Log("SlowNet");
-            switch (GameManager.Instance.LevelUp.items[9].Level)        //나중에 바꾸기
+            switch (GameManager.Instance.LevelUp.items[7].Level)        //나중에 바꾸기
             {
                 case 1:
                     StartCoroutine(EnemySlow());
@@ -527,8 +528,6 @@ public class Enemy : MonoBehaviour
 
         if (GameManager.Instance.Q_Manager.IsQuest)
             GameManager.Instance.Q_Manager.Count += 1;
-
-        GameManager.Instance.GetExp(1);
 
         if (GameManager.Instance.IsLive)
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);

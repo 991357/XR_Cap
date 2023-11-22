@@ -40,7 +40,7 @@ public class Mes : MonoBehaviour
 
     public void Test()
     {
-        switch (GameManager.Instance.LevelUp.items[8].Level)        //나중에바꾸기
+        switch (GameManager.Instance.LevelUp.items[6].Level)        //나중에바꾸기
         {
             case 0:
                 break;

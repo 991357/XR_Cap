@@ -418,7 +418,7 @@ public class Weapon : MonoBehaviour
         Vector3 dir = targetpos - transform.position;
         dir = dir.normalized;
 
-        switch (GameManager.Instance.LevelUp.items[9].Level)        //나중에 바꾸기 
+        switch (GameManager.Instance.LevelUp.items[7].Level)        //나중에 바꾸기 
         {
             case 1:
                 Transform bullet = GameManager.Instance.P_Manager.Get(30).transform;

@@ -22,6 +22,8 @@ public class EscManager : MonoBehaviour
 
     int Hp;
 
+    public GameObject[] SpeedIcons;
+
     private void Update()
     {
         float remaintime = GameManager.Instance.MaxGameTime - GameManager.Instance.GameTime;
@@ -39,5 +41,26 @@ public class EscManager : MonoBehaviour
 
         Hp = (int)GameManager.Instance.Health;
         HP.text = Hp.ToString();
+
+        switch(GameManager.Instance.LevelUp.items[3].Level)
+        {
+            case 0:
+                break;
+            case 1:
+                SpeedIcons[0].SetActive(true);
+                break;
+            case 2:
+                SpeedIcons[1].SetActive(true);
+                break;
+            case 3:
+                SpeedIcons[2].SetActive(true);
+                break;
+            case 4:
+                SpeedIcons[3].SetActive(true);
+                break;
+            case 5:
+                SpeedIcons[4].SetActive(true);
+                break;
+        }
     }
 }

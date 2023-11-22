@@ -48,7 +48,7 @@ public class LevelUp : MonoBehaviour
 
     private void IsEmpty()
     {
-        if (!items[0].gameObject.activeSelf && !items[1].gameObject.activeSelf && !items[2].gameObject.activeSelf && !items[3].gameObject.activeSelf && !items[4].gameObject.activeSelf && !items[5].gameObject.activeSelf && !items[6].gameObject.activeSelf && !items[7].gameObject.activeSelf && !items[9].gameObject.activeSelf && !items[9].gameObject.activeSelf)
+        if (!items[0].gameObject.activeSelf && !items[1].gameObject.activeSelf && !items[2].gameObject.activeSelf && !items[3].gameObject.activeSelf && !items[4].gameObject.activeSelf && !items[5].gameObject.activeSelf && !items[6].gameObject.activeSelf && !items[7].gameObject.activeSelf)
         {
             Debug.Log("아무것도 안떴음");
             items[4].gameObject.SetActive(true);
