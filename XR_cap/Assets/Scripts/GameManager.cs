@@ -12,12 +12,11 @@ public class GameManager : MonoBehaviour
     public Player Player;
     public PoolManager P_Manager;
     public LevelUp LevelUp;
-    public Result Obj_UiResult;
     public GameObject Obj_EnemyCleaner;
     public ChatManager C_Manager;
     public QuestManager Q_Manager;
     public GameObject EscPanel;
-    public Item Item;
+    public GameObject ResultPanel;
 
     [Header("# GameControl")]
     public float GameTime;
@@ -32,14 +31,12 @@ public class GameManager : MonoBehaviour
     public int Level;
     public int Kill;
     public int Exp;
+    public int BossKillCount;
     public int[] I_NextExp = { 10,30,60,100,150,210,280,360,450,600};
 
-
-    [Header("# DummyData")]
-    public TMP_Text Dummy_T_DashCoolTime;
-    public TMP_Text Dummy_T_QCoolTier;
-    public TMP_Text Dummy_T_Power;
+    [Header("# Data")]
     public Image Blood_Img;
+
 
     private void Awake()
     {
@@ -77,8 +74,10 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.2f);
         //yield return null;
 
-        Obj_UiResult.gameObject.SetActive(true);
-        Obj_UiResult.Lose();
+        //Obj_UiResult.gameObject.SetActive(true);
+        //Obj_UiResult.Lose();
+
+        ResultPanel.SetActive(true);
 
         Stop();
 
@@ -97,8 +96,9 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        Obj_UiResult.gameObject.SetActive(true);
-        Obj_UiResult.Win();
+        //Obj_UiResult.gameObject.SetActive(true);
+        //Obj_UiResult.Win();
+        ResultPanel.SetActive(true);
 
         Stop();
 
@@ -129,25 +129,25 @@ public class GameManager : MonoBehaviour
 
     public void Dummy_Dash()
     {
-        if(Player.DashTimer < Player.DashCoolTime)
-        {
-            Dummy_T_DashCoolTime.text = "Dash : false";
-        }
-        else
-        {
-            Dummy_T_DashCoolTime.text = "Dash : true";
-        }
-
-        if(Player.QTimer < Player.QCoolTime)
-        {
-            Dummy_T_QCoolTier.text = "Q : False";
-        }
-        else
-        {
-            Dummy_T_QCoolTier.text = "Q : true";
-        }
-
-        Dummy_T_Power.text = "Power : " + Player.Power;
+        //if(Player.DashTimer < Player.DashCoolTime)
+        //{
+        //    Dummy_T_DashCoolTime.text = "Dash : false";
+        //}
+        //else
+        //{
+        //    Dummy_T_DashCoolTime.text = "Dash : true";
+        //}
+        //
+        //if(Player.QTimer < Player.QCoolTime)
+        //{
+        //    Dummy_T_QCoolTier.text = "Q : False";
+        //}
+        //else
+        //{
+        //    Dummy_T_QCoolTier.text = "Q : true";
+        //}
+        //
+        //Dummy_T_Power.text = "Power : " + Player.Power;
     }
 
     public void Dummy_BloodImg()

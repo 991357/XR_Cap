@@ -23,7 +23,6 @@ public class ChatManager : MonoBehaviour
     private void Awake()
     {        
         TalkData = new Dictionary<int, string[]>();
-
     }
 
     private void Start()
@@ -106,6 +105,59 @@ public class ChatManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+       if(LNum == 0 )
+        {
+            TalkData[1000] = new string[] { "안녕?", "여긴 처음이구나?", "우선 저것들좀 잡아줄래?", "퀘스트를 완료하면 다시 말을 걸어줘 !", "그럼 선물을 줄게" };
+            TalkData[1001] = new string[] { "퀘스트를 완료하면 다시 말을 걸어줘 !" };
+            TalkData[1002] = new string[] { "다시 나를 찾아와줘!" };
+
+            TalkData[2000] = new string[] { "잘 찾았네?! 주변에 있는것들좀 잡아줄래?" };
+            TalkData[2001] = new string[] { "퀘스트를 완료하면 다시 말을 걸어줘 !" };
+            TalkData[2002] = new string[] { "이걸 성공했다고..?" };
+        }
+       else if(LNum == 1)
+        {
+            TalkData[1000] = new string[] { "Hello?", "It's your first time here?", "Would you kill them first?", "Talk to me again when you complete the quest !", "Then I'll give you a present" };
+            TalkData[1001] = new string[] { "Talk to me again when you complete the quest !" };
+            TalkData[1002] = new string[] { "Come back to me!" };
+
+            TalkData[2000] = new string[] { "You found me well! Can you kill the ones around me?" };
+            TalkData[2001] = new string[] { "Talk to me again when you complete the quest !" };
+            TalkData[2002] = new string[] { "You succeeded in this...?" };
+        }
+        else if (LNum == 2)
+        {
+            TalkData[1000] = new string[] { "こんにちは?", "ここに来るのは初めてですか？", "あそこにいる敵を殺してください", "クエストを完了したら、もう一度私に話しかけてください !", "それではプレゼントを差し上げます." };
+            TalkData[1001] = new string[] { "クエストを完了したら、もう一度私に話しかけてください !" };
+            TalkData[1002] = new string[] { "私をまた訪ねてきてください！" };
+
+            TalkData[2000] = new string[] { "よく見つけましたね！ 私の周りにいるモンスターを殺してくれますか？" };
+            TalkData[2001] = new string[] { "クエストを完了したら、もう一度私に話しかけてください !" };
+            TalkData[2002] = new string[] { "これに成功したのでしょうか…？" };
+        }
+        else if (LNum == 3)
+        {
+            TalkData[1000] = new string[] { "你好?", "您第一次来这里吗?", "你能先杀了那些怪兽吗？", "完成任务后，再跟我说话！", "那我送你礼物吧" };
+            TalkData[1001] = new string[] { "完成任务后，再跟我说话！" };
+            TalkData[1002] = new string[] { "再来找我吧!" };
+
+            TalkData[2000] = new string[] { "你找对了！ 你能杀掉我周围的怪兽吗？" };
+            TalkData[2001] = new string[] { "完成任务后，再跟我说话！" };
+            TalkData[2002] = new string[] { "这个成功了吗...？" };
+        }
+        else if (LNum == 4)
+        {
+            TalkData[1000] = new string[] { "Hola!", "¿Es tu primera vez aquí?", "¿Los matarías primero?", "¡Háblame de nuevo cuando termine la búsqueda!", "Entonces te daré un regalo." };
+            TalkData[1001] = new string[] { "¡Háblame de nuevo cuando termine la búsqueda!" };
+            TalkData[1002] = new string[] { "¡Regresa a mí!" };
+
+            TalkData[2000] = new string[] { "¿Puedes matar al monstruo que me rodea? " };
+            TalkData[2001] = new string[] { "¡Háblame de nuevo cuando termine la búsqueda!" };
+            TalkData[2002] = new string[] { "¿Lo lograste?" };
+        }
+    }
     public string GetTalk(int id, int index)
     {
         if (TalkIndex == TalkData[id].Length)

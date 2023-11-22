@@ -16,7 +16,7 @@ public class BossBox : MonoBehaviour
     {
         if (gameObject.activeSelf)
         {
-            if (!GameManager.Instance.LevelUp.IsLevelUp)
+            if (GameManager.Instance.LevelUp.IsLevelUp)
                 StartCoroutine(OffBox());
         }
     }

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +7,9 @@ public class Bullet : MonoBehaviour
     public string Name;
 
     public float F_Dmg;
+    float move_speed;
+    float move_x_rate;
+    float move_y_rate;
 
     public int I_Per;
 
@@ -31,6 +34,26 @@ public class Bullet : MonoBehaviour
         transform.rotation = Quaternion.identity;
     }
 
+    private void Start()
+    {
+        if (Name == "Lightning")
+        {
+            move_speed = 15.0f;
+            move_x_rate = Random.Range(-1.0f, 1.0f);
+            move_y_rate = Random.Range(-1.0f, 1.0f);
+
+            while (Mathf.Abs(move_x_rate) < 0.3f)
+            {
+                move_x_rate = Random.Range(-1.0f, 1.0f);
+            }
+
+            while (Mathf.Abs(move_y_rate) < 0.3f)
+            {
+                move_y_rate = Random.Range(-1.0f, 1.0f);
+            }
+        }
+    }
+
     private void Update()
     {
         Dead();
@@ -38,6 +61,10 @@ public class Bullet : MonoBehaviour
         if(IsRotate)
             transform.Rotate(Vector3.forward * 0.5f);
 
+        if(Name == "Lightning")
+        {
+            Lightning();
+        }
         //MoveSin();
     }
 
@@ -70,7 +97,7 @@ public class Bullet : MonoBehaviour
 
         if (per >= 0)
         {
-            switch (GameManager.Instance.LevelUp.items[9].Level)        //³ªÁß¿¡ ¹Ù²Ù±â
+            switch (GameManager.Instance.LevelUp.items[9].Level)        //ë‚˜ì¤‘ì— ë°”ê¾¸ê¸°
             {
                 case 1:
                     R_Rigid.velocity = dir * 10f;
@@ -89,6 +116,36 @@ public class Bullet : MonoBehaviour
                     break;
             }
         }
+    }
+
+    void Lightning()
+    {
+        transform.Translate(Vector3.right * Time.deltaTime * move_speed * move_x_rate, Space.World);
+        transform.Translate(Vector3.up * Time.deltaTime * move_speed * move_y_rate, Space.World);
+
+        //Â ì¹´ë©”ë¼ë¥¼Â ë²—ì–´ë‚˜ì§€Â ì•Šë„ë¡Â ë²”ìœ„Â ì œí•œ
+        Vector3 position = Camera.main.WorldToViewportPoint(transform.position);
+        if (position.x < 0f)
+        {
+            position.x = 0f;
+            move_x_rate = Random.Range(0.3f, 1.0f);
+        }
+        if (position.y < 0f)
+        {
+            position.y = 0f;
+            move_y_rate = Random.Range(0.3f, 1.0f);
+        }
+        if (position.x > 1f)
+        {
+            position.x = 1f;
+            move_x_rate = Random.Range(-1.0f, -0.3f);
+        }
+        if (position.y > 1f)
+        {
+            position.y = 1f;
+            move_y_rate = Random.Range(-1.0f, -0.3f);
+        }
+        transform.position = Camera.main.ViewportToWorldPoint(position);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -136,35 +193,40 @@ public class Bullet : MonoBehaviour
         {
             if (GameManager.Instance.LevelUp.items[5].Level > 2)
             {
-                //Æø¹ß
+                //í­ë°œ
             }
             if (GameManager.Instance.LevelUp.items[5].Level > 3)
             {
-                //¿øÇüÀ¸·Î?
+                //ì›í˜•ìœ¼ë¡œ?
                 
-                //¿øÇüÀ» ¸¸µç´Ù
+                //ì›í˜•ì„ ë§Œë“ ë‹¤
                 //GameObject circle = GameManager.Instance.P_Manager.Get(29);
                 //circle.transform.position = transform.position;
                 //circle.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                 //
-                ////ÆÛÁø´Ù
+                ////í¼ì§„ë‹¤
                 //for (int i = 0; i < 2; i++)
                 //{
                 //    circle.transform.localScale = new Vector3(transform.localScale.x + 0.000001f, transform.localScale.y + 0.000001f, transform.localScale.z + 0.000001f);
                 //}
                 //
-                ////»èÁ¦ÇÑ´Ù
+                ////ì‚­ì œí•œë‹¤
                 //StartCoroutine(TurnOff(2,circle));
             }
         }
 
+        if(Name == "Lightning")
+        {
+
+        }
+
         if(Name == "SlowNet")
         {
-            if(GameManager.Instance.LevelUp.items[9].Level>2)//³ªÁß¿¡¹Ù²Ù±â
+            if(GameManager.Instance.LevelUp.items[9].Level>2)//ë‚˜ì¤‘ì—ë°”ê¾¸ê¸°
             {
                 if (IsJang)
                     return;
-                //ÀåÆÇ»ı¼º
+                //ì¥íŒìƒì„±
                 IsJang = true;
                 GameObject jang = GameManager.Instance.P_Manager.Get(31);
                 jang.transform.position = transform.position;

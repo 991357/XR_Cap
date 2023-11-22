@@ -8,6 +8,8 @@ public class QuestManager : MonoBehaviour
     public int Id;
     public int Count;
 
+    public int QuestCount;
+
     public bool IsQuest;
     public bool IsHint = false;
 
@@ -26,6 +28,7 @@ public class QuestManager : MonoBehaviour
                 {
                     Count = 0;
                     Debug.Log("Äù½ºÆ® ¼º°ø!");
+                    QuestCount++;
                     GameManager.Instance.C_Manager.ScanObject.GetComponent<NPC>().Id += 1;
                     GameManager.Instance.Player.Power++;
                     IsQuest = false;
@@ -43,6 +46,7 @@ public class QuestManager : MonoBehaviour
                 {
                     Count = 0;
                     Debug.Log("Äù½ºÆ® ¼º°ø!");
+                    QuestCount++;
                     GameManager.Instance.C_Manager.ScanObject.GetComponent<NPC>().Id += 1;
                     GameManager.Instance.Player.Power++;
                     IsQuest = false;

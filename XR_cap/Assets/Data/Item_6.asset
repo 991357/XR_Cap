@@ -15,14 +15,14 @@ MonoBehaviour:
   Type: 6
   I_ItemId: 6
   S_ItemName: Thunder_1
-  S_ItemDesc: 
+  S_ItemDesc: "\uC804\uAE30\uBB34\uAE30 1"
   SP_ItemIcon: {fileID: 21300000, guid: 7d74717c744f4244daf8b602d543e694, type: 3}
   F_BaseDmg: 1
   I_BaseCount: 0
   F_Dmgs:
-  - 0
-  - 0
-  - 0
-  - 0
-  I_Counts: 9cffffff000000000000000000000000
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
+  I_Counts: 9cffffff9cffffff0000000000000000
   PB_Projectile: {fileID: 0}

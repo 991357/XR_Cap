@@ -17,11 +17,16 @@ public class Weapon : MonoBehaviour
     public float SpearShotDealy = 1;
 
     float F_Timer;
+    float F_Timer1;
     float F_Timer2;
+    float F_Timer3;
+    float F_Timer4;
+    float F_Timer5;
 
     Player S_Player;
     public bool IsWeapon0;
     public bool IsWeapon1;
+    public bool IsReady = true;
 
     GameObject[] swords;
 
@@ -33,6 +38,7 @@ public class Weapon : MonoBehaviour
     private void OnEnable()
     {
         transform.localScale = new Vector3(1, 1, 1);
+
     }
 
     private void Update()
@@ -61,11 +67,11 @@ public class Weapon : MonoBehaviour
                     F_Speed = 250;
                 break;
             case 2:
-                F_Timer += Time.deltaTime;
+                F_Timer1 += Time.deltaTime;
 
-                if (F_Timer > F_Speed)
+                if (F_Timer1 > F_Speed)
                 {
-                    F_Timer = 0;
+                    F_Timer1 = 0;
                     Fire();
                 }
                 break;
@@ -78,16 +84,28 @@ public class Weapon : MonoBehaviour
                     BlazeWall();
                 }
                 break;
+            case 6:
+                F_Timer3 += Time.deltaTime;
+
+                if (IsReady)
+                {
+                    if (F_Timer3 > F_Speed)
+                    {
+                        F_Timer3 = 0;
+                        ShotLightning();
+                    }
+                }
+                break;
             case 8:
                 //transform.Rotate(Vector3.back * F_Speed * Time.deltaTime);
 
                 break;
             case 9:
-                F_Timer += Time.deltaTime;
+                F_Timer4 += Time.deltaTime;
 
-                if (F_Timer > F_Speed)
+                if (F_Timer4 > F_Speed)
                 {
-                    F_Timer = 0;
+                    F_Timer4 = 0;
                     Slownet();
                 }
                 break;
@@ -187,6 +205,7 @@ public class Weapon : MonoBehaviour
                 WeaponCount++;
                 break;
             case 6:                                         //전기 무기 1 (체인라이트닝)
+                F_Speed = 1.2f;
                 WeaponCount++;
                 break;
             case 7:                                         //전기 무기 2 (레일건)
@@ -259,7 +278,6 @@ public class Weapon : MonoBehaviour
                 Transform bullet = GameManager.Instance.P_Manager.Get(23).transform;
                 bullet.position = transform.position;
                 bullet.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
-                Debug.Log("실행");
                 bullet.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 bullet.GetComponent<Bullet>().Dir = dir;
                 break;
@@ -380,6 +398,17 @@ public class Weapon : MonoBehaviour
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
+    void ShotLightning()
+    {
+        GameObject lightning = GameManager.Instance.P_Manager.Get(33);
+
+        lightning.transform.position = transform.position;
+        lightning.transform.rotation = transform.rotation;
+
+        lightning.GetComponent<Bullet>().Init(F_Dmg, -100, Vector3.up);
+        IsReady = false;
+    }
+
     void Slownet()
     {
         if (!S_Player.Scanner.F_NearstTarget)
@@ -389,7 +418,7 @@ public class Weapon : MonoBehaviour
         Vector3 dir = targetpos - transform.position;
         dir = dir.normalized;
 
-        switch (GameManager.Instance.LevelUp.items[9].Level)        //나중에 바꾸기
+        switch (GameManager.Instance.LevelUp.items[9].Level)        //나중에 바꾸기 
         {
             case 1:
                 Transform bullet = GameManager.Instance.P_Manager.Get(30).transform;

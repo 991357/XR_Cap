@@ -30,16 +30,16 @@ public class SlowArea : MonoBehaviour
             case "C":
                 enemylogic.F_Speed = 2f;
                 break;
-            case "B_A":
+            case "BossA":
                 enemylogic.F_Speed = 0.7f;
                 break;
-            case "B_A_0":
+            case "B_A":
                 enemylogic.F_Speed = 3f;
                 break;
-            case "B_B":
+            case "BossB":
                 enemylogic.F_Speed = 1.5f;
                 break;
-            case "B_C":
+            case "BossC":
                 enemylogic.F_Speed = 1.8f;
                 break;
         }
@@ -56,16 +56,16 @@ public class SlowArea : MonoBehaviour
             case "C":
                 enemylogic.F_Speed = 2.5f;
                 break;
-            case "B_A":
+            case "BossA":
                 enemylogic.F_Speed = 1.2f;
                 break;
-            case "B_A_0":
+            case "B_A":
                 enemylogic.F_Speed = 3.5f;
                 break;
-            case "B_B":
+            case "BossB":
                 enemylogic.F_Speed = 2f;
                 break;
-            case "B_C":
+            case "BossC":
                 enemylogic.F_Speed = 2.3f;
                 break;
         }

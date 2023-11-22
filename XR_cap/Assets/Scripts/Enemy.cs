@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     public RuntimeAnimatorController[] RAC_AnimCon;     //더 많은 몬스터를 넣고 싶다면 여기에 애니메이터를 추가해서 넣어주세요!
 
     Rigidbody2D R_Rigid;
-    public Collider2D C_Coll;
+    public CapsuleCollider2D C_Coll;
     public SpriteRenderer SR_SPriter;
     Animator A_Anim;
     WaitForFixedUpdate WFU_Wait;
@@ -28,18 +28,19 @@ public class Enemy : MonoBehaviour
     //FreezeEnemy Freeze;
 
     public bool B_IsFlip;
-    bool B_IsLive;
+    bool B_IsLive = true;
     //bool IsHit;
     public bool IsFreeze;
     bool IsBurn;
     bool IsSlowBurn;
     bool IsBlazeWall;
     bool IsNet;
+    bool IsDead;
 
     private void Awake()
     {
         R_Rigid = GetComponent<Rigidbody2D>();
-        C_Coll = GetComponent<Collider2D>();
+        C_Coll = GetComponent<CapsuleCollider2D>();
         SR_SPriter = GetComponent<SpriteRenderer>();
         A_Anim = GetComponent<Animator>();
         WFU_Wait = new WaitForFixedUpdate();
@@ -55,6 +56,8 @@ public class Enemy : MonoBehaviour
 
         if (IsFreeze)
             StartCoroutine(EnemyFreeze());
+
+        EnemyDeadCheck();
     }
 
     // Update is called once per frame
@@ -110,14 +113,13 @@ public class Enemy : MonoBehaviour
     {
         R_Target = GameManager.Instance.Player.GetComponent<Rigidbody2D>();
         B_IsLive = true;
-
         SR_SPriter.color = new Color(1, 1, 1);
-        C_Coll.enabled = true;
+
         R_Rigid.simulated = true;
         IsFreeze = false;
         SR_SPriter.sortingOrder = 2;
         A_Anim.SetBool("Dead", false);
-        if (Name == "B_A_0")
+        if (Name == "B_A")
             StartCoroutine(Walk());
 
         SR.enabled = false;
@@ -134,23 +136,23 @@ public class Enemy : MonoBehaviour
             {
                 case 1:
                     F_Health -= 0.3f;
-                    if(F_Health < 0)
-                        EnemyDead();
+                    if (F_Health < 0)
+                        A_Anim.SetBool("Dead", true);
                     break;
                 case 2:
                     F_Health -= 0.5f;
                     if (F_Health < 0)
-                        EnemyDead();
+                        A_Anim.SetBool("Dead", true);
                     break;
                 case 3:
                     F_Health -= 0.7f;
                     if (F_Health < 0)
-                        EnemyDead();
+                        A_Anim.SetBool("Dead", true);
                     break;
                 default:
                     F_Health -= 1;
                     if (F_Health < 0)
-                        EnemyDead();
+                        A_Anim.SetBool("Dead", true);
                     break;
             }
             HitTimer = 0;
@@ -171,7 +173,18 @@ public class Enemy : MonoBehaviour
         A_Anim.SetTrigger("IsWalk");
     }
 
+    void EnemyDeadCheck()
+    {
+        if (A_Anim.GetCurrentAnimatorStateInfo(0).IsName("Dead") == true)
+        {
+            // 원하는 애니메이션이라면 플레이 중인지 체크
+            float animTime = A_Anim.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            if (animTime > 0 && animTime < 1.0f)
+            {
 
+            }
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Bullet") || !B_IsLive)
@@ -179,32 +192,46 @@ public class Enemy : MonoBehaviour
 
         if (collision.gameObject.tag == "Bullet")
         {
-            F_Health -= collision.GetComponent<Bullet>().F_Dmg;
-
-            StartCoroutine(KnockBack());
-
-            if (F_Health > 0)
+            // Test
+            if (B_IsLive)
             {
-                if (Name == "A")
+                F_Health -= collision.GetComponent<Bullet>().F_Dmg;
+
+                StartCoroutine(KnockBack());
+
+                if (F_Health > 0)
                 {
-                    A_Anim.SetTrigger("Hit");
+                    if (Name == "A")
+                    {
+                        A_Anim.SetTrigger("Hit");
+                    }
+                    else
+                    {
+                        //수현님한테 Enemy Animation 만들어달라 하기
+
+                        //if (IsFreeze)
+                        //    return;
+                        ////RGB값 처리 예정
+                        //SpriteRenderer sr = GetComponent<SpriteRenderer>();
+                        //sr.color = new Color(1, 0, 0, 1);
+                        //Invoke("ReturnSprite", 0.15f);
+                    }
+                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
                 }
                 else
                 {
-                    //수현님한테 Enemy Animation 만들어달라 하기
+                    A_Anim.SetBool("Dead", true);
+                    B_IsLive = false;
 
-                    //if (IsFreeze)
-                    //    return;
-                    ////RGB값 처리 예정
-                    //SpriteRenderer sr = GetComponent<SpriteRenderer>();
-                    //sr.color = new Color(1, 0, 0, 1);
-                    //Invoke("ReturnSprite", 0.15f);
+                    if (Name == "A" || Name == "B" || Name == "C" || Name == "B_A")
+                        GameManager.Instance.Kill++;
+                    else
+                    {
+                        GameObject box = GameManager.Instance.P_Manager.Get(32);
+                        box.transform.position = transform.position;
+                        GameManager.Instance.BossKillCount++;
+                    }
                 }
-                AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
-            }
-            else
-            {
-                EnemyDead();
             }
         }
 
@@ -220,9 +247,6 @@ public class Enemy : MonoBehaviour
             if (ran == 0)
             {
                 IsFreeze = true;
-                //int ran을 전역변수로 빼서 int ran이 0이 아닐때
-
-                //이거 혹시 0인 상태로 얼었는데 바로 또 맞아서 1이 떴는데 1이 떠있는 상태로 코루틴이 돌고 있어서 안되는거 아닌지?
             }
             else
             {
@@ -244,7 +268,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if(collision.GetComponent<Bullet>().Name == "SlowNet")
+        if (collision.GetComponent<Bullet>().Name == "SlowNet")
         {
             Debug.Log("SlowNet");
             switch (GameManager.Instance.LevelUp.items[9].Level)        //나중에 바꾸기
@@ -267,7 +291,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if(collision.GetComponent<Bullet>().Name == "SlowNet_2")
+        if (collision.GetComponent<Bullet>().Name == "SlowNet_2")
         {
             if (IsNet)
                 return;
@@ -298,14 +322,14 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if(collision.GetComponent<Bullet>().Name == "Lightning")
+        if (collision.GetComponent<Bullet>().Name == "Lightning")
         {
 
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
-    { 
+    {
         if (collision.gameObject.name == "OC_Area")
             SR.enabled = true;
 
@@ -320,7 +344,7 @@ public class Enemy : MonoBehaviour
                 {
                     A_Anim.SetTrigger("Hit");
                 }
-                else if (Name == "B_A_0")
+                else if (Name == "B_A")
                 {
                     Debug.Log("애기가 맞음");
                 }
@@ -336,30 +360,6 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                B_IsLive = false;
-                C_Coll.enabled = false;
-                R_Rigid.simulated = false;
-                SR_SPriter.sortingOrder = 1;
-                if (GameManager.Instance.Q_Manager.IsQuest)
-                    GameManager.Instance.Q_Manager.Count += 1;
-                A_Anim.SetBool("Dead", true);
-
-                if (Name == "A" || Name == "B_A")
-                {
-                    StartCoroutine(Dead(0.65f));
-                }
-                else if (Name == "C")
-                {
-                    StartCoroutine(Dead(0.6f));
-                }
-                else if (Name == "B")
-                {
-                    StartCoroutine(Dead(0.8f));
-                }
-                else if (Name == "B_C")
-                {
-                    StartCoroutine(Dead(1.5f));
-                }
                 GameManager.Instance.Kill++;
                 GameManager.Instance.GetExp(1);
 
@@ -369,7 +369,7 @@ public class Enemy : MonoBehaviour
         }
 
         Bullet bullet = collision.GetComponent<Bullet>();
-        if(bullet != null && bullet.Name == "BlazeWall")
+        if (bullet != null && bullet.Name == "BlazeWall")
             IsBlazeWall = true;
     }
 
@@ -397,23 +397,23 @@ public class Enemy : MonoBehaviour
             case "C":
                 F_Speed = 0.8f;
                 break;
-            case "B_A":
+            case "BossA":
                 F_Speed = 0.5f;
                 break;
-            case "B_A_0":
+            case "B_A":
                 F_Speed = 2f;
                 break;
-            case "B_B":
+            case "BossB":
                 F_Speed = 0.8f;
                 break;
-            case "B_C":
+            case "BossC":
                 F_Speed = 1f;
                 break;
         }
         yield return new WaitForSeconds(3);
 
         switch (Name)
-        { 
+        {
             case "A":
                 F_Speed = 2f;
                 break;
@@ -423,16 +423,16 @@ public class Enemy : MonoBehaviour
             case "C":
                 F_Speed = 2.5f;
                 break;
-            case "B_A":
+            case "BossA":
                 F_Speed = 1.2f;
                 break;
-            case "B_A_0":
+            case "B_A":
                 F_Speed = 3.5f;
                 break;
-            case "B_B":
+            case "BossB":
                 F_Speed = 2f;
                 break;
-            case "B_C":
+            case "BossC":
                 F_Speed = 2.3f;
                 break;
         }
@@ -441,12 +441,12 @@ public class Enemy : MonoBehaviour
     IEnumerator SlowBurn()
     {
         //파티클 생성
-        
+
         if (HitTimer > HitDelay)
         {
             F_Health -= 0.3f;
             if (F_Health < 0)
-                EnemyDead();
+                A_Anim.SetBool("Dead", true);
 
             HitTimer = 0;
         }
@@ -464,47 +464,7 @@ public class Enemy : MonoBehaviour
         Par.gameObject.SetActive(false);
     }
 
-    void EnemyDead()
-    {
-        B_IsLive = false;
-        C_Coll.enabled = false;
-        R_Rigid.simulated = false;
-        SR_SPriter.sortingOrder = 1;
-        if (GameManager.Instance.Q_Manager.IsQuest)
-            GameManager.Instance.Q_Manager.Count += 1;
-        A_Anim.SetBool("Dead", true);
 
-        if (Name == "A")
-        {
-            //StartCoroutine(Dead(0.5f));
-        }
-        else if (Name == "B_A")
-        {
-            StartCoroutine(Dead(0.65f));
-        }
-        else if (Name == "C" || Name == "B_A_0")
-        {
-            StartCoroutine(Dead(0.6f));
-        }
-        else if (Name == "B" || Name == "B_B")
-        {
-            StartCoroutine(Dead(0.8f));
-        }
-        else if (Name == "B_C")
-        {
-            StartCoroutine(Dead(1f));
-        }
-        GameManager.Instance.Kill++;
-        if (Name == "B_A" || Name == "B_B" || Name == "B_C")
-        {
-            //상자에 대한 처리..?
-        }
-        else
-            GameManager.Instance.GetExp(1);
-
-        if (GameManager.Instance.IsLive)
-            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
-    }
     public IEnumerator EnemyFreeze()
     {
         C_Coll.isTrigger = true;
@@ -520,28 +480,28 @@ public class Enemy : MonoBehaviour
 
     void StayBlazeWall()
     {
-          Timer += Time.deltaTime;
-          if (Timer > 0.5f)
-          {
-              switch (GameManager.Instance.LevelUp.items[5].Level)
-              {
-                  case 1:
-                      F_Health -= 0.2f;
-                      break;
-                  case 2:
-                      F_Health -= 0.3f;
-                      break;
-                  case 3:
-                      F_Health -= 0.4f;
-                      break;
-                  case 4:
-                      F_Health -= 0.5f;
-                      break;
-                  default:
-                      break;
-              }
-              Timer = 0;
-          }
+        Timer += Time.deltaTime;
+        if (Timer > 0.5f)
+        {
+            switch (GameManager.Instance.LevelUp.items[5].Level)
+            {
+                case 1:
+                    F_Health -= 0.2f;
+                    break;
+                case 2:
+                    F_Health -= 0.3f;
+                    break;
+                case 3:
+                    F_Health -= 0.4f;
+                    break;
+                case 4:
+                    F_Health -= 0.5f;
+                    break;
+                default:
+                    break;
+            }
+            Timer = 0;
+        }
     }
 
     IEnumerator KnockBack()
@@ -555,21 +515,25 @@ public class Enemy : MonoBehaviour
         R_Rigid.AddForce(dirvec.normalized * 1f, ForceMode2D.Impulse);
     }
 
-    IEnumerator Dead(float time)
+    public void EnemyDead()
     {
-        if(Name == "B_A" || Name == "B_B" || Name == "B_C")
-        {
-            GameObject box = GameManager.Instance.P_Manager.Get(32);
-            box.transform.position = transform.position;
-        }
-        yield return new WaitForSeconds(time);
-        IsNet = false;
-        gameObject.SetActive(false);
-    }
+        //R_Rigid.simulated = false;
+        //SR_SPriter.sortingOrder = 1;
 
-    //void ReturnSprite()
-    //{
-    //    SpriteRenderer sr = GetComponent<SpriteRenderer>();
-    //    sr.color = new Color(1, 1, 1, 1);
-    //}
+        if (this.Name == "BossA")
+        {
+            Debug.Log("죽음");
+        }
+
+        if (GameManager.Instance.Q_Manager.IsQuest)
+            GameManager.Instance.Q_Manager.Count += 1;
+
+        GameManager.Instance.GetExp(1);
+
+        if (GameManager.Instance.IsLive)
+            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+
+        this.gameObject.SetActive(false);
+
+    }
 }

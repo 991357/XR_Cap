@@ -76,4 +76,14 @@ public class Main : MonoBehaviour
     {
         Obj_GraphicPanel.SetActive(true);
     }
+
+    public void OnClickGraExitBtn()
+    {
+        Obj_GraphicPanel.SetActive(false);
+    }
+
+    public void OnClickGameExitBtn()
+    {
+        SceneManager.LoadScene(0);
+    }
 }

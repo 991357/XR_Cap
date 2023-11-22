@@ -17,6 +17,8 @@ TagManager:
   - Area
   - Ground
   - Test
+  - LRWall
+  - UDWall
   layers:
   - Default
   - TransparentFX

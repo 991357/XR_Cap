@@ -28,7 +28,7 @@ public class NPC : MonoBehaviour
             GameManager.Instance.Q_Manager.Id = 1;
 
             QuestNotice.SetActive(true);
-            QuestNotice.transform.GetChild(0).GetComponent<Text>().text = "Kill Monster\n" + GameManager.Instance.Q_Manager.Count + "/5";
+            QuestNotice.transform.GetChild(0).GetComponent<Text>().text = GameManager.Instance.Q_Manager.Count + "/5";
 
             //贸府
             if(GameManager.Instance.Q_Manager.Count >= 5)
@@ -46,7 +46,7 @@ public class NPC : MonoBehaviour
             GameManager.Instance.Q_Manager.Id = 2;
 
             QuestNotice.SetActive(true);
-            QuestNotice.transform.GetChild(0).GetComponent<Text>().text = "Kill Monster\n" + GameManager.Instance.Q_Manager.Count + "/5000";
+            QuestNotice.transform.GetChild(0).GetComponent<Text>().text = GameManager.Instance.Q_Manager.Count + "/5000";
 
             //贸府
             if (GameManager.Instance.Q_Manager.Count == 5000)

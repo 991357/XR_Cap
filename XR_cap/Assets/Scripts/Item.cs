@@ -51,7 +51,7 @@ public class Item : MonoBehaviour
                         T_Desc.text = "피격위치에 빙산 생성\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";
                         break;
                     default:
-                        T_Desc.text = "&*&@$#%^$&*#@!@#*&^%!@@##^&%$@^#@$!";
+                        T_Desc.text = "&*&@$#%^$&*#@!@##^&%$@^#@$!";
                         break;
                 }
                 break;
@@ -134,13 +134,13 @@ public class Item : MonoBehaviour
                 switch (Level)
                 {
                     case 0:
-                        T_Desc.text = "폭발하는 전기 발사";
+                        T_Desc.text = "화면에 튕기는 전기 드론 생성";
                         break;
                     case 1:
-                        T_Desc.text = "폭발 횟수 증가\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";
+                        T_Desc.text = "갯수 증가\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";
                         break;
                     case 2:
-                        T_Desc.text = "폭발 후 전이\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";
+                        T_Desc.text = "감전 전이\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";
                         break;
                     case 3:
                         T_Desc.text = "낙뢰 추가\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";
@@ -261,6 +261,29 @@ public class Item : MonoBehaviour
                 {
                     float nextrate = Data.F_Dmgs[Level];
                     Gear.LevelUP(nextrate);
+                }
+                Level++;
+                break;
+            case ItemData.ItemType.Thunder_1:
+                if (Level == 0)
+                {
+                    GameObject newweapon = new GameObject();
+                    Weapon = newweapon.AddComponent<Weapon>();
+                    Weapon.Init(Data);
+
+                    GameManager.Instance.Player.WeaponList.Add(Weapon);
+                }
+                else
+                {
+                    float nextdmg = Data.F_BaseDmg;
+                    int nextcount = 0;
+
+                    nextdmg += Data.F_BaseDmg + Data.F_Dmgs[Level];
+                    nextcount += Data.I_Counts[Level];
+
+                    Weapon.LevelUp(nextdmg, nextcount);
+                    if(GameManager.Instance.LevelUp.items[6].Level <= 2)
+                        Weapon.IsReady = true;
                 }
                 Level++;
                 break;
