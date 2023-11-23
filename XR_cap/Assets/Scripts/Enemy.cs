@@ -204,6 +204,10 @@ public class Enemy : MonoBehaviour
                     if (Name == "A")
                     {
                         A_Anim.SetTrigger("Hit");
+
+                        //Text »ý¼º
+                        GameObject text = GameManager.Instance.P_Manager.Get(33);
+                        text.transform.position += Vector3.up * 2;
                     }
                     else
                     {
@@ -215,6 +219,9 @@ public class Enemy : MonoBehaviour
                         //SpriteRenderer sr = GetComponent<SpriteRenderer>();
                         //sr.color = new Color(1, 0, 0, 1);
                         //Invoke("ReturnSprite", 0.15f);
+                        GameObject text = GameManager.Instance.P_Manager.Get(33);
+                        text.transform.position += Vector3.up * 2;
+
                     }
                     AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
                 }
