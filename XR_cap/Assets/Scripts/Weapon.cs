@@ -242,7 +242,7 @@ public class Weapon : MonoBehaviour
                 bullet.parent = transform;
             }
 
-            bullet.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            bullet.localScale = new Vector3(10,10,10);
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
 
@@ -280,6 +280,10 @@ public class Weapon : MonoBehaviour
                 bullet.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
                 bullet.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 bullet.GetComponent<Bullet>().Dir = dir;
+
+                //var mainModule = GetComponent<ParticleSystem>().main;
+                //mainModule.startRotation = 180;
+
                 break;
         }
     }
@@ -371,25 +375,31 @@ public class Weapon : MonoBehaviour
                 bulletl.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 break;
             default:
-                Transform bulletrr = GameManager.Instance.P_Manager.Get(2).transform;
-                Transform bulletll = GameManager.Instance.P_Manager.Get(2).transform;
-                Transform bulletcc = GameManager.Instance.P_Manager.Get(2).transform;
+                //Transform bulletrr = GameManager.Instance.P_Manager.Get(2).transform;
+                //Transform bulletll = GameManager.Instance.P_Manager.Get(2).transform;
+                //Transform bulletcc = GameManager.Instance.P_Manager.Get(2).transform;
+                //
+                //bulletcc.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                //bulletll.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+                //bulletrr.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+                //
+                //bulletcc.position = transform.position;
+                //bulletll.position = transform.position + Vector3.left * 0.7f;
+                //bulletrr.position = transform.position + Vector3.right * 0.7f;
+                //
+                //bulletrr.rotation = Quaternion.FromToRotation(Vector3.right * 0.3f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
+                //bulletll.rotation = Quaternion.FromToRotation(Vector3.left * 0.3f, dir);
+                //bulletcc.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
+                //
+                //bulletrr.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);                     //-1 is Infinity per (관통)
+                //bulletll.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
+                //bulletcc.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
 
-                bulletcc.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-                bulletll.localScale = new Vector3(0.6f, 0.6f, 0.6f);
-                bulletrr.localScale = new Vector3(0.6f, 0.6f, 0.6f);
-
-                bulletcc.position = transform.position;
-                bulletll.position = transform.position + Vector3.left * 0.7f;
-                bulletrr.position = transform.position + Vector3.right * 0.7f;
-
-                bulletrr.rotation = Quaternion.FromToRotation(Vector3.right * 0.3f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
-                bulletll.rotation = Quaternion.FromToRotation(Vector3.left * 0.3f, dir);
-                bulletcc.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);
-
-                bulletrr.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);                     //-1 is Infinity per (관통)
-                bulletll.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
-                bulletcc.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
+                Transform bullet3 = GameManager.Instance.P_Manager.Get(34).transform;
+                bullet3.position = transform.position;
+                bullet3.rotation = Quaternion.FromToRotation(Vector3.right, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
+                                                                                        //bullet.transform.LookAt(targetpos);
+                bullet3.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);                       //-1 is Infinity per (관통)
 
                 break;
         }
@@ -452,16 +462,26 @@ public class Weapon : MonoBehaviour
                 break;
             case 2:
             case 3:
-            case 4:
                 int ranx1 = Random.Range(-5, 5);
                 int rany1 = Random.Range(-4, 4);
-                int ranx2 = Random.Range(-5, 5);
-                int rany2 = Random.Range(-4, 4);
-                Transform bulletr = GameManager.Instance.P_Manager.Get(28).transform;
-                Transform bulletl = GameManager.Instance.P_Manager.Get(28).transform;
+                //int ranx2 = Random.Range(-5, 5);
+                //int rany2 = Random.Range(-4, 4);
+                Transform bulletr = GameManager.Instance.P_Manager.Get(35).transform;
+                //Transform bulletl = GameManager.Instance.P_Manager.Get(35).transform;
                 bulletr.position = new Vector2(transform.position.x + ranx1, transform.position.y + rany1);
-                bulletl.position = new Vector2(transform.position.x + ranx2, transform.position.y + rany2);
+                //bulletl.position = new Vector2(transform.position.x + ranx2, transform.position.y + rany2);
                 break;
+            case 4:
+                int ranx1_ = Random.Range(-5, 5);
+                int rany1_ = Random.Range(-4, 4);
+                //int ranx2_ = Random.Range(-5, 5);
+                //int rany2_ = Random.Range(-4, 4);
+                Transform bulletr_ = GameManager.Instance.P_Manager.Get(36).transform;
+                //Transform bulletl_ = GameManager.Instance.P_Manager.Get(36).transform;
+                bulletr_.position = new Vector2(transform.position.x + ranx1_, transform.position.y + rany1_);
+                //bulletl_.position = new Vector2(transform.position.x + ranx2_, transform.position.y + rany2_);
+                break;
+
         }
     }
 }

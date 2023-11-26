@@ -17,7 +17,7 @@ MonoBehaviour:
   S_ItemName: Ice_2
   S_ItemDesc: "\uC5BC\uC74C \uBB34\uAE30 2"
   SP_ItemIcon: {fileID: 4119355945198327207, guid: 73f2889ec69184040bf1697d6793d4c5, type: 3}
-  F_BaseDmg: 5
+  F_BaseDmg: 2.5
   I_BaseCount: 2
   F_Dmgs:
   - 0.35

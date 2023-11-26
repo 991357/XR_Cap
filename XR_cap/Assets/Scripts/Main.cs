@@ -9,13 +9,14 @@ public class Main : MonoBehaviour
     public GameObject Obj_LanPanel;
     public GameObject Obj_VolPanel;
     public GameObject Obj_GraphicPanel;
+    public GameObject Obj_DictionaryPanel;
     //public GameObject Obj_GameModePanel;
     //public GameObject Obj_GameStartBtn;
     //public GameObject Obj_ExitBtn;
 
     public GameObject LanguageNum;
     public GameObject Bgm;
-
+    public Dictionnary DIc_Logic;
     public void OnClickStartBtn()
     {
         //Obj_GameStartBtn.SetActive(false);
@@ -85,5 +86,15 @@ public class Main : MonoBehaviour
     public void OnClickGameExitBtn()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void OnClickDictionnaryBtn()
+    {
+        Obj_DictionaryPanel.SetActive(true);
+    }
+    public void OnClickDictionnaryExitBtn()
+    {
+        DIc_Logic.AllFalse();
+        Obj_DictionaryPanel.SetActive(false);
     }
 }

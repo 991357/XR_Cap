@@ -12,7 +12,7 @@ public class AchiveManager : MonoBehaviour
 
     WaitForSecondsRealtime Wait;
 
-    enum Achive { Unlock2}
+    enum Achive { Unlock2, Unlock3}
 
     Achive[] Achives;
 
@@ -66,7 +66,7 @@ public class AchiveManager : MonoBehaviour
             case Achive.Unlock2:            //어떤 몹이든 10마리 처치시 해금 
                 if (GameManager.Instance.IsLive)
                 {
-                    isachive = GameManager.Instance.Kill >= 10;
+                    isachive = GameManager.Instance.Kill >= 15000;
                 }
                 break;
             //case Achive.Unlock3:            //어떤 캐릭터든 버티면 해금

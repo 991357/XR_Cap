@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public QuestManager Q_Manager;
     public GameObject EscPanel;
     public GameObject ResultPanel;
+    public GameObject[] UltimateImg;
+    public GameObject[] ResultUltimate;
 
     [Header("# GameControl")]
     public float GameTime;
@@ -50,7 +52,28 @@ public class GameManager : MonoBehaviour
         Health = MaxHealth;
 
         Player.gameObject.SetActive(true);
-        LevelUp.Select(PlayerId % 2);
+        LevelUp.Select(PlayerId);
+
+        switch (PlayerId)
+        {
+            case 0:
+                UltimateImg[0].SetActive(true);
+                UltimateImg[2].SetActive(true);
+                ResultUltimate[0].SetActive(true);
+                break;
+            case 1:
+                UltimateImg[0].SetActive(true);
+                UltimateImg[2].SetActive(true);
+                ResultUltimate[0].SetActive(true);
+                break;
+            case 2:
+                UltimateImg[1].SetActive(true);
+                UltimateImg[3].SetActive(true);
+                ResultUltimate[1].SetActive(true);
+                break;
+            default:
+                break;
+        }
 
         Resume();
 
@@ -65,24 +88,31 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         StartCoroutine(GameOverRoutine());
+        //IsLive = false;
     }
 
     IEnumerator GameOverRoutine()
     {
         IsLive = false;
-
+    
         yield return new WaitForSeconds(1.2f);
         //yield return null;
-
+    
         //Obj_UiResult.gameObject.SetActive(true);
         //Obj_UiResult.Lose();
-
+    
         ResultPanel.SetActive(true);
-
+    
         Stop();
-
+    
         AudioManager.Instance.PlayBgm(false);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
+    }
+
+    public void GameOverEnd()
+    {
+        ResultPanel.SetActive(true);
+        Stop();
     }
 
     public void GameVictory()
@@ -165,10 +195,11 @@ public class GameManager : MonoBehaviour
             {
                 Blood_Img.color = new Color32(255, 255, 255, i);
             }
-            yield return new WaitForSeconds(0.5f);
-            for (byte i = 255; i > 0; i--)
+            yield return new WaitForSeconds(1.5f);
+            for (byte i = 255; i >0; i--)
             {
-                Blood_Img.color = new Color32(0, 0, 0, i);
+                Blood_Img.color = new Color32(255, 255, 255, i);
+                break;
             }
         }
     }

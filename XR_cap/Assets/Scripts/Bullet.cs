@@ -31,7 +31,10 @@ public class Bullet : MonoBehaviour
         if(Name == "Spear")
             transform.localScale = new Vector3(1, 1, 1);
 
-        transform.rotation = Quaternion.identity;
+        if (Name == "BlazeWall")
+            return;
+        else
+            transform.rotation = Quaternion.identity;
     }
 
     private void Start()
@@ -159,7 +162,7 @@ public class Bullet : MonoBehaviour
         {
             if (GameManager.Instance.LevelUp.items[2].Level > 3)
             {
-                int rannum = Random.Range(10, 13);
+                int rannum = Random.Range(4, 6);
                 for (int i = 0; i < rannum; i++)
                 {
                     GameObject test = GameManager.Instance.P_Manager.Get(22);
@@ -213,11 +216,6 @@ public class Bullet : MonoBehaviour
                 ////삭제한다
                 //StartCoroutine(TurnOff(2,circle));
             }
-        }
-
-        if(Name == "Lightning")
-        {
-
         }
 
         if(Name == "SlowNet")

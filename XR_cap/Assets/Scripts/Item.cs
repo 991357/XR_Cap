@@ -10,6 +10,9 @@ public class Item : MonoBehaviour
     public int Level;
     public Weapon Weapon;
     public Gear Gear;
+    public GameObject WeaponIcon;
+    public GameObject EscWeaponIcon;
+    public GameObject ResultIcon;
 
     Image Img_Icon;
     Text T_Level;
@@ -293,7 +296,11 @@ public class Item : MonoBehaviour
                 break;
         }
 
-        if(Level == Data.F_Dmgs.Length)
+        WeaponIcon.SetActive(true);
+        EscWeaponIcon.SetActive(true);
+        ResultIcon.SetActive(true);
+
+        if (Level == Data.F_Dmgs.Length)
         {
             GetComponent<Button>().interactable = false;
         }

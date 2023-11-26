@@ -215,6 +215,12 @@ public class Skill : MonoBehaviour
             case "SlowNet_2":
                 StartCoroutine(TurnOff(2));
                 break;
+            case "BlazeWall":
+                if (!GameManager.Instance.LevelUp.IsLevelUp)
+                    transform.position = new Vector2(transform.position.x + 0.003f, transform.position.y - 0.009f);
+                //GameManager.Instance.Player.CamShake.IsShake = true;
+                StartCoroutine(TurnOff(2.5f));
+                break;
 
         }
     }

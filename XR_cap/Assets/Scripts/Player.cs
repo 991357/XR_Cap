@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public Camera Cam;
     public CamShake CamShake;
     public GameObject WindObj;
+    public Notice Notice;
 
     [Space(10f)]
     [Header("Float")]
@@ -110,6 +111,11 @@ public class Player : MonoBehaviour
                 return;
         }
 
+        if(Input.GetKeyDown(KeyCode.V))
+        {
+            Notice.IsAnim = true;
+        }
+
         //최대 파워 설정
         if (Power >= 3)
             Power = 3;
@@ -194,7 +200,9 @@ public class Player : MonoBehaviour
 
         //SlowArea Test Code
         if (GameManager.Instance.LevelUp.items[1].Level > 3)
+        {
             SlowArea.SetActive(true);
+        }
     }
 
     IEnumerator FreezeAreaSkill()
@@ -295,10 +303,16 @@ public class Player : MonoBehaviour
                 {
                     transform.GetChild(i).gameObject.SetActive(false);
                 }
-                Anim.SetTrigger("Dead");
+                Anim.SetBool("Dead", true);
                 GameManager.Instance.GameOver();
+
             }
         }
+    }
+
+    public void GameOverSend()
+    {
+        GameManager.Instance.GameOverEnd();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -315,7 +329,7 @@ public class Player : MonoBehaviour
                 {
                     transform.GetChild(i).gameObject.SetActive(false);
                 }
-                Anim.SetTrigger("Dead");
+                Anim.SetBool("Dead",true);
                 GameManager.Instance.GameOver();
             }
         }
