@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject ResultPanel;
     public GameObject[] UltimateImg;
     public GameObject[] ResultUltimate;
+    public GameObject CharPanel;
 
     [Header("# GameControl")]
     public float GameTime;
@@ -49,6 +50,14 @@ public class GameManager : MonoBehaviour
     {
         PlayerId = id;
 
+        Invoke("StartGame", 2.1f);
+        AudioManager.Instance.PlayBgm(true);
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
+    }
+
+    void StartGame()
+    {
+        CharPanel.SetActive(false);
         Health = MaxHealth;
 
         Player.gameObject.SetActive(true);
@@ -76,11 +85,7 @@ public class GameManager : MonoBehaviour
         }
 
         Resume();
-
-        AudioManager.Instance.PlayBgm(true);
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
     }
-
     public void GameRestart()
     {
         SceneManager.LoadScene(0);

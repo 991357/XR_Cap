@@ -178,7 +178,7 @@ public class Player : MonoBehaviour
         //Test Code
         if (Input.GetKeyDown(KeyCode.K))
         {
-            GetComponentInChildren<Weapon>().TestLevelUp(10, 10);
+            GameManager.Instance.LevelUp.Show();
         }
         //Test Code
         if (Input.GetKeyDown(KeyCode.L))

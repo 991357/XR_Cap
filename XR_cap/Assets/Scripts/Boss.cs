@@ -110,10 +110,14 @@ public class Boss : MonoBehaviour
 
         Cloud = GameManager.Instance.P_Manager.Get(18);
 
-        if (CurPatternCount < MaxPatternCount[PatternIndex])
-            Invoke("MakeCloud", 5f);
-        else
-            Invoke("Think", 3f);
+        try
+        {
+            if (CurPatternCount < MaxPatternCount[PatternIndex])
+                Invoke("MakeCloud", 5f);
+            else
+                Invoke("Think", 3f);
+        }
+        catch { }
     }
 
 

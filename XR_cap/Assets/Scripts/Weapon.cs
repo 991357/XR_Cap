@@ -276,8 +276,9 @@ public class Weapon : MonoBehaviour
             case 3:
             case 4:
                 Transform bullet = GameManager.Instance.P_Manager.Get(23).transform;
+                bullet.transform.localScale = new Vector3(6, 7.5f, 6);
                 bullet.position = transform.position;
-                bullet.rotation = Quaternion.FromToRotation(Vector3.right * 0.1f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
+                bullet.rotation = Quaternion.FromToRotation(Vector3.right * 0.65f, dir);        //지정된 축을 중심으로 목표를 향해 회전하는 함수
                 bullet.GetComponent<Bullet>().Init(F_Dmg, I_Count, dir);
                 bullet.GetComponent<Bullet>().Dir = dir;
 
@@ -303,7 +304,7 @@ public class Weapon : MonoBehaviour
                 bullet.parent = transform;
             }
 
-            bullet.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            bullet.localScale = new Vector3(5,5,5);
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
 
@@ -331,7 +332,7 @@ public class Weapon : MonoBehaviour
                 bullet.parent = transform;
             }
 
-            bullet.localScale = new Vector3(0.3f, 1f, 1f);
+            bullet.localScale = new Vector3(3.5f,3.5f,3.5f);
             bullet.localPosition = transform.position;
             bullet.localRotation = Quaternion.identity;
 

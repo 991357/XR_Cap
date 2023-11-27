@@ -201,14 +201,17 @@ public class Enemy : MonoBehaviour
 
                 if (F_Health > 0)
                 {
-                    if (Name == "A")
-                    {
-                        A_Anim.SetTrigger("Hit");
+ /*                   if (Name == "A")
+                    {*/
+                    A_Anim.SetTrigger("Hit");
+                    if(F_Health>0)
+                        A_Anim.SetBool("Dead", true);
+                    Debug.Log("맞음");
 
                         //Text 생성
-                        GameObject text = GameManager.Instance.P_Manager.Get(33);
-                        text.transform.position += Vector3.up * 2;
-                    }
+/*                        GameObject text = GameManager.Instance.P_Manager.Get(33);
+                        text.transform.position += Vector3.up * 2;*/
+/*                    }
                     else
                     {
                         //수현님한테 Enemy Animation 만들어달라 하기
@@ -222,7 +225,7 @@ public class Enemy : MonoBehaviour
                         GameObject text = GameManager.Instance.P_Manager.Get(33);
                         text.transform.position += Vector3.up * 2;
 
-                    }
+                    }*/
                     AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
                 }
                 else
@@ -235,6 +238,7 @@ public class Enemy : MonoBehaviour
                         GameManager.Instance.Kill++;
                     else
                     {
+                        GetComponent<Boss>().StopAllCoroutines();
                         GameObject box = GameManager.Instance.P_Manager.Get(32);
                         box.transform.position = transform.position;
                         GameManager.Instance.BossKillCount++;

@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
     private void OnEnable()
     {
         if(Name == "Spear")
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3(6,7.5f,6);
 
         if (Name == "BlazeWall")
             return;
@@ -76,6 +76,7 @@ public class Bullet : MonoBehaviour
         F_Dmg = dmg;
         I_Per = per;
 
+
         if (per >= 0)
         {
             switch (GameManager.Instance.LevelUp.items[2].Level)
@@ -96,6 +97,13 @@ public class Bullet : MonoBehaviour
                     R_Rigid.velocity = dir * 18f;
                     break;
             }
+        }
+
+
+        if (per >= 0)
+        {
+           if(Name == "Spear")
+                R_Rigid.velocity = dir * 300f;
         }
 
         if (per >= 0)
@@ -245,8 +253,8 @@ public class Bullet : MonoBehaviour
     {
         R_Rigid.velocity = Vector2.zero;
 
-        if(Name == "Spear")
-            transform.localScale = new Vector3(0.1f,0.1f,0.1f);
+       if(Name == "Spear")
+           transform.localScale = new Vector3(0.1f,0.1f,0.1f);
 
         IsTouch = true;
         GameObject Pillar = GameManager.Instance.P_Manager.Get(24);
