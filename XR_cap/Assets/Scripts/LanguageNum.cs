@@ -13,7 +13,7 @@ public class LanguageNum : MonoBehaviour
         //일본어 버튼을 눌렀으면? Lnum = 2 ;
         //중국어 버튼을 눌렀으면? Lnum = 3 ;
         //아무거나 버튼을 눌렀으면? Lnum = 4 ;
-
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
         Lnum = 0;
         Obj_LanPanel.SetActive(false);
     }
@@ -24,7 +24,7 @@ public class LanguageNum : MonoBehaviour
         //일본어 버튼을 눌렀으면? Lnum = 2 ;
         //중국어 버튼을 눌렀으면? Lnum = 3 ;
         //아무거나 버튼을 눌렀으면? Lnum = 4 ;
-
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
         Lnum = 1;
         Obj_LanPanel.SetActive(false);
     }
@@ -36,7 +36,7 @@ public class LanguageNum : MonoBehaviour
         //일본어 버튼을 눌렀으면? Lnum = 2 ;
         //중국어 버튼을 눌렀으면? Lnum = 3 ;
         //아무거나 버튼을 눌렀으면? Lnum = 4 ;
-
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
         Lnum = 2;
         Obj_LanPanel.SetActive(false);
     }
@@ -48,7 +48,7 @@ public class LanguageNum : MonoBehaviour
         //일본어 버튼을 눌렀으면? Lnum = 2 ;
         //중국어 버튼을 눌렀으면? Lnum = 3 ;
         //아무거나 버튼을 눌렀으면? Lnum = 4 ;
-
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
         Lnum = 3;
         Obj_LanPanel.SetActive(false);
     }
@@ -60,6 +60,7 @@ public class LanguageNum : MonoBehaviour
         //일본어 버튼을 눌렀으면? Lnum = 2 ;
         //중국어 버튼을 눌렀으면? Lnum = 3 ;
         //아무거나 버튼을 눌렀으면? Lnum = 4 ;
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
         Lnum = 4;
         Obj_LanPanel.SetActive(false);
     }

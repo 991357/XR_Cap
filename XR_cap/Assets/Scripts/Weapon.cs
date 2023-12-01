@@ -251,7 +251,7 @@ public class Weapon : MonoBehaviour
             //bullet.Translate(bullet.up * 2.5f, Space.World);
             bullet.GetComponent<Bullet>().Init(F_Dmg, -100, Vector3.zero);      //-100 is Infinity per (관통)
 
-            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
+            //AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
         }
     }
 
@@ -313,7 +313,7 @@ public class Weapon : MonoBehaviour
             bullet.Translate(bullet.up * 2.5f, Space.World);
             bullet.GetComponent<Bullet>().Init(F_Dmg, -100, Vector3.zero);      //-100 is Infinity per (관통)
 
-            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
+            //AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
         }
     }
 
@@ -342,7 +342,7 @@ public class Weapon : MonoBehaviour
             bullet.GetComponent<Bullet>().Init(F_Dmg, -100, Vector3.zero);      //-100 is Infinity per (관통)
             bullet.GetComponent<Mes>().Number = i;
 
-            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
+            //AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
         }
     }
 
@@ -406,7 +406,7 @@ public class Weapon : MonoBehaviour
         }
         //Transform bullet = GameManager.Instance.S_Pool.Get(I_PrefabId).transform;
 
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
+        //AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 
     void ShotLightning()

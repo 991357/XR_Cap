@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class GameManager : MonoBehaviour
     public GameObject[] UltimateImg;
     public GameObject[] ResultUltimate;
     public GameObject CharPanel;
+    public GameObject SucceseeImage;
+    public GameObject FadeIn;
+    public AudioManager A_Manager;
+    public SfxManager SfxManager;
 
     [Header("# GameControl")]
     public float GameTime;
@@ -45,18 +50,24 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
     }
-
+    private void Start()
+    {
+        Time.timeScale = 1;
+        AudioManager.Instance.PlayBgm(true);
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
+    }
     public void GameStart(int id)
     {
         PlayerId = id;
-
-        Invoke("StartGame", 2.1f);
-        AudioManager.Instance.PlayBgm(true);
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
+        //Invoke("StartGame", 1.8f);
+        StartCoroutine(StartGame());
     }
 
-    void StartGame()
+    IEnumerator StartGame()
     {
+        yield return new WaitForSeconds(1.8f);
+        Debug.Log("´­¸²");
+        FadeIn.GetComponent<Animator>().SetTrigger("In");
         CharPanel.SetActive(false);
         Health = MaxHealth;
 
@@ -99,7 +110,6 @@ public class GameManager : MonoBehaviour
     IEnumerator GameOverRoutine()
     {
         IsLive = false;
-    
         yield return new WaitForSeconds(1.2f);
         //yield return null;
     
@@ -111,7 +121,7 @@ public class GameManager : MonoBehaviour
         Stop();
     
         AudioManager.Instance.PlayBgm(false);
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Lose);
     }
 
     public void GameOverEnd()
@@ -128,17 +138,16 @@ public class GameManager : MonoBehaviour
     IEnumerator GameVictoryRoutine()
     {
         IsLive = false;
-
+        SucceseeImage.SetActive(true);
         yield return new WaitForSeconds(2f);
+        SucceseeImage.SetActive(false);
 
-        //Obj_UiResult.gameObject.SetActive(true);
-        //Obj_UiResult.Win();
         ResultPanel.SetActive(true);
 
         Stop();
 
         AudioManager.Instance.PlayBgm(false);
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Win);
     }
 
     private void Update()
@@ -157,56 +166,8 @@ public class GameManager : MonoBehaviour
             GameTime = MaxGameTime;
             GameVictory();
         }
-        Dummy_Dash();
         EscMenu();
-        Dummy_BloodImg();
-    }
-
-    public void Dummy_Dash()
-    {
-        //if(Player.DashTimer < Player.DashCoolTime)
-        //{
-        //    Dummy_T_DashCoolTime.text = "Dash : false";
-        //}
-        //else
-        //{
-        //    Dummy_T_DashCoolTime.text = "Dash : true";
-        //}
-        //
-        //if(Player.QTimer < Player.QCoolTime)
-        //{
-        //    Dummy_T_QCoolTier.text = "Q : False";
-        //}
-        //else
-        //{
-        //    Dummy_T_QCoolTier.text = "Q : true";
-        //}
-        //
-        //Dummy_T_Power.text = "Power : " + Player.Power;
-    }
-
-    public void Dummy_BloodImg()
-    {
-        if(Health <= 40)
-        {
-            StartCoroutine(Blooding());
-        }
-    }
-    IEnumerator Blooding()
-    {
-        while (Health > 50)
-        {
-            for (byte i = 0; i < 255; i++)
-            {
-                Blood_Img.color = new Color32(255, 255, 255, i);
-            }
-            yield return new WaitForSeconds(1.5f);
-            for (byte i = 255; i >0; i--)
-            {
-                Blood_Img.color = new Color32(255, 255, 255, i);
-                break;
-            }
-        }
+        //Dummy_BloodImg();
     }
 
     public void GetExp(int exp)
@@ -248,6 +209,7 @@ public class GameManager : MonoBehaviour
     public void OnClickEscExitBtn()
     {      
         EscPanel.SetActive(false);
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
         Resume();
     }
 }

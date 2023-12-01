@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 8
   I_ItemId: 8
-  S_ItemName: Mes
+  S_ItemName: "\uD035\uC2A4\uD2F8\uB808\uD1A0"
   S_ItemDesc: 
   SP_ItemIcon: {fileID: 21300000, guid: 376d65cdde0918142a4052d2bd0cef87, type: 3}
   F_BaseDmg: 1.5

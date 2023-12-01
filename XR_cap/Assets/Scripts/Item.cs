@@ -119,7 +119,7 @@ public class Item : MonoBehaviour
                         T_Desc.text = "화염지대 생성";
                         break;
                     case 1:
-                        T_Desc.text = "갯수가 증가\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";
+                        T_Desc.text = "갯수 증가\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";
                         break;
                     case 2:
                         T_Desc.text = "화염지대에서 폭발\n데미지 " + Data.F_Dmgs[Level] * 10 + "% 증가";

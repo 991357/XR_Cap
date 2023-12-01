@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class FadeEvent : MonoBehaviour
 {
-    public void Off()
+    public GameObject FadeOut;
+
+    public void OnClickFadeOutStartBtn()
     {
-        gameObject.SetActive(false);
+        FadeOut.SetActive(true);
+        SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
+        FadeOut.GetComponent<Animator>().SetTrigger("Out");
+    }
+
+    public void FadeOutOff()
+    {
+        FadeOut.SetActive(false);
     }
 }

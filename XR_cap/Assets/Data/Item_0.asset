@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   I_ItemId: 0
-  S_ItemName: Ice_1
+  S_ItemName: "\uC544\uC774\uC2A4\uBE0C\uB9AC\uC800"
   S_ItemDesc: "\uC5BC\uC74C \uBB34\uAE30 1"
   SP_ItemIcon: {fileID: 21300000, guid: 0f7bc70c1b9ae5a4a88c820c1876bd27, type: 3}
   F_BaseDmg: 2.5

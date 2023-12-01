@@ -160,10 +160,10 @@ public class Player : MonoBehaviour
                     switch (Power)
                     {
                         case 1:
-                            GameManager.Instance.P_Manager.Get(13);
+                            GameManager.Instance.P_Manager.Get(15);
                             break;
                         case 2:
-                            GameManager.Instance.P_Manager.Get(14);
+                            GameManager.Instance.P_Manager.Get(15);
                             break;
                         case 3:
                             GameManager.Instance.P_Manager.Get(15);

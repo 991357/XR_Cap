@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
     int I_ChannelIndex;
     AudioSource[ ] AS_Sfx;
 
-    public enum Sfx { Dead, Hit, LevelUp=3, Lose, Melee, Range=7, Select, Win }
+    public enum Sfx { Dead, Hit, LevelUp=3, Lose, Melee, Range=7, Select, Win, Click }
 
 
     private void Awake()
@@ -42,7 +42,6 @@ public class AudioManager : MonoBehaviour
         AS_Bgm.loop = true;
         AS_Bgm.volume = F_BgmVolume;
         AS_Bgm.clip = AC_Bgm;
-        AF_BgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
 
         //효과음 플레이어 초기화
         GameObject sfx = new GameObject("Sfx");
@@ -58,28 +57,28 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySfx(Sfx sfx)
-    {
-        for(int i = 0; i < I_Channels; i++)
-        {
-            int loopindex = (i + I_ChannelIndex) % I_Channels;
-
-            if (AS_Sfx[loopindex].isPlaying)
-                continue;
-
-            int ran = 0;
-
-            if(sfx == Sfx.Hit || sfx == Sfx.Melee)
-            {
-                ran = Random.Range(0, 2);
-            }
-
-            I_ChannelIndex = loopindex;
-            AS_Sfx[loopindex].clip = AC_Sfx[(int)sfx];
-            AS_Sfx[loopindex].Play();
-            break;
-        }
-    }
+    //public void PlaySfx(Sfx sfx)
+    //{
+    //    for(int i = 0; i < I_Channels; i++)
+    //    {
+    //        int loopindex = (i + I_ChannelIndex) % I_Channels;
+    //
+    //        if (AS_Sfx[loopindex].isPlaying)
+    //            continue;
+    //
+    //        int ran = 0;
+    //
+    //        if(sfx == Sfx.Hit || sfx == Sfx.Melee)
+    //        {
+    //            ran = Random.Range(0, 2);
+    //        }
+    //
+    //        I_ChannelIndex = loopindex;
+    //        AS_Sfx[loopindex].clip = AC_Sfx[(int)sfx];
+    //        AS_Sfx[loopindex].Play();
+    //        break;
+    //    }
+    //}
 
     public void PlayBgm(bool isplay)
     {
@@ -91,10 +90,5 @@ public class AudioManager : MonoBehaviour
         {
             AS_Bgm.Stop();
         }
-    }
-
-    public void EffectBgm(bool isplay)
-    {
-        AF_BgmEffect.enabled = isplay;
     }
 }

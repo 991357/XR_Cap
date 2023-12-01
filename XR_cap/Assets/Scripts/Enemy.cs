@@ -47,6 +47,7 @@ public class Enemy : MonoBehaviour
         SR = GetComponent<SpriteRenderer>();
         //Freeze = GetComponent<FreezeEnemy>();
         B_IsFlip = true;
+        IsBurn = false;
     }
 
     private void Update()
@@ -114,6 +115,7 @@ public class Enemy : MonoBehaviour
         R_Target = GameManager.Instance.Player.GetComponent<Rigidbody2D>();
         B_IsLive = true;
         SR_SPriter.color = new Color(1, 1, 1);
+        A_Anim.Rebind();
 
         R_Rigid.simulated = true;
         IsFreeze = false;
@@ -125,10 +127,12 @@ public class Enemy : MonoBehaviour
         SR.enabled = false;
         F_Health = F_MaxHealth;
     }
+
     IEnumerator Burn()
     {
         //파티클 생성
-
+        //GameObject burnPar = GameManager.Instance.P_Manager.Get(37);
+        //burnPar.transform.parent = transform;
 
         if (HitTimer > HitDelay)
         {
@@ -159,13 +163,11 @@ public class Enemy : MonoBehaviour
         }
 
         //피격 표시   ?? 붙탄 파티클이 나오고 있으면 뭐 0.5초마다 빨갛게-> 원래대로 빨갛게 -> 원래대로
-
-        //파티클 끄기
-
         yield return new WaitForSeconds(5);
+        //파티클 끄기
+        //burnPar.SetActive(false);
         IsBurn = false;
     }
-
 
     IEnumerator Walk()
     {
@@ -201,32 +203,8 @@ public class Enemy : MonoBehaviour
 
                 if (F_Health > 0)
                 {
- /*                   if (Name == "A")
-                    {*/
                     A_Anim.SetTrigger("Hit");
-                    if(F_Health>0)
-                        A_Anim.SetBool("Dead", true);
-                    Debug.Log("맞음");
-
-                        //Text 생성
-/*                        GameObject text = GameManager.Instance.P_Manager.Get(33);
-                        text.transform.position += Vector3.up * 2;*/
-/*                    }
-                    else
-                    {
-                        //수현님한테 Enemy Animation 만들어달라 하기
-
-                        //if (IsFreeze)
-                        //    return;
-                        ////RGB값 처리 예정
-                        //SpriteRenderer sr = GetComponent<SpriteRenderer>();
-                        //sr.color = new Color(1, 0, 0, 1);
-                        //Invoke("ReturnSprite", 0.15f);
-                        GameObject text = GameManager.Instance.P_Manager.Get(33);
-                        text.transform.position += Vector3.up * 2;
-
-                    }*/
-                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
+                    SfxManager.Instance.PlaySfx(SfxManager.Sfx.Hit);
                 }
                 else
                 {
@@ -334,11 +312,16 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if (collision.GetComponent<Bullet>().Name == "Lightning")
+        if (collision.GetComponent<Bullet>().Name == "Mes")
         {
-
+            //StartCoroutine(HitMes());
         }
     }
+
+   /* IEnumerator HitMes()*/
+   /* {*/
+/**/
+   /* }*/
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -368,15 +351,15 @@ public class Enemy : MonoBehaviour
                     //Invoke("ReturnSprite", 0.15f);
                 }
 
-                AudioManager.Instance.PlaySfx(AudioManager.Sfx.Hit);
+                SfxManager.Instance.PlaySfx(SfxManager.Sfx.Hit);
             }
             else
             {
                 GameManager.Instance.Kill++;
                 GameManager.Instance.GetExp(1);
 
-                if (GameManager.Instance.IsLive)
-                    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+                //if (GameManager.Instance.IsLive)
+                //    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
             }
         }
 
@@ -457,6 +440,7 @@ public class Enemy : MonoBehaviour
         if (HitTimer > HitDelay)
         {
             F_Health -= 0.3f;
+
             if (F_Health < 0)
                 A_Anim.SetBool("Dead", true);
 
@@ -540,8 +524,8 @@ public class Enemy : MonoBehaviour
         if (GameManager.Instance.Q_Manager.IsQuest)
             GameManager.Instance.Q_Manager.Count += 1;
 
-        if (GameManager.Instance.IsLive)
-            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
+        //if (GameManager.Instance.IsLive)
+        //    AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
 
         this.gameObject.SetActive(false);
 

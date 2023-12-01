@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 3
   I_ItemId: 3
-  S_ItemName: "\uC804\uD22C\uD654"
+  S_ItemName: "\uC18D\uB3C4\uAC15\uD654"
   S_ItemDesc: "\uC774\uB3D9\uC18D\uB3C4\uAC00\n{0}% \uC99D\uAC00\uD569\uB2C8\uB2E4."
   SP_ItemIcon: {fileID: -966295699, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   F_BaseDmg: 0

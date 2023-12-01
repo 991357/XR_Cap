@@ -90,12 +90,12 @@ public class AchiveManager : MonoBehaviour
 
     IEnumerator NoticeRoutine()
     {
-        Obj_Notice.SetActive(true);
+        //Obj_Notice.SetActive(true);
 
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.LevelUp);
+        //SfxManager.Instance.PlaySfx(SfxManager.Sfx.LevelUp);
 
         yield return Wait;
 
-        Obj_Notice.SetActive(false);
+        //Obj_Notice.SetActive(false);
     }
 }
