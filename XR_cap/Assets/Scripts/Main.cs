@@ -111,12 +111,14 @@ public class Main : MonoBehaviour
     public void OnClickDictionnaryBtn()
     {
         SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
+        Par.SetActive(false);
         Obj_DictionaryPanel.SetActive(true);
     }
     public void OnClickDictionnaryExitBtn()
     {
         SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
-        DIc_Logic.AllFalse();
+        DIc_Logic.AllFalse(); 
+        Par.SetActive(true);
         Obj_DictionaryPanel.SetActive(false);
     }
     
