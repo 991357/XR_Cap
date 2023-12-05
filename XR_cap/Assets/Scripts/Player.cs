@@ -127,7 +127,7 @@ public class Player : MonoBehaviour
             Power = 3;
 
         //캐릭터별 스킬 설정
-        if (GameManager.Instance.PlayerId == 0 || GameManager.Instance.PlayerId == 2)
+        if (GameManager.Instance.PlayerId == 0 || GameManager.Instance.PlayerId == 1)
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -150,7 +150,7 @@ public class Player : MonoBehaviour
                     return;
             }
         }
-        else if (GameManager.Instance.PlayerId == 1)
+        else if (GameManager.Instance.PlayerId == 2)
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {

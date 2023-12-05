@@ -51,7 +51,7 @@ public class Spawner : MonoBehaviour
         if (F_Timer <= 15)
         {
             I_Level = 1;
-            SpawnDelay = Random.Range(0.6f,0.8f);
+            SpawnDelay = Random.Range(0.9f,1.2f);
         }
         else if (F_Timer <= 30)
         {
@@ -89,9 +89,9 @@ public class Spawner : MonoBehaviour
 
         yield return new WaitForSeconds(0.01f);
         if(I_Level == 2)
-            SpawnDelay = Random.Range(0.4f, 6f);
+            SpawnDelay = Random.Range(0.6f, .8f);
         else if(I_Level == 3)
-            SpawnDelay = Random.Range(0.2f, 0.4f);
+            SpawnDelay = Random.Range(0.2f, 0.5f);
         else
             SpawnDelay = Random.Range(0.6f, 0.8f);
     }

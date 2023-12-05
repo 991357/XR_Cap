@@ -88,7 +88,9 @@ public class Enemy : MonoBehaviour
         HitTimer += Time.fixedDeltaTime;
 
         if (IsBurn)
+        {
             StartCoroutine(Burn());
+        }
 
         if (IsSlowBurn)
             StartCoroutine(SlowBurn());     //Net맞으면
@@ -130,10 +132,6 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Burn()
     {
-        //파티클 생성
-        //GameObject burnPar = GameManager.Instance.P_Manager.Get(37);
-        //burnPar.transform.parent = transform;
-
         if (HitTimer > HitDelay)
         {
             switch (GameManager.Instance.LevelUp.items[1].Level)
@@ -164,8 +162,6 @@ public class Enemy : MonoBehaviour
 
         //피격 표시   ?? 붙탄 파티클이 나오고 있으면 뭐 0.5초마다 빨갛게-> 원래대로 빨갛게 -> 원래대로
         yield return new WaitForSeconds(5);
-        //파티클 끄기
-        //burnPar.SetActive(false);
         IsBurn = false;
     }
 
@@ -255,6 +251,7 @@ public class Enemy : MonoBehaviour
             if (FireStack >= 3)
             {
                 IsBurn = true;
+                StartCoroutine(BurnEffect());
             }
         }
 
@@ -322,6 +319,17 @@ public class Enemy : MonoBehaviour
    /* {*/
 /**/
    /* }*/
+
+    IEnumerator BurnEffect()
+    {
+        //파티클 생성
+        GameObject burnPar = GameManager.Instance.P_Manager.Get(37);
+        burnPar.GetComponent<FollowTarget>().Target = gameObject;
+
+        yield return new WaitForSeconds(5f);
+
+        burnPar.SetActive(false);
+    }
 
     private void OnTriggerStay2D(Collider2D collision)
     {

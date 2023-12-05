@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject FadeIn;
     public AudioManager A_Manager;
     public SfxManager SfxManager;
+    public AchiveManager AchiveManagerRef;
 
     [Header("# GameControl")]
     public float GameTime;
@@ -56,6 +57,7 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayBgm(true);
         SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
     }
+
     public void GameStart(int id)
     {
         PlayerId = id;
@@ -72,6 +74,7 @@ public class GameManager : MonoBehaviour
         Health = MaxHealth;
 
         Player.gameObject.SetActive(true);
+
         LevelUp.Select(PlayerId);
 
         switch (PlayerId)

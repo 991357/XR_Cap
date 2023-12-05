@@ -9,6 +9,10 @@ public class CharacterSelect : MonoBehaviour
     public GameObject Char2Panel;
     public GameObject Char3Panel;
 
+    public GameObject[] UnLockBtn;
+    public GameObject[] BackImg;
+    public GameObject[] QuestImg;
+
     public void Char1True()
     {
         SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
@@ -34,5 +38,25 @@ public class CharacterSelect : MonoBehaviour
     {
         SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
         SceneManager.LoadScene(0);
+    }
+
+    public void UnLockChar(int num)
+    {
+        if(num == 0)
+        {
+            GameManager.Instance.AchiveManagerRef.Obj_LockCharacter[num].SetActive(false);
+            GameManager.Instance.AchiveManagerRef.Obj_UnLockCharacter[num].SetActive(true);
+            UnLockBtn[num].SetActive(false);
+            BackImg[num].SetActive(false);
+            QuestImg[num].SetActive(false);
+        }
+        else if(num == 1)
+        {
+            GameManager.Instance.AchiveManagerRef.Obj_LockCharacter[num].SetActive(false);
+            GameManager.Instance.AchiveManagerRef.Obj_UnLockCharacter[num].SetActive(true);
+            UnLockBtn[num].SetActive(false);
+            BackImg[num].SetActive(false);
+            QuestImg[num].SetActive(false);
+        }
     }
 }
