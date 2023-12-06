@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     [Space(10f)]
     [Header("Int")]
     public int Power;
+    public int UltimateCoin;
 
     [Space(10f)]
     [Header("Bool")]
@@ -56,6 +57,11 @@ public class Player : MonoBehaviour
         Collider = GetComponent<CapsuleCollider2D>();
         Scanner = GetComponent<Scanner>();
         //Debug.Log(GameManager.Instance.PlayerId);
+    }
+
+    private void Start()
+    {
+        UltimateCoin = 0;
     }
 
     private void OnEnable()
@@ -131,7 +137,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                if (QTimer > QCoolTime)
+                if (UltimateCoin == 1)
                 {
                     switch (Power)
                     {
@@ -145,6 +151,7 @@ public class Player : MonoBehaviour
                             StartCoroutine(FreezeAreaSkill());
                             break;
                     }
+                    UltimateCoin--;
                 }
                 else
                     return;
@@ -154,9 +161,8 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                if (QTimer > QCoolTime)
+                if (UltimateCoin == 1)
                 {
-                    QTimer = 0;
                     switch (Power)
                     {
                         case 1:
@@ -169,6 +175,7 @@ public class Player : MonoBehaviour
                             GameManager.Instance.P_Manager.Get(15);
                             break;
                     }
+                    UltimateCoin--;
                 }
                 else
                     return;
@@ -202,6 +209,21 @@ public class Player : MonoBehaviour
         if (GameManager.Instance.LevelUp.items[1].Level > 3)
         {
             SlowArea.SetActive(true);
+        }
+
+        if(UltimateCoin == 1)
+        {
+            if(GameManager.Instance.PlayerId == 0 || GameManager.Instance.PlayerId == 1)
+                GameManager.Instance.UltimateImg[0].SetActive(true);
+            else
+                GameManager.Instance.UltimateImg[1].SetActive(true);
+        }
+        else
+        {
+            if (GameManager.Instance.PlayerId == 0 || GameManager.Instance.PlayerId == 1)
+                GameManager.Instance.UltimateImg[0].SetActive(false);
+            else
+                GameManager.Instance.UltimateImg[1].SetActive(false);
         }
     }
 

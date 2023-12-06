@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public AudioManager A_Manager;
     public SfxManager SfxManager;
     public AchiveManager AchiveManagerRef;
+    public RectTransform EscGroupRt;
 
     [Header("# GameControl")]
     public float GameTime;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
     public int PlayerId;
     public int Level;
     public int Kill;
+    public int UltimateKillCount;
     public int Exp;
     public int BossKillCount;
     public int[] I_NextExp = { 10,30,60,100,150,210,280,360,450,600};
@@ -171,6 +173,8 @@ public class GameManager : MonoBehaviour
         }
         EscMenu();
         //Dummy_BloodImg();
+
+        UltimateCoinCheck();
     }
 
     public void GetExp(int exp)
@@ -205,6 +209,7 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             EscPanel.SetActive(true);
+
             Stop();
         }
     }
@@ -214,5 +219,44 @@ public class GameManager : MonoBehaviour
         EscPanel.SetActive(false);
         SfxManager.Instance.PlaySfx(SfxManager.Sfx.Click);
         Resume();
+    }
+
+    public void UltimateCoinCheck()
+    {
+        if((UltimateKillCount / 2) >= 50)
+        {
+            if (Player.UltimateCoin == 1)
+                return;
+
+            Player.UltimateCoin++;
+
+            if(PlayerId == 0 || PlayerId == 1)
+            {
+                //ÆÄ¶û ÆÄÆ¼Å¬
+                GameObject bluePar = P_Manager.Get(38);
+                bluePar.transform.position = Player.transform.position;
+
+                SfxManager.Instance.PlaySfx(SfxManager.Sfx.UltimateFilled);
+
+                StartCoroutine(OffPar(bluePar));
+            }
+            else
+            {
+                //»¡°­ ÆÄÆ¼Å¬
+                GameObject redPar = P_Manager.Get(39);
+                redPar.transform.position = Player.transform.position;
+
+                SfxManager.Instance.PlaySfx(SfxManager.Sfx.UltimateFilled);
+
+                StartCoroutine(OffPar(redPar));
+            }
+            UltimateKillCount = 0;
+        }
+    }
+
+    IEnumerator OffPar(GameObject Par)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Par.SetActive(false);
     }
 }

@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour
     bool IsBlazeWall;
     bool IsNet;
     bool IsDead;
+    bool IsMakeParticle;
 
     private void Awake()
     {
@@ -59,6 +60,7 @@ public class Enemy : MonoBehaviour
             StartCoroutine(EnemyFreeze());
 
         EnemyDeadCheck();
+
     }
 
     // Update is called once per frame
@@ -132,6 +134,15 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Burn()
     {
+        if (IsMakeParticle == false)
+        {
+            //파티클 생성
+            GameObject burnPar = GameManager.Instance.P_Manager.Get(37);
+            burnPar.transform.position = transform.position;
+            burnPar.GetComponent<FollowPar>().Enemy = gameObject;
+            IsMakeParticle = true;
+        }
+
         if (HitTimer > HitDelay)
         {
             switch (GameManager.Instance.LevelUp.items[1].Level)
@@ -209,7 +220,10 @@ public class Enemy : MonoBehaviour
                     GameManager.Instance.GetExp(1);
 
                     if (Name == "A" || Name == "B" || Name == "C" || Name == "B_A")
+                    {
                         GameManager.Instance.Kill++;
+                        GameManager.Instance.UltimateKillCount++;
+                    }
                     else
                     {
                         GetComponent<Boss>().StopAllCoroutines();
@@ -240,7 +254,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        if (collision.GetComponent<Bullet>().Name == "FireBall" || collision.GetComponent<Bullet>().Name == "BlazeWall") //|| collision.GetComponent<Bullet>().Name == "FireBallSmall")
+        if (collision.GetComponent<Bullet>().Name == "BlazeWall") //|| collision.GetComponent<Bullet>().Name == "FireBallSmall")
         {
             FireStack++;
             GameObject par = GameManager.Instance.P_Manager.Get(27);
@@ -251,8 +265,35 @@ public class Enemy : MonoBehaviour
             if (FireStack >= 3)
             {
                 IsBurn = true;
-                StartCoroutine(BurnEffect());
+                //StartCoroutine(BurnEffect());
             }
+        }
+
+        if (collision.GetComponent<Bullet>().Name == "FireBall")
+        {
+            FireStack++;
+            GameObject par = GameManager.Instance.P_Manager.Get(41);
+            par.transform.position = transform.position;
+            par.transform.rotation = transform.rotation;
+
+            StartCoroutine(DestroyPar(par));
+            if (FireStack >= 3)
+            {
+                IsBurn = true;
+            }
+        }
+
+
+        if (collision.GetComponent<Bullet>().Name == "Spear")
+        {
+            FireStack++;
+            GameObject par = GameManager.Instance.P_Manager.Get(42);
+            par.transform.position = transform.position;
+            par.transform.rotation = transform.rotation;
+
+            StartCoroutine(DestroyPar(par));
+
+            IsFreeze = true;
         }
 
         if (collision.GetComponent<Bullet>().Name == "SlowNet")
@@ -311,24 +352,16 @@ public class Enemy : MonoBehaviour
 
         if (collision.GetComponent<Bullet>().Name == "Mes")
         {
-            //StartCoroutine(HitMes());
+            StartCoroutine(HitMes());
         }
     }
 
-   /* IEnumerator HitMes()*/
-   /* {*/
-/**/
-   /* }*/
-
-    IEnumerator BurnEffect()
+    IEnumerator HitMes()
     {
-        //파티클 생성
-        GameObject burnPar = GameManager.Instance.P_Manager.Get(37);
-        burnPar.GetComponent<FollowTarget>().Target = gameObject;
-
-        yield return new WaitForSeconds(5f);
-
-        burnPar.SetActive(false);
+        GameObject Par = GameManager.Instance.P_Manager.Get(40);
+        Par.transform.position = transform.position;
+        yield return new WaitForSeconds(0.3f);
+        Par.gameObject.SetActive(false);
     }
 
     private void OnTriggerStay2D(Collider2D collision)

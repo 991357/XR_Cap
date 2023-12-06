@@ -13,7 +13,7 @@ public class SfxManager : MonoBehaviour
     int I_ChannelIndex;
     AudioSource[] AS_Sfx;
 
-    public enum Sfx { Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win, Click }
+    public enum Sfx { Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win, Click, UltimateFilled }
 
     private void Awake()
     {
