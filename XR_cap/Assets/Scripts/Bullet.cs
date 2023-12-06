@@ -233,9 +233,9 @@ public class Bullet : MonoBehaviour
                 if (IsJang)
                     return;
                 //장판생성
-                IsJang = true;
-                GameObject jang = GameManager.Instance.P_Manager.Get(31);
-                jang.transform.position = transform.position;
+                //IsJang = true;
+                //GameObject jang = GameManager.Instance.P_Manager.Get(31);
+                //jang.transform.position = transform.position;
             }
         }
 
